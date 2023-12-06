@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 // Builder service that adds account DB context to database
 builder.Services.AddDbContext<AccountContext>(options =>
 {
-    options.UseSqlServer("Server=DESKTOP-E4BN869;Database=FinalProjectDB;Trusted_Connection=True;");
+    options.UseSqlServer("Server=DESKTOP-E4BN869;Database=FinalProjectDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;");
 });
 
 var app = builder.Build();
