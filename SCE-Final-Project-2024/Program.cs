@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using SCE_Final_Project_2024.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Builder service that adds account DB context to database
+builder.Services.AddDbContext<AccountContext>(options =>
+{
+    options.UseSqlServer("Server=DESKTOP-E4BN869;Database=FinalProjectDB;Trusted_Connection=True;");
+});
 
 var app = builder.Build();
 
