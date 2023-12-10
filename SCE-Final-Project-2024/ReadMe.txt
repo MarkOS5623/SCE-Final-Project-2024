@@ -3,6 +3,7 @@
 2. Microsoft.EntityFrameworkCore.Tools
 3. Microsoft.EntityFrameworkCore.SqlServer
 
+Remember to update connection string after mergeing
 
 Migration commands:
 add-migration MigrationName // create migration
