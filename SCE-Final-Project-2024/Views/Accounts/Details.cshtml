@@ -1,0 +1,66 @@
+﻿@model SCE_Final_Project_2024.Models.Account
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Account</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._FName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._FName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._LName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._LName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._Password)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._Password)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._Department)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._Department)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._IsraeliID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._IsraeliID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._IsVerfied)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._IsVerfied)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model._IsStaff)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._IsStaff)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?._AccountID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

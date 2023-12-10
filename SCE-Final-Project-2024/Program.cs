@@ -1,12 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using SCE_Final_Project_2024.Context;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-// Builder service that adds account DB context to database
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = options.DefaultPolicy;
+});
+
+// Add services to the container.
+builder.Services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
+
+// Builder service that adds account DB context to the database
 builder.Services.AddDbContext<AccountContext>(options =>
 {
     options.UseSqlServer("Server=DESKTOP-E4BN869;Database=FinalProjectDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;");
@@ -27,8 +42,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
+// Map Razor Pages and Controllers
 app.MapRazorPages();
+app.MapControllers();
+
+// Map the AccountsController
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
