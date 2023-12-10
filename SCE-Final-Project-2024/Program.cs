@@ -21,7 +21,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
-// Builder service that adds account DB context to database
+// Builder service that adds account DB context to the database
 builder.Services.AddDbContext<AccountContext>(options =>
 {
     options.UseSqlServer("Server=IP\\SQLEXPRESS;Database=FinalProjectDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;");
@@ -46,7 +46,13 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+// Map Razor Pages and Controllers
 app.MapRazorPages();
 app.MapControllers();
+
+// Map the AccountsController
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
