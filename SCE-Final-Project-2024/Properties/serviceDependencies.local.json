@@ -3,6 +3,10 @@
     "identityapp1": {
       "connectionInfo": "App registration: SCE Final Project, Tenant: ac.sce.ac.il (acsceacil.onmicrosoft.com - Microsoft Entra ID)",
       "type": "identityapp.default"
+    },
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:AccountDbContextConnection"
     }
   }
 }
