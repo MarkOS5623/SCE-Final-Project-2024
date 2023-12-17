@@ -6,6 +6,7 @@
     <RootNamespace>SCE_Final_Project_2024</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
@@ -20,6 +21,7 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="2.13.4" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageReference Include="MimeKit" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\" />

@@ -2,7 +2,8 @@
 1. Microsoft.EntityFrameworkCore
 2. Microsoft.EntityFrameworkCore.Tools
 3. Microsoft.EntityFrameworkCore.SqlServer
-
+4. MailKit
+5. MimeKit
 Remember to update connection string after mergeing
 
 Migration commands:
