@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using SCE_Final_Project_2024.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Syncfusion.Licensing;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AccountDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AccountDbContextConnection' not found.");
@@ -24,7 +25,9 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Build the initial application to retrieve the IServiceProvider
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5eeHRcQ2VfUEF2Wks=");
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

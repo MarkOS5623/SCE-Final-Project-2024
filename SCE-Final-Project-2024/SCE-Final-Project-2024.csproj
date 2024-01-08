@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="24.1.41" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\" />

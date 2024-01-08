@@ -22,3 +22,13 @@ ASP.NET Identity:
 https://www.youtube.com/watch?v=5UfJeDcoC1k
 Scaffolding:
 https://www.youtube.com/watch?v=NHv7KdY09Qw
+Syncfusion Components:
+https://www.youtube.com/watch?v=5OvmkDExNgQ&list=PLjC4UKOOcfDT5Kpxez-ztrmM2246vc28s
+Documentation:
+https://ej2.syncfusion.com/aspnetcore/documentation/introduction
+
+https://ej2.syncfusion.com/home/aspnetcore.html
+
+https://ej2.syncfusion.com/aspnetcore/Word/SalesInvoice#/material3-dark
+Syncfusion Scaffolding:
+https://ej2.syncfusion.com/aspnetcore/documentation/visual-studio-integration/scaffolding
