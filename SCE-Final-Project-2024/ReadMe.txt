@@ -4,6 +4,8 @@
 3. Microsoft.EntityFrameworkCore.SqlServer
 4. MailKit
 5. MimeKit
+6. OpenXML
+7. Microsoft.Office.Interop.Word
 Remember to update connection string after mergeing
 
 Migration commands:

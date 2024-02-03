@@ -6,6 +6,7 @@
     <RootNamespace>SCE_Final_Project_2024</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.1" />
     <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
@@ -20,8 +21,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="2.13.4" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.4" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
+    <PackageReference Include="Syncfusion.DocIO.Net.Core" Version="24.2.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="24.1.41" />
   </ItemGroup>
   <ItemGroup>

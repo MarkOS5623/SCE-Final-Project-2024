@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    Layout = "_LayoutNoNavbar";
+    Layout = "_Layout";
     ViewData["Title"] = "Home page";
 }
 
@@ -15,7 +15,7 @@
         <!-- Adjust the margin-top (mt-5) value as needed -->
         @if (User.Identity?.IsAuthenticated == true)
         {
-            <a class="btn btn-dark" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
+            <a class="btn btn-dark" asp-area="Documents" asp-page="/Index">Create Docs</a>
         }
         else
         {

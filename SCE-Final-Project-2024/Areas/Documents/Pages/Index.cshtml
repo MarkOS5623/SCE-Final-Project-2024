@@ -1,0 +1,61 @@
+﻿@page
+@model SCE_Final_Project_2024.Areas.Documents.Pages.CreateDocsModel
+@{
+    Layout = "_Layout";
+}
+
+<html>
+<body>
+    <style>
+        .wrap {
+            margin: 0 auto;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        #signature {
+            border: 1px solid lightgray;
+            height: 300px;
+            width: 100%;
+        }
+
+        .e-split-btn-wrapper {
+            float: right;
+            margin-bottom: 5px;
+            margin-right: 50px;
+        }
+    </style>
+
+    <div class="wrap">
+        <h2>Create Document</h2>
+
+        <form method="post" asp-page-handler="OnPostSaveDocument">
+            <div id="signatureContainer">
+                <ejs-richtexteditor id="signature" bind-Value="DocumentContent">
+
+                </ejs-richtexteditor>
+            </div>
+
+            <button type="submit">Save Document</button>
+        </form>
+    </div>
+
+    <script>
+        var successMessage = '@ViewData["SuccessMessage"]';
+        var errorMessage = '@ViewData["ErrorMessage"]';
+
+        console.log('Script executed.');
+
+        if (successMessage && successMessage !== '') {
+            console.log('Success Message:', successMessage);
+            alert(successMessage);
+        }
+
+        if (errorMessage && errorMessage !== '') {
+            console.log('Error Message:', errorMessage);
+            alert(errorMessage);
+        }
+    </script>
+
+</body>
+</html>
