@@ -1,12 +1,10 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCE_Final_Project_2024.Areas.Documents.Data;
 using SCE_Final_Project_2024.Areas.Identity.Data;
 using Syncfusion.Licensing;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,13 +22,17 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5eeHRcQ2VfUEF2Wks=");
-
-// Add logging
-builder.Services.AddLogging(builder =>
+builder.Services.AddLogging(logging =>
 {
-    builder.AddConsole();
+    logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+    logging.AddConsole();
+    logging.AddDebug();
+    logging.AddSerilog();
 });
+
+builder.Host.UseSerilog();
+
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5eeHRcQ2VfUEF2Wks=");
 
 var app = builder.Build();
 

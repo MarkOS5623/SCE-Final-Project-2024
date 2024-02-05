@@ -1,89 +1,48 @@
-// Razor Pages Model
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging; // Add this
-using SCE_Final_Project_2024.Areas.Documents.Data;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System;
 using System.IO;
 
 namespace SCE_Final_Project_2024.Areas.Documents.Pages
 {
     public class CreateDocsModel : PageModel
     {
-        private readonly DocsContext _context;
-        private readonly ILogger<CreateDocsModel> _logger; // Add this
+        private readonly IWebHostEnvironment hostingEnv;
 
-        [BindProperty]
-        public string DocumentContent { get; set; }
-
-        public CreateDocsModel(DocsContext context, ILogger<CreateDocsModel> logger) // Add ILogger in the constructor
+        public CreateDocsModel(IWebHostEnvironment env)
         {
-            _context = context;
-            _logger = logger; // Initialize logger
+            hostingEnv = env;
         }
 
-        public IActionResult OnPostSaveDocument()
+        public IActionResult OnGet()
+        {
+            return Page();
+        }
+
+        public class RichTextEditorValue
+        {
+            public string Text { get; set; }
+        }
+        public IActionResult OnPostSave([FromBody] RichTextEditorValue value)
         {
             try
             {
-                if (ModelState.IsValid)
+                string rootPath = Path.Combine(hostingEnv.WebRootPath, "js", "data.txt");
+                Console.WriteLine("OnPostSave method called. Text: " + value.Text);
+
+                using (StreamWriter writeFile = new StreamWriter(rootPath, true))
                 {
-                    // Log statements
-                    _logger.LogInformation("ModelState is valid.");
-                    _logger.LogInformation($"DocumentContent length: {DocumentContent.Length}");
-
-                    // Convert rich text content to Word document
-                    byte[] wordDocumentBytes = ConvertToWordDocument(DocumentContent);
-                    _logger.LogInformation($"Word document bytes length: {wordDocumentBytes.Length}");
-
-                    // Save Word document bytes to the database
-                    try
-                    {
-                        var newDocument = new Docs
-                        {
-                            DocumentContent = wordDocumentBytes
-                        };
-
-                        _context.Docs.Add(newDocument);
-                        _context.SaveChanges();
-
-                        TempData["SuccessMessage"] = "Document saved successfully.";
-
-                        return RedirectToPage("/Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError($"Database save error: {ex.Message}");
-                        TempData["ErrorMessage"] = $"Failed to save document to the database. Error: {ex.Message}";
-                        return Page();
-                    }
+                    writeFile.WriteLine(value.Text);
                 }
 
-                TempData["ErrorMessage"] = "Invalid ModelState.";
                 return Page();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"General error: {ex.Message}");
-                TempData["ErrorMessage"] = $"Failed to save document. Error: {ex.Message}";
-                return Page();
+                Console.WriteLine("Error in OnPostSave: " + ex.Message);
+                return BadRequest(); // Return a 400 status on error
             }
         }
 
-        private byte[] ConvertToWordDocument(string richTextContent)
-        {
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(memStream, WordprocessingDocumentType.Document))
-                {
-                    MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
-                    mainPart.Document = new Document(new Body(new Paragraph(new Run(new Text(richTextContent)))));
-                }
-                return memStream.ToArray();
-            }
-        }
     }
 }

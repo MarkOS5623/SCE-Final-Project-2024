@@ -1,61 +1,57 @@
 ﻿@page
-@model SCE_Final_Project_2024.Areas.Documents.Pages.CreateDocsModel
+@model CreateDocsModel
 @{
     Layout = "_Layout";
 }
 
 <html>
 <body>
-    <style>
-        .wrap {
-            margin: 0 auto;
-            width: 80%;
-            max-width: 800px;
-        }
+<ejs-richtexteditor id="saveFile">
+    <e-content-template>
 
-        #signature {
-            border: 1px solid lightgray;
-            height: 300px;
-            width: 100%;
-        }
+    </e-content-template>
+</ejs-richtexteditor>
+<div> <button id="btn">save content</button></div>
 
-        .e-split-btn-wrapper {
-            float: right;
-            margin-bottom: 5px;
-            margin-right: 50px;
-        }
-    </style>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <div class="wrap">
-        <h2>Create Document</h2>
+<script>
+document.getElementById('btn').addEventListener('click', function () {
+    try {
+        var obj = document.getElementById('saveFile').ej2_instances[0];
+        var value = JSON.stringify({ text: obj.value });
+        const Http = new XMLHttpRequest();
+        const url = '/Documents/Index?handler=OnPostSave';
+        console.log(url);
+        Http.open("POST", url);
+        Http.setRequestHeader('Content-Type', 'application/json');
 
-        <form method="post" asp-page-handler="OnPostSaveDocument">
-            <div id="signatureContainer">
-                <ejs-richtexteditor id="signature" bind-Value="DocumentContent">
+        // Use jQuery to get the anti-forgery token
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        Http.setRequestHeader('RequestVerificationToken', token);
 
-                </ejs-richtexteditor>
-            </div>
+        Http.onreadystatechange = function () {
+            if (Http.readyState === 4) {
+                if (Http.status === 200) {
+                    console.log("Save successful!");
+                } else {
+                    console.error("Save failed with status: ", Http.status);
+                    console.error("Response: ", Http.responseText);
+                }
+            }
+        };
 
-            <button type="submit">Save Document</button>
-        </form>
-    </div>
+        Http.onerror = function () {
+            console.error("XHR failed loading: ", Http.statusText);
+        };
 
-    <script>
-        var successMessage = '@ViewData["SuccessMessage"]';
-        var errorMessage = '@ViewData["ErrorMessage"]';
+        Http.send(value);
+    } catch (e) {
+        console.error("Error Mate: ", e);
+    }
+});
 
-        console.log('Script executed.');
-
-        if (successMessage && successMessage !== '') {
-            console.log('Success Message:', successMessage);
-            alert(successMessage);
-        }
-
-        if (errorMessage && errorMessage !== '') {
-            console.log('Error Message:', errorMessage);
-            alert(errorMessage);
-        }
-    </script>
+</script>
 
 </body>
 </html>
