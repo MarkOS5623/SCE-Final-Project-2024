@@ -5,24 +5,26 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if the user is logged in by making a request to the server
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch('/api/users/checklogin');
+        const response = await fetch('http://localhost:5000/api/users/checklogin');
         if (response.ok) {
-          setIsLoggedIn(true);
+          const data = await response.json();
+          setIsLoggedIn(data.loggedIn);
+        } else {
+          console.error('Error checking login status:', response.statusText);
         }
       } catch (error) {
-        console.error('Error checking login status:', error);
+        console.error('Network error while checking login status:', error);
       }
     };
-
     checkLoggedIn();
   }, []);
+  
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch('/api/users/signout', {
+      const response = await fetch('http://localhost:5000/api/users/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

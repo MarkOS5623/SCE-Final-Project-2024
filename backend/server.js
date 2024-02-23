@@ -14,7 +14,9 @@ const sequelize = new Sequelize('DocProject', 'postgres', 'Xhxnv2903!', {
 
 // Initialize Express app
 const app = express();
-
+const store = new SequelizeStore({
+  db: sequelize,
+})
 // Middleware setup
 app.use(bodyParser.json());
 app.use(morgan('dev'));
@@ -23,10 +25,10 @@ app.use(session({
   secret: 'Hamburger',
   resave: false,
   saveUninitialized: false,
-  store: new SequelizeStore({
-    db: sequelize,
-  }),
+  store: store,
 }));
+
+store.sync();
 
 sequelize.authenticate()
   .then(() => {

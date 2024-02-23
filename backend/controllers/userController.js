@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/User'); // Assuming your User model is defined in this file
+const User = require('../models/user'); // Assuming your User model is defined in this file
+const Session = require('../models/session');
 
 const userController = {
   signup: async (req, res) => {
@@ -32,27 +33,37 @@ const userController = {
     try {
       const { username, password } = req.body;
       const user = await User.findOne({ where: { username } });
-
-      if (!user) {
-        return res.status(401).json({ message: 'User not found!' });
-      }
-  
+      if (!user) return res.status(401).json({ message: 'User not found!' });
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid password' });
-      }
-  
+      if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password' });
       req.session.user = {
         id: user.id,
         username: user.username,
       };
-  
       res.status(200).json({ message: 'Login successful', user: req.session.user });
     } catch (error) {
       console.error('Error occurred during login:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
+  },
+  checkLogin: async (req, res) => {
+    try {
+      const session = await Session.findOne({ where: { sid: req.sessionID } });
+      console.log(req.session);
+      if (session && session.dataValues && session.dataValues.data) {
+        const sessionData = JSON.parse(session.dataValues.data);
+        if (sessionData && sessionData.user) {
+          res.status(200).json({ loggedIn: true });
+          return;
+        }
+      }
+      res.status(200).json({ loggedIn: false });
+    } catch (error) {
+      console.error('Error occurred during login check:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
   }
+  
 };
 
 module.exports = userController;

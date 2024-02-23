@@ -23,6 +23,7 @@ const Login = () => {
 
       const responseData = await response.json();
       console.log(responseData);
+      window.location.href = '/'; 
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid username or password');
