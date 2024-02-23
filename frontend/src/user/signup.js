@@ -41,7 +41,7 @@ function Signup() {
   };
 
   return (
-    <div>
+    <div className="container-fluid">
       <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
         <div>

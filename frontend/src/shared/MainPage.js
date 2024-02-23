@@ -9,7 +9,7 @@ function MainPage() {
           <h5 className="card-title">SCE Document Manager</h5>
           <p className="card-text">Please sign in or sign up to continue.</p>
           <div>
-            <Link to="/signin" className="btn btn-primary me-3">Sign In</Link>
+            <Link to="/login" className="btn btn-primary me-3">login</Link>
             <Link to="/signup" className="btn btn-success">Sign Up</Link>
           </div>
         </div>
