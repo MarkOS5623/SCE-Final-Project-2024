@@ -1,44 +1,32 @@
-// Import necessary modules and dependencies
-const { User } = require('../models'); // Assuming you have a User model defined
+const bcrypt = require('bcrypt');
+const User = require('../models/User'); // Assuming your User model is defined in this file
 
-// Define the signup function
-exports.signup = async (req, res, next) => {
-  try {
-    // Extract user data from request body
-    const { username, password, email, fname, lname, id, department, worker, admin } = req.body;
-
-    // Check if the username or email already exists
-    const existingUser = await User.findOne({
-      where: {
-        $or: [
-          { username },
-          { email },
-        ],
-      },
-    });
-
-    if (existingUser) {
-      return res.status(400).json({ error: 'Username or email already exists' });
+const userController = {
+  signup: async (req, res) => {
+    try {
+      const { id, username, password, email, fname, lname, department, role } = req.body;
+      const userRole = role || 'student';
+      const newUser = await User.create({
+        id,
+        username,
+        password,
+        email,
+        fname,
+        lname,
+        department,
+        role: userRole 
+      }, { 
+        fields: ['id', 'username', 'password', 'email', 'fname', 'lname', 'department', 'role']
+      });
+      res.status(201).json({ message: 'User created successfully', user: newUser });
+    } catch (error) {
+      console.error('Error occurred during signup:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-
-    // Create a new user record in the database
-    const newUser = await User.create({
-      username,
-      password,
-      email,
-      fname,
-      lname,
-      id,
-      department,
-      worker,
-      admin,
-    });
-
-    // Return the newly created user
-    res.status(201).json(newUser);
-  } catch (error) {
-    // Handle errors
-    console.error('Error in signup:', error);
-    next(error); // Pass the error to the error handling middleware
   }
 };
+
+module.exports = userController;
+
+
+module.exports = userController;

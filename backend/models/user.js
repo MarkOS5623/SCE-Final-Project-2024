@@ -1,8 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize('database', 'username', 'password', {
-  dialect: 'mssql',
-  host: 'your-database-server',
+const sequelize = new Sequelize('DocProject', 'postgres', 'Xhxnv2903!', {
+  dialect: 'postgres',
+  host: 'localhost',
 });
 
 const User = sequelize.define('User', {
