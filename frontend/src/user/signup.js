@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -7,7 +8,7 @@ function Signup() {
     password: '',
     fname: '',
     lname: '',
-    id: '', // New field for ID
+    id: '', 
   });
 
   const handleChange = (e) => {
@@ -29,10 +30,8 @@ function Signup() {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        // Handle successful signup
         console.log('User signed up successfully');
       } else {
-        // Handle signup failure
         console.error('Failed to sign up:', response.statusText);
       }
     } catch (error) {
@@ -41,74 +40,76 @@ function Signup() {
   };
 
   return (
-    <div className="container-fluid">
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input 
-            type="text" 
-            name="username" 
-            value={formData.username} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input 
-            type="email" 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password" 
-            name="password" 
-            value={formData.password} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <label>First Name:</label>
-          <input 
-            type="text" 
-            name="fname" 
-            value={formData.fname} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Last Name:</label>
-          <input 
-            type="text" 
-            name="lname" 
-            value={formData.lname} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Personal ID:</label> {/* New field */}
-          <input 
-            type="text" 
-            name="id" 
-            value={formData.id} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-        <div>
-          <button type="submit">Signup</button>
-        </div>
-      </form>
-    </div>
+    <Container>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <h2>Signup</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Username:</Form.Label>
+              <Form.Control 
+                type="text" 
+                name="username" 
+                value={formData.username} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Email:</Form.Label>
+              <Form.Control 
+                type="email" 
+                name="email" 
+                value={formData.email} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Password:</Form.Label>
+              <Form.Control 
+                type="password" 
+                name="password" 
+                value={formData.password} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>First Name:</Form.Label>
+              <Form.Control 
+                type="text" 
+                name="fname" 
+                value={formData.fname} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Last Name:</Form.Label>
+              <Form.Control 
+                type="text" 
+                name="lname" 
+                value={formData.lname} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Personal ID:</Form.Label> {/* New field */}
+              <Form.Control 
+                type="text" 
+                name="id" 
+                value={formData.id} 
+                onChange={handleChange} 
+                required 
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">Signup</Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

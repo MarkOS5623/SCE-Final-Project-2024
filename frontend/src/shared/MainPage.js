@@ -1,20 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Container, Card } from 'react-bootstrap';
 
 function MainPage() {
   return (
-    <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
-      <div className="card text-center text-white bg-dark">
-        <div className="card-body">
-          <h5 className="card-title">SCE Document Manager</h5>
-          <p className="card-text">Please sign in or sign up to continue.</p>
+    <Container className="d-flex justify-content-center align-items-center vh-100">
+      <Card bg="dark" text="white" className="text-center">
+        <Card.Body>
+          <Card.Title>SCE Document Manager</Card.Title>
+          <Card.Text>Please sign in or sign up to continue.</Card.Text>
           <div>
-            <Link to="/login" className="btn btn-primary me-3">login</Link>
+            <Link to="/login" className="btn btn-primary me-3">Login</Link>
             <Link to="/signup" className="btn btn-success">Sign Up</Link>
           </div>
-        </div>
-      </div>
-    </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

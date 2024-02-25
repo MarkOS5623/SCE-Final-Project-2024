@@ -8,7 +8,7 @@ const Navbar = () => {
     const checkLoggedIn = async () => {
       try {
         const token = localStorage.getItem('token')
-        if(!token) return setIsLoggedIn(false)
+        if (!token) return setIsLoggedIn(false)
         const response = await fetch('http://localhost:5000/api/users/checkLogin', {
           headers: {
             'authorization': `Bearer ${token}`
@@ -25,7 +25,6 @@ const Navbar = () => {
     };
     checkLoggedIn();
   }, []);
-  
 
   const handleSignOut = async () => {
     try {
@@ -45,7 +44,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
+      <div className="container">
         <Link className="navbar-brand" to="/">My App</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -55,7 +54,7 @@ const Navbar = () => {
             {!isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/signin">Sign In</Link>
+                  <Link className="nav-link" to="/login">Sign In</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signup">Sign Up</Link>
@@ -64,7 +63,7 @@ const Navbar = () => {
             ) : (
               <>
                 <li className="nav-item">
-                  <button className="nav-link btn" onClick={handleSignOut}>Sign Out</button>
+                  <button className="nav-link btn btn-outline-light" onClick={handleSignOut}>Sign Out</button>
                 </li>
               </>
             )}
