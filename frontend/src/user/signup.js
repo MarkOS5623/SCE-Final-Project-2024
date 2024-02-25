@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -10,7 +11,8 @@ function Signup() {
     lname: '',
     id: '', 
   });
-
+  const navigate = useNavigate();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -31,6 +33,7 @@ function Signup() {
       });
       if (response.ok) {
         console.log('User signed up successfully');
+        navigate("/");
       } else {
         console.error('Failed to sign up:', response.statusText);
       }

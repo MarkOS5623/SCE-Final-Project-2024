@@ -34,7 +34,9 @@ const Navbar = () => {
           'authorization': `Bearer ${token}`
         }
       });
+      const responseData = await response.json();
       if (response.ok) {
+        localStorage.removeItem('token', responseData.token);
         setIsLoggedIn(false);
       }
     } catch (error) {

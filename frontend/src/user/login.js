@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -24,8 +26,8 @@ const Login = () => {
 
       const responseData = await response.json();
       console.log(responseData);
-      localStorage.setItem('token', responseData.token)
-      //window.location.href = '/'; 
+      localStorage.setItem('token', responseData.token);
+      navigate("/");
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid username or password');

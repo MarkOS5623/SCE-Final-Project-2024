@@ -49,8 +49,8 @@ const userController = {
   },
   logout: async (req, res) => {
     const id = req.user.id;
-    const user = await localStorage.removeItem(id);
-    return res.status(200).json(user);
+    const token = await localStorage.getItem(id);
+    res.status(200).json({ message: 'Login successful', token });
   }
 };
 
