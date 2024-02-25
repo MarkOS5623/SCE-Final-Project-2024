@@ -1,20 +1,19 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user'); // Assuming your User model is defined in this file
-const Session = require('../models/session');
+const { encode } = require('../utils');
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
 
 const userController = {
   signup: async (req, res) => {
     try {
       const { id, username, password, email, fname, lname, department, role } = req.body;
       const userRole = role || 'student';
-      
-      // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
-
       const newUser = await User.create({
         id,
         username,
-        password: hashedPassword, // Save hashed password to the database
+        password: hashedPassword, 
         email,
         fname,
         lname,
@@ -36,34 +35,23 @@ const userController = {
       if (!user) return res.status(401).json({ message: 'User not found!' });
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password' });
-      req.session.user = {
-        id: user.id,
-        username: user.username,
-      };
-      res.status(200).json({ message: 'Login successful', user: req.session.user });
+      const token = encode({id: user.id, username: user.username})
+      res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error('Error occurred during login:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
   checkLogin: async (req, res) => {
-    try {
-      const session = await Session.findOne({ where: { sid: req.sessionID } });
-      console.log(req.session);
-      if (session && session.dataValues && session.dataValues.data) {
-        const sessionData = JSON.parse(session.dataValues.data);
-        if (sessionData && sessionData.user) {
-          res.status(200).json({ loggedIn: true });
-          return;
-        }
-      }
-      res.status(200).json({ loggedIn: false });
-    } catch (error) {
-      console.error('Error occurred during login check:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
+    const id = req.user.id;
+    const user = await localStorage.getItem(id);
+    return res.status(200).json(user);
+  },
+  logout: async (req, res) => {
+    const id = req.user.id;
+    const user = await localStorage.removeItem(id);
+    return res.status(200).json(user);
   }
-  
 };
 
 module.exports = userController;

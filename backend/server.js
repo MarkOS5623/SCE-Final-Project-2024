@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const userRoutes = require('./routes/userRoutes');
 
 const sequelize = new Sequelize('DocProject', 'postgres', 'Xhxnv2903!', {
@@ -14,21 +12,12 @@ const sequelize = new Sequelize('DocProject', 'postgres', 'Xhxnv2903!', {
 
 // Initialize Express app
 const app = express();
-const store = new SequelizeStore({
-  db: sequelize,
-})
+
+app.use(cors());
+
 // Middleware setup
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use(cors());
-app.use(session({
-  secret: 'Hamburger',
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-}));
-
-store.sync();
 
 sequelize.authenticate()
   .then(() => {

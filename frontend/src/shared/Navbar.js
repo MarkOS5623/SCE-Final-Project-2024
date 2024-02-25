@@ -7,10 +7,15 @@ const Navbar = () => {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/users/checklogin');
+        const token = localStorage.getItem('token')
+        if(!token) return setIsLoggedIn(false)
+        const response = await fetch('http://localhost:5000/api/users/checkLogin', {
+          headers: {
+            'authorization': `Bearer ${token}`
+          }
+        });
         if (response.ok) {
-          const data = await response.json();
-          setIsLoggedIn(data.loggedIn);
+          setIsLoggedIn(true);
         } else {
           console.error('Error checking login status:', response.statusText);
         }
@@ -24,10 +29,10 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch('http://localhost:5000/api/users/logout', {
-        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'authorization': `Bearer ${token}`
         }
       });
       if (response.ok) {

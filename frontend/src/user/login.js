@@ -16,6 +16,7 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
       
+      
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
@@ -23,7 +24,8 @@ const Login = () => {
 
       const responseData = await response.json();
       console.log(responseData);
-      window.location.href = '/'; 
+      localStorage.setItem('token', responseData.token)
+      //window.location.href = '/'; 
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid username or password');
