@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Alert } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
+import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -27,7 +25,7 @@ const Login = () => {
       const responseData = await response.json();
       console.log(responseData);
       localStorage.setItem('token', responseData.token);
-      navigate("/");
+      window.location.href = '/'; 
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid username or password');
@@ -35,25 +33,28 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <h2 className="mt-5">Login</h2>
-      <Form className="mt-3">
-        <Form.Group controlId="formBasicUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </Form.Group>
+    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh" }}>
+      <Card className="mt-3" bg="primary" text="white" style={{ width: '400px' }}>
+        <Card.Body>
+          <Form className="mt-3">
+            <Form.Group controlId="formBasicUsername">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </Form.Group>
 
-        {error && <Alert variant="danger">{error}</Alert>}
-
-        <Button variant="primary" type="button" onClick={handleLogin}>
-          Login
-        </Button>
-      </Form>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <br/>
+            <Button variant="primary" type="button" onClick={handleLogin}>
+              Login
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
     </Container>
   );
 };

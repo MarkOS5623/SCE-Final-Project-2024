@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -43,75 +43,75 @@ function Signup() {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <h2>Signup</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label>Username:</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="username" 
-                value={formData.username} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Email:</Form.Label>
-              <Form.Control 
-                type="email" 
-                name="email" 
-                value={formData.email} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Password:</Form.Label>
-              <Form.Control 
-                type="password" 
-                name="password" 
-                value={formData.password} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>First Name:</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="fname" 
-                value={formData.fname} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Last Name:</Form.Label>
-              <Form.Control 
-                type="text" 
-                name="lname" 
-                value={formData.lname} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Personal ID:</Form.Label> {/* New field */}
-              <Form.Control 
-                type="text" 
-                name="id" 
-                value={formData.id} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">Signup</Button>
-          </Form>
-        </Col>
-      </Row>
+    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh"}}>
+          <Card className="mt-3" bg="primary" text="white" style={{ width: "500px" }}>
+            <Card.Body>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                  <Form.Label>Username:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="username" 
+                    value={formData.username} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Email:</Form.Label>
+                  <Form.Control 
+                    type="email" 
+                    name="email" 
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Password:</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    name="password" 
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>First Name:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="fname" 
+                    value={formData.fname} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Last Name:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="lname" 
+                    value={formData.lname} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Personal ID:</Form.Label> {/* New field */}
+                  <Form.Control 
+                    type="text" 
+                    name="id" 
+                    value={formData.id} 
+                    onChange={handleChange} 
+                    required 
+                  />
+                </Form.Group>
+                <br/>
+                <Button variant="primary" type="submit">Signup</Button>
+              </Form>
+            </Card.Body>
+          </Card>
     </Container>
   );
 }

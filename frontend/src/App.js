@@ -9,9 +9,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
-      <header className="App-header" style={{ height: "100%" }}>
+      <header className="App-header bg-light" style={{ height: "100%" }}>
         <Router>
-          <div className="container-fluid">
+          <div className="container-fluid bg-primary">
             <Navbar />
           </div>
           <Routes>

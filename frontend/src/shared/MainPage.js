@@ -4,8 +4,8 @@ import { Container, Card } from 'react-bootstrap';
 
 function MainPage() {
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Card bg="dark" text="white" className="text-center">
+    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh" }}>
+      <Card bg="primary" text="white" className="text-center">
         <Card.Body>
           <Card.Title>SCE Document Manager</Card.Title>
           <Card.Text>Please sign in or sign up to continue.</Card.Text>
