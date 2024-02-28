@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logoImg from '../sce.jpg';
+import logoImg from '../pics/sce.jpg';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,7 +57,7 @@ const Navbar = () => {
             {!isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login" style={{fontSize: "15px", fontWeight: "bold", color: "white"}}>Sign In</Link>
+                  <Link className="nav-link" to="/login" style={{fontSize: "15px", fontWeight: "bold", color: "white"}}>Login</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signup"  style={{fontSize: "15px", fontWeight: "bold", color: "white"}}>Sign Up</Link>
