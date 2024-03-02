@@ -1,27 +1,23 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user'); // Assuming your User model is defined in this file
+const User = require('../models/user');
 const { encode } = require('../utils');
-var LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('./scratch');
 const transporter = require('../config/nodemailer.config');
 
 const userController = {
   signup: async (req, res) => {
     try {
-      const { id, username, password, email, fname, lname, department, role } = req.body;
+      const { id, username, password, email, fname, lname, department } = req.body;
       const userRole = role || 'student';
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await User.create({
         id,
         username,
-        password: hashedPassword, 
+        password: hashedPassword,
         email,
         fname,
         lname,
         department,
-        role: userRole 
-      }, { 
-        fields: ['id', 'username', 'password', 'email', 'fname', 'lname', 'department', 'role']
+        role: userRole,
       });
       res.status(201).json({ message: 'User created successfully', user: newUser });
     } catch (error) {
@@ -32,11 +28,11 @@ const userController = {
   login: async (req, res) => {
     try {
       const { username, password } = req.body;
-      const user = await User.findOne({ where: { username } });
+      const user = await User.findOne({ username });
       if (!user) return res.status(401).json({ message: 'User not found!' });
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password' });
-      const token = encode({id: user.id, username: user.username})
+      const token = encode({ id: user.id, username: user.username });
       res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error('Error occurred during login:', error);
@@ -55,7 +51,6 @@ const userController = {
   },
   passrest: async (req, res) => {
     const { email } = req.body;
-
     const token = 'generated_reset_token';
     const mailOptions = {
       from: 'markos5623@example.com',
@@ -64,7 +59,7 @@ const userController = {
       text: `To reset your password, please click on the following link: http://localhost:3000/reset-password?token=${token}`,
       html: `<p>To reset your password, please click on the following link:</p><p><a href="http://localhost:3000/reset-password?token=${token}">Reset Password</a></p>`
     };
-  
+
     try {
       await transporter.sendMail(mailOptions);
       res.status(200).json({ message: 'Password reset email sent successfully' });

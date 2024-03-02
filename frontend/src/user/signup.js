@@ -32,7 +32,7 @@ function Signup() {
       const response = await fetch('http://localhost:5000/api/users/signup', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+
         },
         body: JSON.stringify(formData),
       });
@@ -108,10 +108,10 @@ function Signup() {
               required 
               style={{ marginBottom: "20px", marginTop: "30px" }}
             />
-            <Button variant="secondary" type="button" onClick={handleLogin} style={{marginTop: "10px", marginRight: "10px" }}>
+            <Button variant="secondary" type="button" onClick={handleLogin} style={{marginTop: "10px", marginRight: "10px" }}  block="true">
               Login Instead
             </Button>
-            <Button variant="primary" type="submit" style={{marginTop: "10px" }}>Signup</Button>
+            <Button variant="primary" type="submit" style={{marginTop: "10px" }}  block="true">Signup</Button>
           </Form>
         </Card.Body>
       </Card>

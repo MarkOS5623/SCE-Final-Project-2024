@@ -13,6 +13,6 @@ router.get('/checkLogin', authMiddlware, userController.checkLogin);
 
 router.get('/logout', authMiddlware, userController.logout);
 
-router.get('/user', authMiddlware, userController.user);
+//router.get('/user', authMiddlware, userController.user);
 
 module.exports = router;
