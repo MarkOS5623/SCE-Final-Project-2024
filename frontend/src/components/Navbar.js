@@ -10,12 +10,7 @@ const Navbar = () => {
       try {
         const token = localStorage.getItem('token')
         if (!token) return setIsLoggedIn(false)
-        const response = await fetch('http://localhost:5000/api/users/checkLogin', {
-          headers: {
-            'authorization': `Bearer ${token}`
-          }
-        });
-        if (response.ok) {
+        else if (token) {
           setIsLoggedIn(true);
         } else {
           console.error('Error checking login status:', response.statusText);
