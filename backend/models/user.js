@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  password: { type: String, required: true },
   email: { type: String, required: true },
+  password: { type: String, required: true },
   fname: { type: String, required: true },
   lname: { type: String, required: true },
   id: {
@@ -19,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   department: { type: String },
   role: { type: String, required: true },
-  isActive: { type: Boolean, default: true } // New field
+  isActive: { type: Boolean, default: true } 
 });
 
 const User = mongoose.model('User', userSchema);
