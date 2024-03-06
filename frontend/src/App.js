@@ -1,12 +1,11 @@
-import './css/bootstrap.css';
-import './css/App.css';
-import MainPage from './shared/MainPage';
-import SignUp from './user/signup'; 
-import Login from './user/login';
-import Navbar from './shared/Navbar';
-import Account from './user/info';
-import ForgotPassword from './user/forgotpassword';
+import './assests/css/bootstrap.css';
+import './assests/css/App.css';
+import MainPage from './pages/MainPage';
+import SignUp from './components/forms/signup'; 
+import Login from './components/forms/loginForm';
+import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import TextEditor from './components/docs/textEditor';
 
 function App() {
   return (
@@ -20,8 +19,7 @@ function App() {
             <Route exact path="/" element={<MainPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/passrest" element={<ForgotPassword />} />
-            <Route path="/user" element={<Account />} />
+            <Route path="/editor" element={<TextEditor />} />
           </Routes>
         </Router>
       </header>

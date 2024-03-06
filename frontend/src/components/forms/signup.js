@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import logoImg from '../pics/sce.jpg';
+import logoImg from '../../assests/sce.jpg';
 
 function Signup() {
   const [formData, setFormData] = useState({

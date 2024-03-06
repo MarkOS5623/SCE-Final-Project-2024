@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logoImg from '../pics/sce.jpg';
+import logoImg from '../assests/sce.jpg';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,10 +13,10 @@ const Navbar = () => {
         else if (token) {
           setIsLoggedIn(true);
         } else {
-          console.error('Error checking login status:', response.statusText);
+          console.error('Error checking token status:', token);
         }
       } catch (error) {
-        console.error('Network error while checking login status:', error);
+        console.error('Network error while checking token status:', error);
       }
     };
     checkLoggedIn();

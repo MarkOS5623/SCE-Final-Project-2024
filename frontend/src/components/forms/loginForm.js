@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import logoImg from '../pics/sce.jpg';
+import logoImg from '../../assests/sce.jpg';
 
-const Login = () => {
+const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -62,4 +62,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;
