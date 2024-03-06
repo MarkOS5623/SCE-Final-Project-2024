@@ -5,7 +5,7 @@ import SignUp from './components/forms/signup';
 import Login from './components/forms/loginForm';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import TextEditor from './components/docs/textEditor';
+import EditorPage from './pages/editorPage';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
             <Route exact path="/" element={<MainPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/editor" element={<TextEditor />} />
+            <Route path="/editor" element={<EditorPage />} />
           </Routes>
         </Router>
       </header>
