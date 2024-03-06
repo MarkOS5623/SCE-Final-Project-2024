@@ -4,7 +4,7 @@ import TextEditor from '../components/docs/textEditor';
 function EditorPage() {
   return (
     <div>
-        <TextEditor/>
+        <TextEditor/> 
     </div>
   );
 }
