@@ -4,9 +4,9 @@ const utils = require('../utils');
 const userController = {
   signup: async (req, res) => {
     try {
-      const { id, username, password, email, fname, lname, department } = req.body;
-      const userRole = role || 'student';
-      const hashedPassword = await utils.encrpytValue(password);
+      const { id, username, password, email, fname, lname, department, role } = req.body;
+      console.log(password)
+      let hashedPassword = await utils.encrpytValue(password);
       const newUser = await User.create({
         id,
         username,
@@ -15,9 +15,10 @@ const userController = {
         fname,
         lname,
         department,
-        role: userRole,
+        role
       });
       res.status(201).json({ message: 'User created successfully', user: newUser });
+
     } catch (error) {
       console.error('Error occurred during signup:', error);
       res.status(500).json({ message: 'Internal server error' });

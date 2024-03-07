@@ -17,14 +17,14 @@ const decode = (token) => {
     }
 }
 
-const encrpytValue = (value) => {
-    try{
-        return hashedValue = bcrypt.hash(value, 10)
-    } catch(e) {
-        throw e
+const encrpytValue = async (value) => {
+    try {
+        const hashedValue = await bcrypt.hash(value, 10);
+        return hashedValue;
+    } catch (e) {
+        throw e;
     }
-}
-
+};
 
 const decrpytValue = (value, compared) => {
     try{

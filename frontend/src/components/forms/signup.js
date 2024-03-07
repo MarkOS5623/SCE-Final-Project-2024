@@ -11,6 +11,7 @@ function Signup() {
     fname: '',
     lname: '',
     id: '', 
+    role: ''
   });
   const navigate = useNavigate();
   
@@ -105,6 +106,15 @@ function Signup() {
               value={formData.id} 
               onChange={handleChange} 
               placeholder="Personal ID"
+              required 
+              style={{ marginBottom: "20px", marginTop: "30px" }}
+            />
+            <Form.Control 
+              type="text" 
+              name="role" 
+              value={formData.role} 
+              onChange={handleChange} 
+              placeholder="Role"
               required 
               style={{ marginBottom: "20px", marginTop: "30px" }}
             />
