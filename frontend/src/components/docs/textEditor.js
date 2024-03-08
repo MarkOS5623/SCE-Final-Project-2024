@@ -1,35 +1,32 @@
-import React from "react";
-import { Card, Container } from "react-bootstrap";
-import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent  } from '@syncfusion/ej2-react-documenteditor';
+import React, { useRef } from "react";
+import { Card, Container, Button } from "react-bootstrap";
+import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 
 const TextEditor = () => {
-
   const mainContainerStyle = {
     all: "unset",
     width: "100vw",
-    
-  }
+  };
 
   const editorStyle = {
-    border: "20px solid black",
     width: "100%",
-    height: "80svh"
-  }
+    height: "95%"
+  };
 
-  let documentContainer = DocumentEditorContainerComponent | null;
+  const documentContainerRef = useRef(null);
+
   const saveAsDocx = async () => {
-    documentContainer.documentEditor.save("Sample","Docx");
-
-  }
+    documentContainerRef.current.documentEditor.save("Sample", "Docx");
+  };
 
   return (
     <Container style={mainContainerStyle} className="d-flex justify-content-center align-items-center">
       <Card style={{ height: "90vh", width: "100%" }} bg="primary" text="black">
-        <Card.Body >
-           <DocumentEditorContainerComponent id="container" style={editorStyle}  ref={(scope) => { documentContainer = scope; }}>
+        <Card.Body>
+          <DocumentEditorContainerComponent height='90%' id="container" style={editorStyle} ref={documentContainerRef}>
             <Inject services={[Toolbar, WordExport]} />
-          </DocumentEditorContainerComponent> 
-          <button onClick={saveAsDocx}>Save</button>
+          </DocumentEditorContainerComponent>
+          <Button onClick={saveAsDocx}>Save</Button>
         </Card.Body>
       </Card>
     </Container>

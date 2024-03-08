@@ -17,6 +17,8 @@ registerLicense ('Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNH
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
+    
     <App />
+   
 );
 
