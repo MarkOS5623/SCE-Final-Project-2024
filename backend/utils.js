@@ -1,17 +1,42 @@
-
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
 
 const encode = (userDetails) => {
-    const token = jwt.sign(userDetails, "hamburger")
-    return token
+    try{
+        return token = jwt.sign(userDetails, "hamburger")
+    } catch(e) {
+        throw e
+    }
 }
 
 const decode = (token) => {
-    const userDetails = jwt.decode(token)
-    return userDetails
+    try{
+        return userDetails = jwt.decode(token)
+    } catch(e) {
+        throw e
+    }
+}
+
+const encrpytValue = async (value) => {
+    try {
+        const hashedValue = await bcrypt.hash(value, 10);
+        return hashedValue;
+    } catch (e) {
+        throw e;
+    }
+};
+
+const decrpytValue = (value, compared) => {
+    try{
+        return bcrypt.compare(value, compared)
+    } catch(e) {
+        throw e
+    }
 }
 
 module.exports = {
     encode,
-    decode
+    encrpytValue,
+    decode,
+    decrpytValue
 }

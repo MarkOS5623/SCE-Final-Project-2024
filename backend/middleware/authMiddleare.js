@@ -1,4 +1,4 @@
-const { decode } = require("../utils")
+const utils = require("../utils")
 
 const authMiddlware = (req, res, next) => {
     try {
@@ -6,7 +6,7 @@ const authMiddlware = (req, res, next) => {
         console.log(authHeader)
         if(authHeader) {
             const token = authHeader.split('Bearer ')[1]
-            const decoded = decode(token)
+            const decoded = utils.decode(token)
             req.user = decoded
             return next()
         }

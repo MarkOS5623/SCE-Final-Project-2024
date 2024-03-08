@@ -1,30 +1,26 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
 
-const sequelize = new Sequelize('DocProject', 'postgres', 'Xhxnv2903!', {
-  dialect: 'postgres',
-  host: 'localhost',
-});
-
-const User = sequelize.define('User', {
-  username: { type: DataTypes.STRING, allowNull: false },
-  password: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false },
-  fname: { type: DataTypes.STRING, allowNull: false },
-  lname: { type: DataTypes.STRING, allowNull: false },
-  id: { 
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  fname: { type: String, required: true },
+  lname: { type: String, required: true },
+  id: {
+    type: Number,
+    required: true,
+    unique: true,
     validate: {
-      is: /^\d{9}$/ 
+      validator: function(v) {
+        return /^\d{9}$/.test(v);
+      },
+      message: props => `${props.value} is not a valid ID!`
     }
   },
-  department: { type: DataTypes.STRING },
-  role: { type: DataTypes.STRING, allowNull: false},
-  isActive: { type: DataTypes.BOOLEAN, defaultValue: true } // New field
-}, {
-  sequelize,
-  modelName: 'User'
+  department: { type: String },
+  role: { type: String, required: true },
+  isActive: { type: Boolean, default: true } 
 });
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
