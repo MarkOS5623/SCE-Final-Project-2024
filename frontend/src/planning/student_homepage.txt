@@ -1,0 +1,32 @@
+    Create a new request ->         |
+                                    |
+    My requests                     |   {editor}
+                                    |
+    My authorization                |
+
+                                    |   Title         status          
+    Create a new request            |   my_request_1  (*) ()  ( )   [view]  [delete]
+                                    |   my_request_2  (*) (*) ( )   [view]  [delete]
+    My requests         ->          |   my_request_3  (*) (*) (*)   [view]  [delete]
+                                    |
+    My authorization                |
+
+
+    * When the user click on "view" -> an editor window with the request details will be shown
+      the editor would be open in read-only mode
+
+
+   Create a new request             |   Title         Author
+                                    |   request_1     user_1        [view]
+    My requests                     |   request_2     user_2        [view]
+                                    |   request_3     user_1        [view]
+    My authorization      ->        |
+
+
+    * When viewing an tuthorizaion request, the editor would be open in read-only mode with the details
+      of the authorization
+    NOTE: consider how the data would be transported, if the data would be received as an editor file,
+    then you have no choice but to open with the editr, 
+    However, there's no much point in opening an "editor" for a sign reqsust,
+    Alternativelty the data for the sign request can be recevied as a JSON object, and
+    you can have a custom component to display and sign.

@@ -14,7 +14,6 @@ import NavBarSwitch from './components/NavBarSwitch';
 function App() {
   return (
     <div className="App">
-      
       <Router>
         <NavBarSwitch /> {/* Render NavBarSwitch component */}
         <Routes>
