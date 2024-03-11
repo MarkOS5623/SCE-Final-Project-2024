@@ -56,15 +56,6 @@ function Signup() {
           </Card.Title>
           <Form onSubmit={handleSubmit}>
             <Form.Control 
-              type="text" 
-              name="username" 
-              value={formData.username} 
-              onChange={handleChange} 
-              placeholder="Username"
-              required 
-              style={{ marginBottom: "20px", marginTop: "30px" }}
-            />
-            <Form.Control 
               type="email" 
               name="email" 
               value={formData.email} 

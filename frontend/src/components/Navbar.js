@@ -25,14 +25,8 @@ const Navbar = () => {
   const handleSignOut = async () => {
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch('http://localhost:5000/api/users/logout', {
-        headers: {
-          'authorization': `Bearer ${token}`
-        }
-      });
-      const responseData = await response.json();
-      if (response.ok) {
-        localStorage.removeItem('token', responseData.token);
+      if(token && isLoggedIn == true) {
+        localStorage.removeItem('token', token);
         setIsLoggedIn(false);
       }
     } catch (error) {

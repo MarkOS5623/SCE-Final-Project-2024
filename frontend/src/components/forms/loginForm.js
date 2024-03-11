@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import logoImg from '../../assests/sce.jpg';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const LoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -43,7 +43,7 @@ const LoginForm = () => {
         <Card.Title style={{ fontSize: "30px" }}><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "20px", marginTop: "30px" }}/><br/></Card.Title>
           <Form className="mt-3">
             <Form.Group controlId="formBasicUsername" style={{marginTop: "20px" }}> 
-              <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <Form.Control type="text" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
             <Form.Group controlId="formBasicPassword" style={{marginTop: "20px" }}>
               <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
