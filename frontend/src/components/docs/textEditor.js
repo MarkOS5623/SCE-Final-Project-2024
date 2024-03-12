@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Card, Container, Button } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 
@@ -16,7 +16,45 @@ const TextEditor = () => {
   const documentContainerRef = useRef(null);
 
   const saveAsDocx = async () => {
-    documentContainerRef.current.documentEditor.save("Sample", "Docx");
+    const documentData = documentContainerRef.current.documentEditor.serialize();
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/documents/saveDocument', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ documentData }),
+      });
+      if (response.ok) {
+        console.log('Document saved successfully!');
+      } else {
+        console.error('Failed to save document:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error saving document:', error);
+    }
+  };
+  
+  const fetchDocument = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/documents/fetchDocument', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: '65f085f23025cd426bea6389' }),
+      });
+      if (response.ok) {
+        const document = await response.json();
+        documentContainerRef.current.documentEditor.open(document.text); // Set the text in the editor
+        console.log('Document fetched successfully!');
+      } else {
+        console.error('Failed to fetch document:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching document:', error);
+    }
   };
 
   return (
@@ -27,6 +65,7 @@ const TextEditor = () => {
             <Inject services={[Toolbar, WordExport]} />
           </DocumentEditorContainerComponent>
           <Button onClick={saveAsDocx}>Save</Button>
+          <Button onClick={fetchDocument}>Fetch</Button>
         </Card.Body>
       </Card>
     </Container>

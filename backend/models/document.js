@@ -5,7 +5,7 @@ const documentSchema = new mongoose.Schema({
   text: { type: String, required: true },
   department: { type: String, required: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  authorizers: { type: mongoose.Schema.Types.ObjectId, ref: 'Status', required: true },
+  authorizers: { type: mongoose.Schema.Types.ObjectId, ref: 'Status', required: false },
 });
 
 const Document = mongoose.model('Document', documentSchema);
