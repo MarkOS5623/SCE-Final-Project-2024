@@ -4,16 +4,14 @@ const utils = require('../utils');
 const userController = {
   signup: async (req, res) => {
     try {
-      const { id, password, email, fname, lname, department, role } = req.body;
-      console.log(password)
+      const { email, password, fname, lname, id, role } = req.body;
       let hashedPassword = await utils.encrpytValue(password);
       const newUser = await User.create({
-        id,
         email,
         password: hashedPassword,
         fname,
         lname,
-        department,
+        id,
         role
       });
       res.status(201).json({ message: 'User created successfully', user: newUser });

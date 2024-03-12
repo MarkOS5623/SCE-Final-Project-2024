@@ -5,7 +5,6 @@ import logoImg from '../../assests/sce.jpg';
 
 function Signup() {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: '',
     fname: '',
@@ -33,7 +32,7 @@ function Signup() {
       const response = await fetch('http://localhost:5000/api/users/signup', {
         method: 'POST',
         headers: {
-
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
