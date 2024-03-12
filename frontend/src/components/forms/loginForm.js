@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 import logoImg from '../../assests/sce.jpg';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Obtain the navigate function
 
   const handleLogin = async () => {
     try {
@@ -25,7 +25,8 @@ const LoginForm = () => {
       const responseData = await response.json();
       console.log(responseData);
       localStorage.setItem('token', responseData.token);
-      window.location.href = '/'; 
+      // Redirect user to StudentHomePage upon successful login
+      navigate("/student");
     } catch (error) {
       console.error('Login failed:', error.message);
       setError('Invalid username or password');
