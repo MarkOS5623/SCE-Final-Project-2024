@@ -1,0 +1,6 @@
+.right-panel {
+    width: 170vh; /* Set width to 100% of the column */
+    height: calc(100vh - 4rem); /* Adjust height based on viewport height */
+    overflow: auto; /* Add overflow property for scrolling if needed */
+    padding: 1rem; /* Add padding for spacing */
+}
