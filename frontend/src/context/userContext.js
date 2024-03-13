@@ -1,4 +1,4 @@
-// UserContext.js
+// userContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import { users } from '../data/mockData';
 import { documents } from '../data/mockData';

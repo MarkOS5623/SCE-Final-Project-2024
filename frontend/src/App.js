@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EditorPage from './pages/editorPage';
 import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
+import ViewTextPage from './pages/ViewTextPage';
 
 function App() {
   return (
@@ -20,8 +21,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/editor" element={<EditorPage />} />
+
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
+          <Route path="/views" element={<ViewTextPage />} />
           </Routes>
       </Router>
 

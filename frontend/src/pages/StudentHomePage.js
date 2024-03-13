@@ -3,6 +3,7 @@ import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
 import TextEditor from '../components/docs/textEditor';
+import backgroundImage from '../assests/background.png'; // Import the background image
 import './Editor.css';
 
 function StudentHomePage() {
@@ -37,8 +38,8 @@ function StudentHomePage() {
     };
 
     return (
-        <div>
-            <div className="mt-4">
+        <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
+            <div className="mt-0">
                 <Row>
                     <Col md={2}>{actionPanel()}</Col>
                     <Col md={8}>

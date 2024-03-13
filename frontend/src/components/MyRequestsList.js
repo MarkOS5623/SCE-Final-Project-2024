@@ -1,31 +1,25 @@
+import React from 'react';
+import { Table } from 'react-bootstrap';
 
-
-export default function MyRequestsList({requests}) {
-
-    // const showRequests = () => {
-    //     return(
-    //         requests.map((request, index) => {
-    //             return <div key={index}>{request.title}</div>
-    //         })
-    //     )
-    // }
-
-    const showRequests = () => {
-        return(
-            <>
-            {
-                requests.map((request, index) => {
-                    return <div key={index}>{request.title}</div>
-                })
-            }
-            </>
-        );
-    }
-
-
+export default function MyRequestsList({ requests }) {
   return (
     <div className="d-flex flex-column">
-        {showRequests()}
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          {requests.map((request, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td> {/* Assuming index starts from 1 */}
+              <td>{request.title}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
-  )
+  );
 }
