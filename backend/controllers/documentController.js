@@ -6,11 +6,11 @@ const Status= require('../models/status');
 const documentController = {
     saveDocument: async (req, res) => {
         try {
-            const { documentData } = req.body;
+            const { Data, title } = req.body;
             const user = await User.findOne({ email: 'markos093@gmail.com' });
             const newDocument = new Document({
-              title: 'demo',
-              text: documentData,
+              title: title,
+              text: Data,
               department: "test",
               author: user,
             });
@@ -23,7 +23,8 @@ const documentController = {
     },
     fetchDocument: async (req, res) => {
         try {
-            const document = await Document.findOne({title: 'demo'});
+          const { title } = req.body;
+            const document = await Document.findOne({title: title});
             if (!document) {
               return res.status(404).send('Document not found');
             }

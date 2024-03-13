@@ -37,6 +37,7 @@ const StudentNavbar = () => {
       console.error('Error signing out:', error)
     }
   };
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-primary bg-primary" style={{ height: '70px' }}>
       <div className="container-fluid">
@@ -48,9 +49,6 @@ const StudentNavbar = () => {
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/accountinfopage" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>Account Info</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/myrequestpage" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>My Request</Link>
             </li>
             {isLoggedIn && (
               <li className="nav-item">

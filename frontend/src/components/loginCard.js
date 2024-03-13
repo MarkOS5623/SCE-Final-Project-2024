@@ -8,6 +8,7 @@ function LoginCard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     const checkLoggedIn = async () => {
       try {
         const token = localStorage.getItem('token')

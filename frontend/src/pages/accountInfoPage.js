@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card } from 'react-bootstrap';
+import { Container, Card, Table } from 'react-bootstrap';
 import logoImg from '../assests/sce.jpg';
 
 function AccountInfoPage() {
@@ -20,7 +20,7 @@ function AccountInfoPage() {
         console.log(responseData.token)
         setAccountInfo(responseData.token.user)
       } catch (error) {
-        console.error('Decrpytiton of value failed:', error.message);
+        console.error('Decryption of value failed:', error.message);
       }
     }
     fetchData()
@@ -33,14 +33,32 @@ function AccountInfoPage() {
           <Card.Title style={{ fontSize: "30px" }}>
             <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "40px", marginTop: "30px" }}/>
           </Card.Title>
+          <h2>Account Details</h2>
           {accountInfo && (
-            <div>
-              <p>ID: {accountInfo.id}</p>
-              <p>Email: {accountInfo.email}</p>
-              <p>First Name: {accountInfo.fname}</p>
-              <p>Last Name: {accountInfo.lname}</p>
-              <p>Role: {accountInfo.role}</p>
-            </div>
+            <Table striped bordered hover>
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>{accountInfo.id}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{accountInfo.email}</td>
+                </tr>
+                <tr>
+                  <td>First Name</td>
+                  <td>{accountInfo.fname}</td>
+                </tr>
+                <tr>
+                  <td>Last Name</td>
+                  <td>{accountInfo.lname}</td>
+                </tr>
+                <tr>
+                  <td>Role</td>
+                  <td>{accountInfo.role}</td>
+                </tr>
+              </tbody>
+            </Table>
           )}
         </Card.Body>
       </Card>

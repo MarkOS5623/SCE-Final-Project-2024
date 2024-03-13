@@ -33,10 +33,6 @@ const LoginForm = () => {
     }
   };
 
-  const handleReset = async () => {
-    navigate("/passrest");
-  };
-
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh" }}>
       <Card className="mt-3" bg="primary" text="white" style={{ width: '400px' }}>
