@@ -1,9 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card } from 'react-bootstrap';
 import logoImg from '../assests/sce.jpg';
 
 function LoginCard() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        if (token) {
+          navigate('/student')
+        } else {
+          console.error('Error checking token status:', token);
+        }
+      } catch (error) {
+        console.error('Network error while checking token status:', error);
+      }
+    };
+    checkLoggedIn();
+  }, []);
+
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh" }}>
       <Card bg="primary" text="white" className="text-center">

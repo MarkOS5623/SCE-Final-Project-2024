@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const documentRoutes = require('./routes/docsRoutes');
+const utilsRoutes = require('./routes/utilsRoutes');
 
 mongoose.connect('mongodb+srv://Admin:iCEye8tLh4ehBUgY@sce-project.zywbimp.mongodb.net/', {
   useNewUrlParser: true,
@@ -25,6 +26,7 @@ app.use(morgan('dev'));
 // Mount routes
 app.use('/api/users', userRoutes);
 app.use('/api/documents', documentRoutes);
+app.use('/api/utils', utilsRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

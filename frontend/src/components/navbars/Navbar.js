@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import logoImg from '../assests/sce.jpg';
+import { Link, useNavigate } from 'react-router-dom';
+import logoImg from '../../assests/sce.jpg';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -11,12 +12,12 @@ const Navbar = () => {
         const token = localStorage.getItem('token')
         if (!token) return setIsLoggedIn(false)
         else if (token) {
-          setIsLoggedIn(true);
+          setIsLoggedIn(true)
         } else {
-          console.error('Error checking token status:', token);
+          console.error('Error checking token status:', token)
         }
       } catch (error) {
-        console.error('Network error while checking token status:', error);
+        console.error('Network error while checking token status:', error)
       }
     };
     checkLoggedIn();
@@ -25,12 +26,13 @@ const Navbar = () => {
   const handleSignOut = async () => {
     try {
       const token = localStorage.getItem('token')
-      if(token && isLoggedIn == true) {
-        localStorage.removeItem('token', token);
-        setIsLoggedIn(false);
+      if(token && isLoggedIn === true) {
+        localStorage.removeItem('token', token)
+        setIsLoggedIn(false)
+        navigate('/')
       }
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Error signing out:', error)
     }
   };
 

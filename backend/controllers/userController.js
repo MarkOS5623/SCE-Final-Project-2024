@@ -27,7 +27,7 @@ const userController = {
       if (!user) return res.status(401).json({ message: 'User not found!' });
       const isPasswordValid = await utils.decrpytValue(password, user.password);
       if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password' });
-      const token = utils.encode({ id: user.id, userEmail: user.email });
+      const token = utils.encode({ user: user });
       res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error('Error occurred during login:', error);

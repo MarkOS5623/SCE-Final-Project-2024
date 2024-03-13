@@ -54,9 +54,6 @@ const LoginForm = () => {
               Login
             </Button>
           </Form>
-          <Button variant="secondary" type="button" onClick={handleReset} style={{ marginRight: "5px", marginTop: "10px" }}>
-              Forgot Password
-          </Button>
         </Card.Body>
       </Card>
     </Container>

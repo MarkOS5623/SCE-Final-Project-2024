@@ -6,4 +6,6 @@ router.post('/saveDocument', documentController.saveDocument);
 
 router.post('/fetchDocument', documentController.fetchDocument);
 
+router.get('/fetchDocsList', documentController.fetchDocsList);
+
 module.exports = router;

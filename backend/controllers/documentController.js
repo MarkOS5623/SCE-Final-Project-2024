@@ -32,7 +32,20 @@ const documentController = {
             console.error('Error fetching document:', error);
             res.status(500).send('Internal server error');
         }
-    }
+    },
+    fetchDocsList: async (req, res) => {
+      try {
+        const documentsList = await Document.find({});
+        if (!documentsList) {
+          return res.status(404).send('Documents not found');
+        }
+        const documentTitles = documentsList.map(doc => doc.title);
+        res.json({docs: documentTitles});
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+        res.status(500).send('Internal server error');
+      }
+    }    
   };
   
   module.exports = documentController;

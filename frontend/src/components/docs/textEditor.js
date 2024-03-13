@@ -1,9 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Card, Container, Button } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 
 
 const TextEditor = () => {
+  
+  const [DocsList, setDocsList] = useState(null);
+
   const mainContainerStyle = {
     all: "unset",
     width: "100vw",
@@ -16,9 +19,27 @@ const TextEditor = () => {
 
   const documentContainerRef = useRef(null);
 
+  useEffect(() => {
+    async function fetchDocs() {
+      try {
+        const response = await fetch('http://localhost:5000/api/documents/fetchDocsList', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const responseData = await response.json();
+        console.log(responseData)
+        setDocsList(responseData)
+      } catch (error) {
+        console.error('fetching of docs failed:', error.message);
+      }
+    }
+    fetchDocs()
+  }, []);
+
   const saveAsDocx = async () => {
     const documentData = documentContainerRef.current.documentEditor.serialize();
-    
     try {
       const response = await fetch('http://localhost:5000/api/documents/saveDocument', {
         method: 'POST',
