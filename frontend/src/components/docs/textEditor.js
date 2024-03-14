@@ -100,6 +100,14 @@ const TextEditor = () => {
     setTitleInput(event.target.value);
   };
 
+  
+  const FillForm = ()=> {
+    let textformField = {fieldName: 'Name', value: 'Marko Doe'};
+    let fieldInfo = documentContainerRef.current.documentEditor.getFormFieldInfo('Name');
+    console.log(fieldInfo)
+    documentContainerRef.current.documentEditor.importFormData([textformField]);
+  };
+  
   return (
     <Container style={mainContainerStyle} className="d-flex justify-content-center align-items-center">
       <Card style={{ height: "100vh", width: "100%" }} bg="primary" text="black">
@@ -124,6 +132,7 @@ const TextEditor = () => {
           <p/>
           <Button onClick={saveAsDocx} style={{marginRight: '10px'}}>Save</Button>
           <Button onClick={fetchDocument}>Fetch</Button>
+          <Button onClick={FillForm}>FillForm</Button>
         </Card.Body>
       </Card>
     </Container>

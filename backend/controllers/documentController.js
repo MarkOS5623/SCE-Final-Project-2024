@@ -30,7 +30,7 @@ const documentController = {
             }
             res.json(document);
         } catch (error) {
-            console.error('Error fetching document:', error);
+            console.error('Error fetching document serverside:', error);
             res.status(500).send('Internal server error');
         }
     },
