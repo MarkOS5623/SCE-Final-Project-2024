@@ -1,7 +1,5 @@
-// userContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import { users } from '../data/mockData';
-import { documents } from '../data/mockData';
+import { Dropdown } from 'react-bootstrap';
 
 export const UserContext = createContext();
 
@@ -9,32 +7,32 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userAuthoredDocuments, setUserAuthoredDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [docsList, setDocsList] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching user data
-    setTimeout(() => {
-      setUser(users.get(1));
-      setIsLoading(false);
-    }, 100);
-
-    // Simulate fetching user authored documents
-    setTimeout(() => {
-      const docs = [];
-      if (user && user.id) { // Check if user is not null before accessing its properties
-        for (let key of documents.keys()) {
-          if (documents.get(key).author === user.id) docs.push(documents.get(key));
+    async function fetchDocs() {
+      try {
+        const response = await fetch('http://localhost:5000/api/documents/fetchDocsList', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const responseData = await response.json();
+        if (Array.isArray(responseData.docs)) {
+          setDocsList(responseData.docs); // Set the fetched document titles
+        } else {
+          console.error('Response data is not an array:', responseData);
         }
-        setUserAuthoredDocuments(docs);
+      } catch (error) {
+        console.error('Fetching of docs failed:', error.message);
       }
-    }, 200);
-  }, [user]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    }
+    fetchDocs();
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, userAuthoredDocuments, setUserAuthoredDocuments }}>
+    <UserContext.Provider value={{ user, setUser, userAuthoredDocuments, setUserAuthoredDocuments, docsList }}>
       {children}
     </UserContext.Provider>
   );

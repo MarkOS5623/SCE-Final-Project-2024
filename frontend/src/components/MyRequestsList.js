@@ -1,21 +1,31 @@
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Table, Button } from 'react-bootstrap';
+import { UserContext } from '../context/userContext';
 
-export default function MyRequestsList({ requests }) {
+export default function MyRequestsList() {
+  const { docsList } = useContext(UserContext);
+
+  const handleViewClick = (documentId) => {
+    // Perform action to view the document with the given ID
+    console.log('View document with ID:', documentId);
+  };
+
   return (
     <div className="d-flex flex-column">
-      <Table striped bordered hover>
+      <Table striped bordered hover style={{ width: '50%' }}>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Title</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {requests.map((request, index) => (
+          {docsList.map((title, index) => (
             <tr key={index}>
-              <td>{index + 1}</td> {/* Assuming index starts from 1 */}
-              <td>{request.title}</td>
+              <td>{title}</td>
+              <td>
+                <Button onClick={() => handleViewClick(docsList[index]._id)}>View</Button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -23,3 +33,4 @@ export default function MyRequestsList({ requests }) {
     </div>
   );
 }
+

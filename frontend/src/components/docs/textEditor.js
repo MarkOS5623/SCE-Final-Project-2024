@@ -31,7 +31,8 @@ const TextEditor = () => {
         });
         const responseData = await response.json();
         if (Array.isArray(responseData.docs)) {
-          setDocsList(responseData.docs); // Set the fetched document titles
+          const responseData = await response.json();
+          setDocsList.setUserAuthoredDocuments(responseData.docs); // Set the fetched document titles
         } else {
           console.error('Response data is not an array:', responseData);
         }

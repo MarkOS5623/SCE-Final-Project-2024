@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-import { UserProvider } from './userContext';
+import { UserProvider } from '../context/userContext';
 import { documents } from '../data/mockData';
 
 export const DocumentContext = createContext();

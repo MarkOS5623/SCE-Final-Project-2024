@@ -5,6 +5,7 @@ import MyRequestsList from '../components/MyRequestsList';
 import TextEditor from '../components/docs/textEditor';
 import backgroundImage from '../assests/background.png'; // Import the background image
 import './Editor.css';
+import ViewTextPage from './ViewTextPage'; // Import the ViewTextPage component
 
 function StudentHomePage() {
     const { user, userAuthoredDocuments } = useContext(UserContext);
@@ -12,6 +13,7 @@ function StudentHomePage() {
     const [rightPanel, setRightPanel] = useState(null); // Initialize rightPanel with null
     const [isEditorVisible, setIsEditorVisible] = useState(false);
     const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
+    const [selectedDocumentId, setSelectedDocumentId] = useState(null); // State to hold the selected document ID
 
     useEffect(() => {
         // Fetch admin messages from backend when component mounts
@@ -25,6 +27,11 @@ function StudentHomePage() {
     const showMyRequests = () => {
         setIsMyRequestsVisible(!isMyRequestsVisible); // Toggle My Requests visibility
         setIsEditorVisible(false); // Hide editor panel
+    };
+
+    const handleViewClick = (documentId) => {
+        // Set the selected document ID
+        setSelectedDocumentId(documentId);
     };
 
     const actionPanel = () => {
@@ -45,7 +52,8 @@ function StudentHomePage() {
                     <Col md={8}>
                         <div className="right-panel">
                             {isEditorVisible && <TextEditor />} {/* Render editor only when visible */}
-                            {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} />} {/* Render My Requests only when visible */}
+                            {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} onDocumentClick={handleViewClick} />} {/* Render My Requests only when visible */}
+                            {selectedDocumentId && <ViewTextPage documentId={selectedDocumentId} />} {/* Render ViewTextPage when a document is selected */}
                         </div>
                     </Col>
                 </Row>
