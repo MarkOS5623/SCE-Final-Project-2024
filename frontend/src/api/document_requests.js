@@ -12,3 +12,32 @@ export const createDocument = async (documentObject) => {
     }
     finally {return res}
 };
+
+const save_as_word_docx = async () =>{
+    try {
+      // Fetch the document from the API
+      const response = await fetch('http://localhost:5000/api/documents/fetchDocument', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: 'Confirmation of Studies' }), 
+      });
+
+
+      if (response.ok) {
+        const document = await response.json();
+        documentContainerRef.current.documentEditor.open(document.text);
+        console.log(document.text)
+        let NameField = {fieldName: 'Name', value: 'Marko Doe'};
+        let DateField = {fieldName: 'Text1', value: 'April  29, 2024'};
+        let IDField = {fieldName: 'ID', value: '123456789'};
+        documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
+        documentContainerRef.current.documentEditor.save("Doc_test", "Docx")
+      } else {
+        console.error('Failed to fetch document:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching document:', error);
+    }
+  }
