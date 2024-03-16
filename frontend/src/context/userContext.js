@@ -1,12 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { Dropdown } from 'react-bootstrap';
-
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userAuthoredDocuments, setUserAuthoredDocuments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [docsList, setDocsList] = useState([]);
 
   useEffect(() => {
@@ -20,7 +17,7 @@ export const UserProvider = ({ children }) => {
         });
         const responseData = await response.json();
         if (Array.isArray(responseData.docs)) {
-          setDocsList(responseData.docs); // Set the fetched document titles
+          setDocsList(responseData.docs); // Set the fetched documents
         } else {
           console.error('Response data is not an array:', responseData);
         }

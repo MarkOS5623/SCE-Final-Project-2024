@@ -1,8 +1,8 @@
 // ViewText.js
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Button, Card, Container } from 'react-bootstrap';
+import React, { useEffect, useRef, useState, forwardRef } from 'react';
+import { Alert, Card, Container } from 'react-bootstrap';
 
-const ViewText = ({ documentId }) => {
+const ViewText = forwardRef(({ documentId }, ref) => {
   const [documentText, setDocumentText] = useState('');
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
@@ -16,6 +16,7 @@ const ViewText = ({ documentId }) => {
         }
         const documentData = await response.json();
         setDocumentText(documentData.text);
+        setError(null);
       } catch (error) {
         setError(error.message);
       }
@@ -23,6 +24,15 @@ const ViewText = ({ documentId }) => {
 
     fetchDocument();
   }, [documentId]);
+
+  useEffect(() => {
+    if (documentContainerRef.current) {
+      // Update ref.current only if it's not already set
+      if (ref.current !== documentContainerRef.current) {
+        ref.current = documentContainerRef.current;
+      }
+    }
+  }, [documentText, ref]); // Add ref to the dependency array
 
   return (
     <Container className="d-flex justify-content-center align-items-center">
@@ -34,6 +44,6 @@ const ViewText = ({ documentId }) => {
       </Card>
     </Container>
   );
-};
+});
 
 export default ViewText;
