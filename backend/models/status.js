@@ -4,7 +4,7 @@ const statusSchema = new mongoose.Schema({
   requestId: { type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true },
   recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   status: { type: String, required: true },
-  comments: { type: String },
+  comments: { type: String, required: false },
   updatedAt: { type: Date, default: Date.now }
 });
 
