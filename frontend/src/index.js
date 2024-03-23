@@ -12,6 +12,7 @@ import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
 import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
 import "../node_modules/@syncfusion/ej2-documenteditor/styles/material.css";
 import { UserProvider } from './context/userContext';
+// Syncfusion api key registry
 registerLicense ('Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxednVXRWhfVUR1WUI=');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

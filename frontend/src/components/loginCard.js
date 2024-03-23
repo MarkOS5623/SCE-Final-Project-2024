@@ -21,7 +21,7 @@ function LoginCard() {
       }
     };
     checkLoggedIn();
-  }, [navigate]); // Include navigate in the dependency array
+  }, [navigate]);
 
   return (
     <div style={{

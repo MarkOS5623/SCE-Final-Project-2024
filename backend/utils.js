@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
+// decode and encode functions for user tokens
 const encode = (userDetails) => { 
     try{
         return token = jwt.sign(userDetails, "hamburger")
@@ -16,7 +17,7 @@ const decode = (token) => {
         throw e
     }
 }
-
+//encrypt and decrypt function for values mostly user passwords
 const encrpytValue = async (value) => {
     try {
         const hashedValue = await bcrypt.hash(value, 10);

@@ -21,7 +21,7 @@ const documentController = {
             res.status(500).send('Internal server error');
           }
     },
-    fetchDocument: async (req, res) => {
+    fetchDocument: async (req, res) => { // gets a document from the DB by title, returns the document as document model object
         try {
           const { title } = req.body;
             const document = await Document.findOne({title: title});
@@ -34,7 +34,7 @@ const documentController = {
             res.status(500).send('Internal server error');
         }
     },
-    fetchDocsList: async (req, res) => {
+    fetchDocsList: async (req, res) => { // returns an array of strings of all the document titles
       try {
         const documentsList = await Document.find({});
         if (!documentsList) {

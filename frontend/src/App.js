@@ -26,9 +26,8 @@ function App() {
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/views" element={<ViewTextPage />} />
-          </Routes>
+        </Routes>
       </Router>
-
     </div>
   );
 }

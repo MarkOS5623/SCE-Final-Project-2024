@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-const utilsController = {
+const utilsController = { // request for decoding values for server side requests
     decodeValue: async (req, res) => {
     try {
       const token = req.body;
