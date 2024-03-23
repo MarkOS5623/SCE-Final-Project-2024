@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBarSwitch /> {/* Render NavBarSwitch component */}
+        <NavBarSwitch />
         <Routes>
           <Route exact path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignUp />} />

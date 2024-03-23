@@ -3,9 +3,11 @@ const utils = require('../utils');
 const utilsController = {
     decodeValue: async (req, res) => {
     try {
-      const { token } = req.body;
-      let decrpytedValue = await utils.decode(token);
-      res.status(201).json({token: decrpytedValue});
+      const token = req.body;
+      console.log(token.token)
+      let decrpytedValue = await utils.decode(token.token);
+      console.log(decrpytedValue)
+      res.status(201).json(decrpytedValue);
     } catch (error) {
       console.error('Error occurred during decryption:', error);
       res.status(500).json({ message: 'Internal server error' });

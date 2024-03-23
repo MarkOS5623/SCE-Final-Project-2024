@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
-const encode = (userDetails) => {
+const encode = (userDetails) => { 
     try{
         return token = jwt.sign(userDetails, "hamburger")
     } catch(e) {

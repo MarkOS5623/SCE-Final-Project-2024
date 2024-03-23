@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-
+//config for mailing services
 const transporter = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
