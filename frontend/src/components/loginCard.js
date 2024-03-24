@@ -14,7 +14,7 @@ function LoginCard() {
         if (token) {
           navigate('/student');
         } else {
-          console.error('Error checking token status:', token);
+          console.log('No token found:');
         }
       } catch (error) {
         console.error('Network error while checking token status:', error);

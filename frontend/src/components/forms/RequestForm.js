@@ -45,14 +45,9 @@ const RequestForm = () => {
         
         let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
         
-        let DateField = { fieldName: 'Text1', value: currentDate.toLocaleDateString('en-US', options) };
-        
+        let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
         let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
-        console.log(NameField);
-        console.log(DateField);
-        console.log(IDField);
         documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
-        
         utils.pdfConverter(documentContainerRef);
       } else {
         console.error('Failed to fetch document:', response.statusText);
