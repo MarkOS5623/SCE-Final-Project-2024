@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Card, Container, Button, Dropdown, Alert} from "react-bootstrap";
+import { Button, Dropdown, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument, saveDocument, fetchDocsList } from "../../api/document_requests";
+import CardContainer from "../cardContainer";
 
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
@@ -12,12 +13,18 @@ const TextEditor = () => {
   const mainContainerStyle = {
     all: "unset",
     width: "100vw",
-  };
+    height: "90vw",
+  }
 
   const editorStyle = {
-    width: "100%",
-    height: "95%"
-  };
+    width: "75%",
+    height: "82vh"
+  }
+
+  const buttonStyle = {
+    margin: '10px',
+    width: '100px'
+  }
 
   const documentContainerRef = useRef(null);
 
@@ -37,12 +44,11 @@ const TextEditor = () => {
     }
     fetchDocs();
   }, []);
-  
 
   const saveToDb = async () => {
     if (!titleInput) {
-      console.error('Title cannot be empty')
-      setError('Title cannot be empty')
+      console.error('A title is needed for saving a document')
+      setError('A title is needed for saving a document')
       return;
     } else setError(null)
 
@@ -61,8 +67,8 @@ const TextEditor = () => {
   
   const fetchDoc = async () => {
     if (!selectedDocument) {
-      console.error('No document selected')
-      setError('No document selected')
+      console.error('Please select a document to fetch first')
+      setError('Please select a document to fetch first')
       return;
     } else setError(null)
     try {
@@ -83,32 +89,34 @@ const TextEditor = () => {
   };
 
   return (
-    <Container style={mainContainerStyle} className="d-flex justify-content-center align-items-center">
-      <Card style={{ height: "100vh", width: "100%" }} bg="primary" text="black">
-        <Card.Body>
-          <DocumentEditorContainerComponent height="82vh" width="95%" id="container" style={editorStyle} ref={documentContainerRef}>
+    <CardContainer style={{ ...mainContainerStyle}}>
+      <Row style={{ width: '100%' }}> 
+        {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}
+        <Col xs={8} style={{ width: '80%' }}>
+          <DocumentEditorContainerComponent height="82vh" id="container" style={editorStyle} ref={documentContainerRef}>
             <Inject services={[Toolbar, WordExport]} />
           </DocumentEditorContainerComponent>
-          {error && <Alert variant="danger"  style={{width: '95%'}}>{error}</Alert>}
-          <div className="d-flex justify-content-center align-items-center">
-            <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mr-2"  style={{marginTop: '10px'}}>
-              <Dropdown.Toggle variant="primary" id="documentDropdown">
-                {selectedDocument ? selectedDocument : "Select Document"}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {DocsList.map((docTitle, index) => (
-                  <Dropdown.Item key={index} eventKey={docTitle}>{docTitle}</Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-            <input type="text" placeholder="Enter title" value={titleInput} onChange={handleTitleChange}  style={{marginLeft: '10px'}}/>
+        </Col>
+        <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '20%'}} className="d-flex flex-column justify-content-center">
+          <h1 style={{color:'black'}}>This is for fetching and saving document to the database</h1>
+          <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2">
+            <Dropdown.Toggle variant="primary" id="documentDropdown">
+              {selectedDocument ? selectedDocument : "Select Document"}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {DocsList.map((docTitle, index) => (
+                <Dropdown.Item key={index} eventKey={docTitle}>{docTitle}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
+          <div className="d-flex justify-content-between">
+            <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
+            <Button onClick={fetchDoc} style={buttonStyle}>Fetch</Button>
           </div>
-          <p/>
-          <Button onClick={saveToDb} style={{marginRight: '10px'}}>Save</Button>
-          <Button onClick={fetchDoc}>Fetch</Button>
-        </Card.Body>
-      </Card>
-    </Container>
+        </Col>
+      </Row>
+    </CardContainer>
   );
 };
 

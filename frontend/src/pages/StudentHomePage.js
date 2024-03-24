@@ -3,7 +3,6 @@ import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
 import RequestForm from '../components/forms/RequestForm';
-import backgroundImage from '../assests/background.png'; // Import the background image
 import './Editor.css';
 
 function StudentHomePage() {
@@ -23,23 +22,22 @@ function StudentHomePage() {
 
     const actionPanel = () => {
         return (
-            <div className='d-flex flex-column gap-2'>
-                <Button onClick={toggleEditorVisibility} className='btn btn-primary'>Create new request</Button>
+            <div className='d-flex flex-column gap-2' style={{margin: "10px"}}>
+                <Button onClick={toggleEditorVisibility} className='btn btn-primary'>Make a new request</Button>
                 <Button onClick={showMyRequests} className='btn btn-primary'>My requests</Button>
-                <Button className='btn btn-primary'>My authorizations</Button>
+                <Button className='btn btn-primary'>My Requests Status </Button>
             </div>
         );
     };
-
     return (
-        <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
+        <div>
             <div className="mt-0">
                 <Row>
                     <Col md={2}>{actionPanel()}</Col>
                     <Col md={8}>
                         <div className="right-panel">
-                            {isRequestFormVisible && <RequestForm />} {/* Render editor only when visible */}
-                            {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} />} {/* Render My Requests only when visible */}
+                            {isRequestFormVisible && <RequestForm />} 
+                            {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} />}
                         </div>
                     </Col>
                 </Row>

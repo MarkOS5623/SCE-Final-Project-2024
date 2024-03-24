@@ -11,10 +11,11 @@ import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
 import RequestForm from './components/forms/RequestForm';
+import backgroundImage from './assests/background.png';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App"  style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <Router>
         <NavBarSwitch />
         <Routes>
