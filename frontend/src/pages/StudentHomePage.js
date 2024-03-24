@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
-import RequestForm from '../components/forms/RequestForm';
 import './Editor.css';
+import NoSigForm from '../components/docs/noSigForm';
 
 function StudentHomePage() {
     const { user, userAuthoredDocuments } = useContext(UserContext);
@@ -36,7 +36,7 @@ function StudentHomePage() {
                     <Col md={2}>{actionPanel()}</Col>
                     <Col md={8}>
                         <div className="right-panel">
-                            {isRequestFormVisible && <RequestForm />} 
+                            {isRequestFormVisible && <NoSigForm />} 
                             {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} />}
                         </div>
                     </Col>

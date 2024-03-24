@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Form, Dropdown, DropdownButton, Button, Card, Container } from 'react-bootstrap';
 import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import * as utils from '../../api/utils'
-
+import { fetchDocument } from '../../api/document_requests';
 const RequestForm = () => {
   const [subject, setSubject] = useState('');
   const documentContainerRef = useRef(null);
@@ -13,48 +13,6 @@ const RequestForm = () => {
 
   const handleSubmit = async (e) => {
     console.log('Form submitted:', { subject });
-  };
-
-  
-  const handleCOSF = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/documents/fetchDocument', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title: 'Confirmation of Studies' }), 
-      });
-      if(response.ok) {
-        const data = await response.json();
-        const token = localStorage.getItem('token');
-        let tokenData = await fetch('http://localhost:5000/api/utils/decodeValue', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({token}), 
-        });
-        let decodedTokenData = await tokenData.json();
-        console.log(decodedTokenData.user);
-        
-        const currentDate = new Date();
-        const options = { year: 'numeric', month: 'long', day: '2-digit' };
-        
-        documentContainerRef.current.documentEditor.open(data.text);
-        
-        let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
-        
-        let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
-        let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
-        documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
-        utils.pdfConverter(documentContainerRef);
-      } else {
-        console.error('Failed to fetch document:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching document:', error);
-    }
   };
   
   return (
