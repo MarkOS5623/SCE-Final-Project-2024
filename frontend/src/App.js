@@ -10,25 +10,27 @@ import EditorPage from './pages/editorPage';
 import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
-import RequestForm from './components/forms/RequestForm';
+import backgroundImage from './assests/background.png';
+import NoSigForm from './components/docs/noSigForm';
+import StaffHomePage from './pages/staffPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App"  style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <Router>
-        <NavBarSwitch /> {/* Render NavBarSwitch component */}
+        <NavBarSwitch />
         <Routes>
           <Route exact path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/editor" element={<EditorPage />} />
-          <Route path="/request" element={<RequestForm />} />
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/views" element={<ViewTextPage />} />
-          </Routes>
+          <Route path="/nosig" element={<NoSigForm />} />
+          <Route path="/staff" element={<StaffHomePage />} />
+        </Routes>
       </Router>
-
     </div>
   );
 }

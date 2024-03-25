@@ -5,6 +5,7 @@ const userController = {
   signup: async (req, res) => {
     try {
       const { email, password, fname, lname, id, role } = req.body;
+      console.log(password)
       let hashedPassword = await utils.encrpytValue(password);
       const newUser = await User.create({
         email,

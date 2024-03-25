@@ -1,43 +1,49 @@
 import axios from "axios"
 import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/documents/"
+const ROUTE_URL = "/api/documents/"
 
-
-export const createDocument = async (documentObject) => {
-    let res
-    try {
-        res = await axios.post(SERVER_BASE + ROUTE_URL, documentObject)
-    } catch (error) {
-        res = {message: error.message, success: false}
-    }
-    finally {return res}
+export const fetchDocument = async (subject) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchDocument', {
+      title: subject
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
 };
 
-const save_as_word_docx = async () =>{
-    try {
-      // Fetch the document from the API
-      const response = await fetch('http://localhost:5000/api/documents/fetchDocument', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title: 'Confirmation of Studies' }), 
-      });
-
-
-      if (response.ok) {
-        const document = await response.json();
-        documentContainerRef.current.documentEditor.open(document.text);
-        console.log(document.text)
-        let NameField = {fieldName: 'Name', value: 'Marko Doe'};
-        let DateField = {fieldName: 'Text1', value: 'April  29, 2024'};
-        let IDField = {fieldName: 'ID', value: '123456789'};
-        documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
-        documentContainerRef.current.documentEditor.save("Doc_test", "Docx")
-      } else {
-        console.error('Failed to fetch document:', response.statusText);
+export const saveDocument = async (documentData, titleInput) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/saveDocument', {
+      Data: documentData, title: titleInput
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    } catch (error) {
-      console.error('Error fetching document:', error);
-    }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
   }
+};
+
+export const fetchDocsList = async () => {
+  try {
+    const response = await axios.get('http://localhost:5000/api/documents/fetchDocsList', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document list:', error.message);
+    throw error;
+  }
+};

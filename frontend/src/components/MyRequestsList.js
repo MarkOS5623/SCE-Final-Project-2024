@@ -16,7 +16,7 @@ export default function MyRequestsList() {
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1"> 
-        <Table striped bordered hover style={{ width: 'auto', height: 'auto' }}>
+        <Table striped bordered hover style={{ width: '100%', minWidth: '300px' }}>
           <thead>
             <tr>
               <th>Title</th>
@@ -37,13 +37,11 @@ export default function MyRequestsList() {
           </tbody>
         </Table>
       </div>
-      {docsList.map((title) => (
-        title === visibleDocumentId && (
-          <div key={title} className="flex-grow-1">
-            <ViewText documentId={title} />
-          </div>
-        )
-      ))}
+      {isMyRequestsVisible && title === title && (
+        <div className="flex-grow-1" style={{ minWidth: '300px' }}>
+          <ViewText documentId={title} />
+        </div>
+      )}
     </div>
   );
 }

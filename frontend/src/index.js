@@ -12,7 +12,6 @@ import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
 import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
 import "../node_modules/@syncfusion/ej2-documenteditor/styles/material.css";
 import { UserProvider } from './context/userContext';
-import { DocumentProvider } from './context/documentsContext';
 
 registerLicense ('Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxednVXRWhfVUR1WUI=');
 
@@ -20,10 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <UserProvider>
-        {/* <DocumentProvider> */}
             <App />
-        {/* </DocumentProvider> */}
     </UserProvider>
-   
 );
 

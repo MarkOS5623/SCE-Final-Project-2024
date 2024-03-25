@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 import logoImg from '../../assests/sce.jpg';
+import { login } from '../../api/user_requests';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -11,24 +12,14 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+      const response = await login(email, password)
+      if (!response.status === 200) {
+        throw new Error('Login failed');
       }
-      const responseData = await response.json();
-      console.log(responseData);
-      localStorage.setItem('token', responseData.token);
-      // Redirect user to StudentHomePage upon successful login
+      localStorage.setItem('token', response.data.token);
       navigate("/student");
     } catch (error) {
-      console.error('Login failed:', error.message);
+      console.error('Login failed:', error);
       setError('Invalid username or password');
     }
   };

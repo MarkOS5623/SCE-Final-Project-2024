@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Alert, Card, Container } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
+import { fetchDocument } from '../../api/document_requests';
 
 const ViewText = forwardRef(({ documentId }) => {
   const [error, setError] = useState(null);
@@ -12,26 +13,19 @@ const ViewText = forwardRef(({ documentId }) => {
   };
 
   useEffect(() => {
-    async function fetchDocument() {
+    async function fetchDoc() {
       try {
-        const response = await fetch('http://localhost:5000/api/documents/fetchDocument', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ title: title }),
-        });
-        if (!response.ok) {
+        const response = await fetchDocument(title)
+        if (!response.status === 200) {
           throw new Error('Failed to fetch document');
         }
-        const documentData = await response.json();
-        documentContainerRef.current.open(documentData.text);
+        documentContainerRef.current.open(response.data.text);
         setError(null);
       } catch (error) {
         setError(error.message);
       }
     }
-    fetchDocument();
+    fetchDoc();
   }, [documentId]);
 
   return (

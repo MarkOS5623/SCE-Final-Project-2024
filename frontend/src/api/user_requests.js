@@ -1,14 +1,35 @@
-import axios from "axios"
+import axios from "axios";
 import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/users/"
+const ROUTE_URL = "/api/users/";
 
-export const login = async (username,password) => {
-    let res
+export const login = async (email, password) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL +  '/login', {
+      email,
+      password
+      }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response; 
+  } catch (error) {
+    return error.response || error; 
+  }
+};JSON.stringify()
+
+export const signup = async (formData) => {
+    console.log(formData)
     try {
-        res = await axios.post(SERVER_BASE + ROUTE_URL + "auth", {username,password})
+        const response = await axios.post(SERVER_BASE + ROUTE_URL + '/signup',
+            formData
+            , {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        });
+        return response; 
     } catch (error) {
-        res = {message: error.message, success: false}
-    
+        return error.response || error; 
     }
-    finally {return res}
 };

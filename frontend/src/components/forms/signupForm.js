@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import logoImg from '../../assests/sce.jpg';
+import { signup } from '../../api/user_requests';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -29,14 +30,8 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
+      const response = await signup(JSON.stringify(formData))
+      if (response.status === 201) {
         console.log('User signed up successfully');
         navigate("/");
       } else {
