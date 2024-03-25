@@ -49,7 +49,6 @@ export const decodeValue = async (token) => {
         'Content-Type': 'application/json'
       }
     });
-    console.log(response)
     return response
   } catch (error) {
     console.error('Error decoding value:', error.message);

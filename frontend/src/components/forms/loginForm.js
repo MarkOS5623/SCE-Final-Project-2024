@@ -15,12 +15,11 @@ const LoginForm = () => {
       const response = await login(email, password)
       if (!response.status === 200) {
         throw new Error('Login failed');
-      }
+      } else setError(response.data.message);
       localStorage.setItem('token', response.data.token);
       navigate("/student");
     } catch (error) {
       console.error('Login failed:', error);
-      setError('Invalid username or password');
     }
   };
 

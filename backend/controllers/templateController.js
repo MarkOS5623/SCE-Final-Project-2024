@@ -46,7 +46,7 @@ const templateController = {
       try {
         const templatesList = await Template.find({});
         if (!templatesList) {
-          return res.status(404).send('Documents not found');
+          return res.status(404).send('Templates not found');
         }
         const documentTitles = templatesList.map(Tem => Tem.title);
         res.status(201).json({docs: documentTitles});
