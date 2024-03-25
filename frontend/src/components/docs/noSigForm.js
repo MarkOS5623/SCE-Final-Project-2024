@@ -4,7 +4,7 @@ import CardContainer from '../cardContainer'; // Import your CardContainer compo
 import { fetchDocsList, fetchDocument } from '../../api/document_requests'; // Import your API function
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import * as utils from '../../api/utils';
-
+import { decodeValue } from '../../api/utils';
 const NoSigForm = () => {
 
     const [docsList, setDocsList] = useState([]);
@@ -32,15 +32,8 @@ const NoSigForm = () => {
             if (response.status === 200) {
                 const data = response.data;
                 const token = localStorage.getItem('token');
-                let tokenData = await fetch('http://localhost:5000/api/utils/decodeValue', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ token }),
-                });
-                let decodedTokenData = await tokenData.json();
-                console.log(decodedTokenData.user);
+                const tokenData = await decodeValue(JSON.stringify({token: token}))
+                const decodedTokenData = tokenData.data;
                 const currentDate = new Date();
                 const options = { year: 'numeric', month: 'long', day: '2-digit' };
                 documentContainerRef.current.documentEditor.open(data.text);

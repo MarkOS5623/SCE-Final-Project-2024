@@ -12,6 +12,8 @@ import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
 import backgroundImage from './assests/background.png';
 import NoSigForm from './components/docs/noSigForm';
+import StaffHomePage from './pages/staffPage';
+
 function App() {
   return (
     <div className="App"  style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -26,6 +28,7 @@ function App() {
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/views" element={<ViewTextPage />} />
           <Route path="/nosig" element={<NoSigForm />} />
+          <Route path="/staff" element={<StaffHomePage />} />
         </Routes>
       </Router>
     </div>

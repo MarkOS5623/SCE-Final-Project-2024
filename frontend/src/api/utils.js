@@ -1,4 +1,7 @@
+import axios from "axios"
 import { PdfPageSettings, PdfDocument, PdfPageOrientation, PdfBitmap, SizeF } from '@syncfusion/ej2-pdf-export';
+import { SERVER_BASE } from "./config";
+const ROUTE_URL = "/api/utils"
 
 export const pdfConverter = async (objRef) => {
   const obj = objRef.current.documentEditor; 
@@ -35,4 +38,21 @@ export const pdfConverter = async (objRef) => {
     });
   }
   pdfdocument.save((obj.documentName === '' ? 'sample' : obj.documentName) + '.pdf');
+};
+
+export const decodeValue = async (token) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/decodeValue', 
+      token
+      , {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(response)
+    return response
+  } catch (error) {
+    console.error('Error decoding value:', error.message);
+    throw error;
+  }
 };

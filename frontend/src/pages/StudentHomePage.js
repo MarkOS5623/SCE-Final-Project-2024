@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
-import './Editor.css';
 import NoSigForm from '../components/docs/noSigForm';
+import './Editor.css';
 
 function StudentHomePage() {
     const { user, userAuthoredDocuments } = useContext(UserContext);
@@ -25,7 +25,6 @@ function StudentHomePage() {
             <div className='d-flex flex-column gap-2' style={{margin: "10px"}}>
                 <Button onClick={toggleEditorVisibility} className='btn btn-primary'>Make a new request</Button>
                 <Button onClick={showMyRequests} className='btn btn-primary'>My requests</Button>
-                <Button className='btn btn-primary'>My Requests Status </Button>
             </div>
         );
     };
