@@ -11,9 +11,10 @@ function NavBarSwitch() {
   const isCreateRequestPage = location.pathname.includes('/create-request');
   const isEditRequestPage = location.pathname.includes('/edit-request');
   const isViewFormPage = location.pathname.includes('/view-form');
-
+  const isStaffFormPage = location.pathname.includes('/staff');
+  const isAccountInfoPage = location.pathname.includes('/accountinfopage');
   // Render different navbars based on the current route
-  if (isStudentPage || isCreateRequestPage || isEditRequestPage || isViewFormPage) {
+  if (isStudentPage || isCreateRequestPage || isEditRequestPage || isViewFormPage || isStaffFormPage || isAccountInfoPage) {
     return <StudentNavbar />;
   } else {
     return <Navbar />;
