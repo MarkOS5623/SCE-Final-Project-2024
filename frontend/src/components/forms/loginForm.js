@@ -25,7 +25,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh" }}>
+    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "15vh" }}>
       <Card className="mt-3" bg="primary" text="white" style={{ width: '400px' }}>
         <Card.Body>
         <Card.Title style={{ fontSize: "30px" }}><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "20px", marginTop: "30px" }}/><br/></Card.Title>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Table, Button } from 'react-bootstrap';
 import CardContainer from '../cardContainer'; // Import your CardContainer component
-import { fetchDocsList, fetchDocument } from '../../api/document_requests'; // Import your API function
+import { fetchTemplatesList, fetchTemplate } from '../../api/templates_requests'; // Import your API function
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import * as utils from '../../api/utils';
 import { decodeValue } from '../../api/utils';
@@ -13,7 +13,7 @@ const NoSigForm = () => {
     useEffect(() => {
         async function fetchDocs() {
             try {
-                const response = await fetchDocsList();
+                const response = await fetchTemplatesList();
                 if (Array.isArray(response.data.docs)) {
                     setDocsList(response.data.docs);
                 } else {
@@ -28,7 +28,7 @@ const NoSigForm = () => {
 
     const handleCOSF = async (documentName) => {
         try {
-            const response = await fetchDocument(documentName);
+            const response = await fetchTemplate(documentName);
             if (response.status === 200) {
                 const data = response.data;
                 const token = localStorage.getItem('token');

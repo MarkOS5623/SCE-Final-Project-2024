@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import TextEditor from '../components/docs/textEditor';
+import TextEditor from '../components/templates/textEditor';
 import './Editor.css';
 
 function StaffHomePage() {

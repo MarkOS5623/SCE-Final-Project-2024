@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewText from '../components/docs/ViewText';
+import ViewText from '../components/templates/ViewText';
 
 function ViewTextPage() {
   const style = {

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Button, Dropdown, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchDocument, saveDocument, fetchDocsList } from "../../api/document_requests";
+import { fetchTemplate, saveTemplate, fetchTemplatesList } from "../../api/templates_requests";
 import CardContainer from "../cardContainer";
 
 const TextEditor = () => {
@@ -31,7 +31,7 @@ const TextEditor = () => {
   useEffect(() => {
     async function fetchDocs() {
       try {
-        const response = await fetchDocsList();
+        const response = await fetchTemplatesList();
         console.log(response.data)
         if (Array.isArray(response.data.docs)) {
           setDocsList(response.data.docs);
@@ -54,7 +54,7 @@ const TextEditor = () => {
 
     const documentData = documentContainerRef.current.documentEditor.serialize();
     try {
-      const response = await saveDocument(documentData, titleInput)
+      const response = await saveTemplate(documentData, titleInput)
       if (response.status === 200) {
         console.log('Document saved successfully!');
       } else {
@@ -65,14 +65,14 @@ const TextEditor = () => {
     }
   };
   
-  const fetchDoc = async () => {
+  const fetchTem = async () => {
     if (!selectedDocument) {
       console.error('Please select a document to fetch first')
       setError('Please select a document to fetch first')
       return;
     } else setError(null)
     try {
-      const response = await fetchDocument(selectedDocument)
+      const response = await fetchTemplate(selectedDocument)
       if (response.status === 200) {
         documentContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
         console.log('Document fetched successfully!');
@@ -98,7 +98,7 @@ const TextEditor = () => {
           </DocumentEditorContainerComponent>
         </Col>
         <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '20%'}} className="d-flex flex-column justify-content-center">
-          <h1 style={{color:'black'}}>This is for fetching and saving document to the database</h1>
+          <h1 style={{color:'black'}}>This is for fetching and saving templates to the database</h1>
           <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2">
             <Dropdown.Toggle variant="primary" id="documentDropdown">
               {selectedDocument ? selectedDocument : "Select Document"}
@@ -112,7 +112,7 @@ const TextEditor = () => {
           <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
           <div className="d-flex justify-content-between">
             <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
-            <Button onClick={fetchDoc} style={buttonStyle}>Fetch</Button>
+            <Button onClick={fetchTem} style={buttonStyle}>Fetch</Button>
           </div>
         </Col>
       </Row>

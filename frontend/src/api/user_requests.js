@@ -1,6 +1,6 @@
 import axios from "axios";
 import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/api/users/";
+const ROUTE_URL = "/api/users";
 
 export const login = async (email, password) => {
   try {

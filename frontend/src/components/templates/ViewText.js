@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Alert, Card, Container } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchDocument } from '../../api/document_requests';
+import { fetchTemplate } from '../../api/templates_requests';
 
-const ViewText = forwardRef(({ documentId }) => {
+const ViewText = forwardRef(({ templateId }) => {
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
-  const [title] = useState(documentId);
+  const [title] = useState(templateId);
 
   useEffect(() => {
-    async function fetchDoc() {
+    async function fetchTem() {
       try {
-        const response = await fetchDocument(title)
+        const response = await fetchTemplate(title)
         if (!response.status === 200) {
-          throw new Error('Failed to fetch document');
+          throw new Error('Failed to fetch template');
         }
         documentContainerRef.current.open(response.data.text);
         setError(null);
@@ -21,8 +21,8 @@ const ViewText = forwardRef(({ documentId }) => {
         setError(error.message);
       }
     }
-    fetchDoc();
-  }, [documentId]);
+    fetchTem();
+  }, [templateId]);
 
   return (
     <Container className="d-flex justify-content-center align-items-center">

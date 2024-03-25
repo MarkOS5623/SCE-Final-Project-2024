@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
-import NoSigForm from '../components/docs/noSigForm';
+import NoSigForm from '../components/templates/noSigForm';
 import './Editor.css';
 
 function StudentHomePage() {
