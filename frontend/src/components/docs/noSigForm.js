@@ -5,9 +5,11 @@ import { fetchDocsList, fetchDocument } from '../../api/document_requests'; // I
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import * as utils from '../../api/utils';
 import { decodeValue } from '../../api/utils';
-const NoSigForm = () => {
 
+const NoSigForm = () => {
     const [docsList, setDocsList] = useState([]);
+    const [showDownloadForms, setShowDownloadForms] = useState(false);
+    const [showDownloadFill, setShowDownloadFill] = useState(false);
     const documentContainerRef = useRef(null);
 
     useEffect(() => {
@@ -50,30 +52,64 @@ const NoSigForm = () => {
         }
     };
 
+    const toggleDownloadForms = () => {
+        setShowDownloadForms(!showDownloadForms);
+        setShowDownloadFill(false); // Close the fill section when forms are opened
+    };
+
+    const toggleDownloadFill = () => {
+        setShowDownloadFill(!showDownloadFill);
+        setShowDownloadForms(false); // Close the forms section when fill is opened
+    };
+
     return (
         <CardContainer style={{ width: '800px', padding: '20px' }}>
             <Card.Body>
-                <Card.Title>These are documents that don't need a signature</Card.Title>
-                <Table striped bordered hover variant="dark">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Documents</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {docsList.map((doc, index) => (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{doc}</td>
-                                <td>
-                                    <Button variant="primary" onClick={() => handleCOSF(doc)}>Download</Button>
-                                </td>
+                {showDownloadForms && (
+                    <Card.Title>These are documents that don't need a signature</Card.Title>
+                )}
+                <div>
+                    <Button onClick={toggleDownloadForms} style={{width: '35%', marginRight: '10px', fontSize: '20px', padding: '15px 25px' }}>Forms</Button>
+                    <Button onClick={toggleDownloadFill} style={{ width: '35%', fontSize: '20px', padding: '15px 25px' }}>Fill</Button>
+                </div>
+                {showDownloadForms && (
+                    <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Documents</th>
+                                <th>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {docsList.map((doc, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{doc}</td>
+                                    <td>
+                                        <Button variant="primary" onClick={() => handleCOSF(doc)}>Download</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                )}
+                {showDownloadFill && (
+                    <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Empty</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {/* Your fill table row content */}
+                            </tr>
+                        </tbody>
+                    </Table>
+                )}
             </Card.Body>
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>
