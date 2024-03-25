@@ -5,12 +5,12 @@ import ViewText from '../components/docs/ViewText';
 
 export default function MyRequestsList() {
   const { docsList } = useContext(UserContext);
-  const [visibleDocumentId, setVisibleDocumentId] = useState(null);
-
-  const handleViewClick = (documentTitle) => {
-    setVisibleDocumentId((prevVisibleDocumentId) =>
-      prevVisibleDocumentId === documentTitle ? null : documentTitle
-    );
+  const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
+  const [title, setTitle] = useState(null)
+  
+  const handleViewClick = (documentTitle) => { // Fetch the selected document directly by its title
+    setTitle(documentTitle)
+    setIsMyRequestsVisible(!isMyRequestsVisible); // Toggle My Requests visibility
   };
 
   return (
@@ -44,4 +44,5 @@ export default function MyRequestsList() {
       )}
     </div>
   );
+  
 }
