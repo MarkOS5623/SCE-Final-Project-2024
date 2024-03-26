@@ -69,8 +69,8 @@ const NoSigForm = () => {
                     <Card.Title>These are documents that don't need a signature</Card.Title>
                 )}
                 <div>
-                    <Button onClick={toggleDownloadForms} style={{width: '35%', marginRight: '10px', fontSize: '20px', padding: '15px 25px' }}>Forms</Button>
-                    <Button onClick={toggleDownloadFill} style={{ width: '35%', fontSize: '20px', padding: '15px 25px' }}>Fill</Button>
+                    <Button onClick={toggleDownloadForms} style={{width: '35%', marginRight: '10px', fontSize: '25px', padding: '15px 25px' }}>Forms</Button>
+                    <Button onClick={toggleDownloadFill} style={{ width: '35%', fontSize: '25px', padding: '15px 25px' }}>Fill</Button>
                 </div>
                 {showDownloadForms && (
                     <Table striped bordered hover variant="dark">
