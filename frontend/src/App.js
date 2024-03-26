@@ -11,7 +11,7 @@ import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
 import backgroundImage from './assests/background.png';
-import FormViewer from './components/templates/formViewer';
+import FormViewer from './components/templates/studentFormViewer';
 import StaffHomePage from './pages/staffHomePage';
 
 function App() {
