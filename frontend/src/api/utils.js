@@ -3,6 +3,7 @@ import { PdfPageSettings, PdfDocument, PdfPageOrientation, PdfBitmap, SizeF } fr
 import { SERVER_BASE } from "./config";
 const ROUTE_URL = "/api/utils"
 
+// converts a document(document container object into a pdf file)
 export const pdfConverter = async (objRef) => {
   const obj = objRef.current.documentEditor; 
   if (!obj) {

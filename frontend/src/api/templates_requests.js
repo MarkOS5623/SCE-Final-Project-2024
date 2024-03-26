@@ -76,3 +76,4 @@ export const fetchTemplatesList = async () => {
     throw error;
   }
 };
+

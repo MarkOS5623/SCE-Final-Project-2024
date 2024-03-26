@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 
-const FillDocsTable = ({ documents, handleDownload }) => {
+const FillDocsTable = ({ documents, toggleFillFrom }) => {
     return (
         <Table striped bordered hover variant="dark">
             <thead>
@@ -17,7 +17,7 @@ const FillDocsTable = ({ documents, handleDownload }) => {
                         <td>{index + 1}</td>
                         <td>{doc}</td>
                         <td>
-                            <Button variant="primary" onClick={() => handleDownload(doc)}>Fill</Button>
+                            <Button variant="primary" onClick={() => toggleFillFrom(doc)}>Fill</Button>
                         </td>
                     </tr>
                 ))}
