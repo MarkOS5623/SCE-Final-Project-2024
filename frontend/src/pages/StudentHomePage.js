@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
-import FormViewer from '../components/templates/formViewer';
+import FormViewer from '../components/templates/studentFormViewer';
 import './Editor.css';
 
 function StudentHomePage() {

@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { pdfConverter, decodeValue } from '../../api/utils';
 import FillDocument from '../forms/FillDocument';
-const FormViewer = () => {
+const StudentFormViewer = () => {
     const [noSignDocsList, setNoSignDocsList] = useState([]);
     const [onlySignDocsList, setOnlySignDocsList] = useState([]);
     const [showDownloadForms, setShowDownloadForms] = useState(false);
@@ -34,7 +34,6 @@ const FormViewer = () => {
 
     const handleSubmit = async (course, reason) => {
         try {
-            await filling(choosenDocument)
             const response = await fetchTemplate(choosenDocument);
             if (response.status === 200) {
                 const data = response.data;
@@ -126,4 +125,4 @@ const FormViewer = () => {
     );
 };
 
-export default FormViewer;
+export default StudentFormViewer;

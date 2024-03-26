@@ -32,7 +32,7 @@ export const signup = async (formData) => {
         return error.response || error; 
     }
 };
-
+// fetchs a array of names of the users that are allow to sign forms
 export const fetchAuthList = async () => {
   try {
       const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchauthlist', {
