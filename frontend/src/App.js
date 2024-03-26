@@ -11,7 +11,7 @@ import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
 import backgroundImage from './assests/background.png';
-import NoSigForm from './components/templates/noSigForm';
+import FormViewer from './components/templates/formViewer';
 import StaffHomePage from './pages/staffHomePage';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/views" element={<ViewTextPage />} />
-          <Route path="/nosig" element={<NoSigForm />} />
+          <Route path="/nosig" element={<FormViewer />} />
           <Route path="/staff" element={<StaffHomePage />} />
         </Routes>
       </Router>
