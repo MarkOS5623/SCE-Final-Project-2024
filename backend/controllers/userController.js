@@ -37,6 +37,19 @@ const userController = {
       console.error('Error occurred during login:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
+  },
+  fetchAuthNames: async (req, res) => {
+    try {
+      const userList = await User.find({ role: 'admin' });
+      const adminNamesWithIds = userList.map(user => ({
+        id: user.id,
+        name: `${user.fname} ${user.lname}`
+      }));
+      res.status(200).json(adminNamesWithIds);
+    } catch (error) {
+      console.error('Error fetching auths names:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 };
 

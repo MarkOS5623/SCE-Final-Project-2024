@@ -1,14 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Button, Dropdown, Alert, Row, Col } from "react-bootstrap";
+import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchTemplate, saveTemplate, fetchTemplatesList } from "../../api/templates_requests";
 import CardContainer from "../cardContainer";
-
+import { fetchAuthList } from "../../api/user_requests";
+import { decodeValue } from "../../api/utils";
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState('');
   const [titleInput, setTitleInput] = useState('');
   const [error, setError] = useState('');
+  const [selectedNames, setSelectedNames] = useState([]);
+  const [namesList, setNamesList] = useState([]);
+  const [authlist, setAuthsList] = useState({});
 
   const mainContainerStyle = {
     all: "unset",
@@ -29,10 +33,9 @@ const TextEditor = () => {
   const documentContainerRef = useRef(null);
 
   useEffect(() => {
-    async function fetchDocs() {
+    async function fetchData() {
       try {
         const response = await fetchTemplatesList();
-        console.log(response.data)
         if (Array.isArray(response.data.docs)) {
           setDocsList(response.data.docs);
         } else {
@@ -41,8 +44,16 @@ const TextEditor = () => {
       } catch (error) {
         console.error('Fetching of docs failed:', error.message);
       }
+      try {
+        const response = await fetchAuthList();
+        const names = response.data.map(item => item.name);
+        setNamesList(names);
+        setAuthsList(response.data);
+      } catch (error) {
+        console.error('Fetching of auths failed:', error.message);
+      }
     }
-    fetchDocs();
+    fetchData();
   }, []);
 
   const saveToDb = async () => {
@@ -50,11 +61,18 @@ const TextEditor = () => {
       console.error('A title is needed for saving a document')
       setError('A title is needed for saving a document')
       return;
-    } else setError(null)
-
+    }
+    setError(null);
+    const selectedAuthsIds = selectedNames.map(name => {
+      const author = authlist.find(auth => auth.name === name);
+      return author ? author.id : null;
+    });
+    const token = localStorage.getItem('token')
+    const decodedToken = await decodeValue(JSON.stringify({ token: token }));
     const documentData = documentContainerRef.current.documentEditor.serialize();
+    const author = decodedToken.data.user.id
     try {
-      const response = await saveTemplate(documentData, titleInput)
+      const response = await saveTemplate(documentData, titleInput, selectedAuthsIds, author);
       if (response.status === 200) {
         console.log('Document saved successfully!');
       } else {
@@ -65,14 +83,15 @@ const TextEditor = () => {
     }
   };
   
-  const fetchTem = async () => {
+  const fetchTemplateData = async () => {
     if (!selectedDocument) {
       console.error('Please select a document to fetch first')
       setError('Please select a document to fetch first')
       return;
-    } else setError(null)
+    }
+    setError(null);
     try {
-      const response = await fetchTemplate(selectedDocument)
+      const response = await fetchTemplate(selectedDocument);
       if (response.status === 200) {
         documentContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
         console.log('Document fetched successfully!');
@@ -86,6 +105,17 @@ const TextEditor = () => {
 
   const handleTitleChange = (event) => {
     setTitleInput(event.target.value);
+  };
+
+  const handleNameSelect = (name) => {
+    if (!selectedNames.includes(name)) {
+      setSelectedNames([...selectedNames, name]);
+    }
+  };
+
+  const removeName = (nameToRemove) => {
+    const updatedNames = selectedNames.filter(name => name !== nameToRemove);
+    setSelectedNames(updatedNames);
   };
 
   return (
@@ -110,9 +140,29 @@ const TextEditor = () => {
             </Dropdown.Menu>
           </Dropdown>
           <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
+          <div>
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="nameDropdown">
+                Add Authorizers
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {namesList.map((name, index) => (
+                  <Dropdown.Item key={index} onClick={() => handleNameSelect(name)}>{name}</Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+            <div>
+              {selectedNames.map((name, index) => (
+                <Badge key={index} variant="primary" style={{ marginRight: '5px', marginTop: '5px' }}>
+                  {name} 
+                  <Button variant="danger" size="sm" onClick={() => removeName(name)} style={{ marginLeft: '3px', height: '40px' }}>X</Button>
+                </Badge>
+              ))}
+            </div>
+          </div>
           <div className="d-flex justify-content-between">
             <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
-            <Button onClick={fetchTem} style={buttonStyle}>Fetch</Button>
+            <Button onClick={fetchTemplateData} style={buttonStyle}>Fetch</Button>
           </div>
         </Col>
       </Row>

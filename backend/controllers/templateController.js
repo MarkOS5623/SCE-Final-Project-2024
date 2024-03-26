@@ -5,11 +5,17 @@ const templateController = {
     // save template to the database if a template with the same name already exists it will overide it
     saveTemplate: async (req, res) => {
       try {
-        const { Data, title } = req.body;
-        const user = await User.findOne({ email: 'markos093@gmail.com' });
+        const { Data, title, Authorizers, Author } = req.body;
+        console.log(req.body)
+        console.log(Author)
+        const authorizers = await User.find({ id: {  $in: Authorizers } });
+        const user = await User.findOne({ id: Author });
         const Tem = await Template.findOne({title: title});
+        console.log(authorizers)
+        console.log(user)
         if(Tem){
           await Tem.updateOne({ text: Data });
+          await Tem.updateOne({ signatories: authorizers });
           res.status(200).send('Template updated successfully');
         } else {
           const newDocument = new Template({
@@ -17,6 +23,7 @@ const templateController = {
             text: Data,
             department: "test",
             author: user,
+            signatories: authorizers
           });
           await newDocument.save();
           res.status(200).send('Template saved successfully');

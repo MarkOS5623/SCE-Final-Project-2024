@@ -18,10 +18,11 @@ export const fetchTemplate = async (subject) => {
   }
 };
 
-export const saveTemplate = async (templateData, titleInput) => {
+export const saveTemplate = async (templateData, titleInput, authorizers, author) => {
   try {
+    console.log(author)
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/saveTemplate', {
-      Data: templateData, title: titleInput
+      Data: templateData, title: titleInput, Authorizers: authorizers, Author: author
     }, {
       headers: {
         'Content-Type': 'application/json'
