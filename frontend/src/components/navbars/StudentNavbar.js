@@ -5,7 +5,7 @@ import { decodeValue } from '../../api/utils';
 
 const StudentNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // New state for admin status
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

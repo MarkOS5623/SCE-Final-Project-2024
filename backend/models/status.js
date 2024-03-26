@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
   by different staff users which can be recived from the Template model where their id's are saved
  */
 const statusSchema = new mongoose.Schema({
-  requestId: { type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true },
-  recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  signatories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }],
   status: { type: String, required: true },
   comments: { type: String, required: false },
   updatedAt: { type: Date, default: Date.now }

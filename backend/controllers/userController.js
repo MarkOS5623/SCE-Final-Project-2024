@@ -5,17 +5,21 @@ const userController = {
   signup: async (req, res) => {
     try {
       const { email, password, fname, lname, id, role } = req.body;
-      console.log(password)
-      let hashedPassword = await utils.encrpytValue(password);
-      const newUser = await User.create({
-        email,
-        password: hashedPassword,
-        fname,
-        lname,
-        id,
-        role
-      });
-      res.status(201).json({ message: 'User created successfully', user: newUser });
+      const user = await User.findOne({ email });
+      if(!user){
+        let hashedPassword = await utils.encrpytValue(password);
+        const newUser = await User.create({
+          email,
+          password: hashedPassword,
+          fname,
+          lname,
+          id,
+          role
+        });
+        res.status(201).json({ message: 'User created successfully', user: newUser });
+      } else {
+        res.status(401).json({ message: 'This email is already register to a user', user: null });
+      }
     } catch (error) {
       console.error('Error occurred during signup:', error);
       res.status(500).json({ message: 'Internal server error' });
@@ -25,14 +29,26 @@ const userController = {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
-      if (!user) return res.status(401).json({ message: 'User not found!' });
       const isPasswordValid = await utils.decrpytValue(password, user.password);
-      if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password' });
+      if (!isPasswordValid || !user) return res.status(401).json({ message: 'Invalid email or password'});
       const token = utils.encode({ user: user });
       res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error('Error occurred during login:', error);
       res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  fetchAuthNames: async (req, res) => {
+    try {
+      const userList = await User.find({ role: 'admin' });
+      const adminNamesWithIds = userList.map(user => ({
+        id: user.id,
+        name: `${user.fname} ${user.lname}`
+      }));
+      res.status(200).json(adminNamesWithIds);
+    } catch (error) {
+      console.error('Error fetching auths names:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 };

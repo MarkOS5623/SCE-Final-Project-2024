@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     async function fetchDocs() {
       try {
-        const response = await fetch('http://localhost:5000/api/documents/fetchDocsList', {
+        const response = await fetch('http://localhost:5000/api/documents/fetchTemplatesList', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   department: { type: String },
   role: { type: String, required: true },
-  isActive: { type: Boolean, default: true } 
+  documents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true }],
 });
 
 const User = mongoose.model('User', userSchema);

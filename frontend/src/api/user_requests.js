@@ -1,6 +1,6 @@
 import axios from "axios";
 import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/api/users/";
+const ROUTE_URL = "/api/users";
 
 export const login = async (email, password) => {
   try {
@@ -19,7 +19,6 @@ export const login = async (email, password) => {
 };JSON.stringify()
 
 export const signup = async (formData) => {
-    console.log(formData)
     try {
         const response = await axios.post(SERVER_BASE + ROUTE_URL + '/signup',
             formData
@@ -32,4 +31,17 @@ export const signup = async (formData) => {
     } catch (error) {
         return error.response || error; 
     }
+};
+
+export const fetchAuthList = async () => {
+  try {
+      const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchauthlist', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response; 
+  } catch (error) {
+      return error.response || error; 
+  }
 };

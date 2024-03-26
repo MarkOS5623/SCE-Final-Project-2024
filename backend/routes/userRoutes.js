@@ -6,4 +6,6 @@ router.post('/signup', userController.signup);
 
 router.post('/login', userController.login);
 
+router.get('/fetchauthlist', userController.fetchAuthNames)
+
 module.exports = router;

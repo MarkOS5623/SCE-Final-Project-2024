@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import logoImg from '../../assests/sce.jpg';
 import { signup } from '../../api/user_requests';
@@ -13,6 +13,7 @@ function Signup() {
     id: '', 
     role: ''
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   
   const handleChange = (e) => {
@@ -34,7 +35,10 @@ function Signup() {
       if (response.status === 201) {
         console.log('User signed up successfully');
         navigate("/");
-      } else {
+      } else if(response.status === 401) {
+        setError(response.data.message)
+      }
+      else {
         console.error('Failed to sign up:', response.statusText);
       }
     } catch (error) {
@@ -43,12 +47,14 @@ function Signup() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh"}}>
+    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "10vh"}}>
       <Card className="mt-3" bg="primary" text="white" style={{ width: "500px" }}>
         <Card.Body>
-        <Card.Title style={{ fontSize: "30px" }}><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "40px", marginTop: "30px" }}/>
-          </Card.Title>
+        <Card.Title style={{ fontSize: "30px" }}>
+          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "40px", marginTop: "30px" }}/>
+        </Card.Title>
           <Form onSubmit={handleSubmit}>
+            {error && <Alert variant="danger">{error}</Alert>}
             <Form.Control 
               type="email" 
               name="email" 
