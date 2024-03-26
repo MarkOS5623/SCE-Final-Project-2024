@@ -7,6 +7,10 @@ const ViewText = forwardRef(({ templateId }) => {
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
   const [title] = useState(templateId);
+  const editorStyle = {
+    width: "100%",
+    height: "95%"
+  };
 
   useEffect(() => {
     async function fetchTem() {
@@ -26,10 +30,10 @@ const ViewText = forwardRef(({ templateId }) => {
 
   return (
     <Container className="d-flex justify-content-center align-items-center">
-      <Card style={{ height: '80vh', width: '80%' }}>
+      <Card style={{ height: '90svh', width: '120svh' }}>
         <Card.Body>
           {error && <Alert variant="danger">{error}</Alert>}
-          <DocumentEditorComponent ref={documentContainerRef} restrictEditing={true}/>
+          <DocumentEditorComponent height="90%" width="95%" id="container" style={editorStyle} ref={documentContainerRef} restrictEditing={true} />
         </Card.Body>
       </Card>
     </Container>
