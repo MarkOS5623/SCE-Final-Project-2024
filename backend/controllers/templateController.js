@@ -48,20 +48,46 @@ const templateController = {
         res.status(500).send('Internal server error');
       }
     },
-    // returns an array of strings containing the titles of all the documents in the database
+    // returns an array of strings containing the titles of all the templates in the database that don't need to be signed
+    fetchNoSignTemplatesList: async (req, res) => { 
+      try {
+        const templatesList = await Template.find({ signatories: { $size: 0 } });
+        if (!templatesList) {
+          return res.status(404).send('Templates not found');
+        }
+        const templatTitles = templatesList.map(Tem => Tem.title);
+        res.status(201).json({docs: templatTitles});
+      } catch (error) {
+        console.error('Error fetching templates:', error);
+        res.status(500).send('Internal server error');
+      }
+    },
+    fetchOnlySignTemplatesList: async (req, res) => { 
+      try {
+        const templatesList = await Template.find({ signatories: { $exists: true, $ne: [] } });
+        if (!templatesList) {
+          return res.status(404).send('Templates not found');
+        }
+        const templatTitles = templatesList.map(Tem => Tem.title);
+        res.status(201).json({docs: templatTitles});
+      } catch (error) {
+        console.error('Error fetching templates:', error);
+        res.status(500).send('Internal server error');
+      }
+    },
     fetchTemplatesList: async (req, res) => { 
       try {
         const templatesList = await Template.find({});
         if (!templatesList) {
           return res.status(404).send('Templates not found');
         }
-        const documentTitles = templatesList.map(Tem => Tem.title);
-        res.status(201).json({docs: documentTitles});
+        const templatTitles = templatesList.map(Tem => Tem.title);
+        res.status(201).json({docs: templatTitles});
       } catch (error) {
-        console.error('Error fetching documents:', error);
+        console.error('Error fetching templates:', error);
         res.status(500).send('Internal server error');
       }
-    }    
+    }  
   };
   
   module.exports = templateController;
