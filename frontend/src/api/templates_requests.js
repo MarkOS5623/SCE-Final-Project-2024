@@ -35,6 +35,34 @@ export const saveTemplate = async (templateData, titleInput, authorizers, author
   }
 };
 
+export const fetchNoSignTemplatesList = async () => {
+  try {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchNoSignTemplatesList', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching template list:', error.message);
+    throw error;
+  }
+};
+
+export const fetchOnlySignTemplatesList = async () => {
+  try {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchOnlySignTemplatesList', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching template list:', error.message);
+    throw error;
+  }
+};
+
 export const fetchTemplatesList = async () => {
   try {
     const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchTemplatesList', {

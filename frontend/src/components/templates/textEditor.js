@@ -118,7 +118,8 @@ const TextEditor = () => {
     setSelectedNames(updatedNames);
   };
 
-  return (
+  return ( /* צריך להזיז את כל הכפתורים והאינפוטים של השמירה לכרטיס אחד וכל מה שקשור
+           לטעינה של מסמכים לכרטיס אחר ששניהם יהיה בצד שמאל רק בכרטיסים שונים שיהיה יותר ברור מה זה מה*/
     <CardContainer style={{ ...mainContainerStyle}}>
       <Row style={{ width: '100%' }}> 
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}

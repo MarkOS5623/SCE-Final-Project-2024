@@ -1,34 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Table, Button } from 'react-bootstrap';
 import CardContainer from '../cardContainer'; // Import your CardContainer component
-import { fetchTemplatesList, fetchTemplate } from '../../api/templates_requests'; // Import your API function
+import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests'; // Import your API function
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import * as utils from '../../api/utils';
 import { decodeValue } from '../../api/utils';
 
 const NoSigForm = () => {
-    const [docsList, setDocsList] = useState([]);
+    const [noSignDocsList, setNoSignDocsList] = useState([]);
+    const [onlySignDocsList, setOnlySignDocsList] = useState([]);
     const [showDownloadForms, setShowDownloadForms] = useState(false);
-    const [showDownloadFill, setShowDownloadFill] = useState(false);
+    const [showFillDocuments, setShowFillDocuments] = useState(false);
     const documentContainerRef = useRef(null);
 
     useEffect(() => {
-        async function fetchDocs() {
+        async function fetchData() {
             try {
-                const response = await fetchTemplatesList();
-                if (Array.isArray(response.data.docs)) {
-                    setDocsList(response.data.docs);
-                } else {
-                    console.error('Response data is not an array:', response.data.docs);
-                }
+                const noSignDocs = await fetchNoSignTemplatesList();
+                const onlySignDocs = await fetchOnlySignTemplatesList();
+                setNoSignDocsList(noSignDocs.data.docs);
+                setOnlySignDocsList(onlySignDocs.data.docs);
             } catch (error) {
                 console.error('Fetching of docs failed:', error.message);
             }
         }
-        fetchDocs();
+        fetchData();
     }, []);
 
-    const handleCOSF = async (documentName) => {
+    const handleDownload = async (documentName) => {
         try {
             const response = await fetchTemplate(documentName);
             if (response.status === 200) {
@@ -54,11 +53,11 @@ const NoSigForm = () => {
 
     const toggleDownloadForms = () => {
         setShowDownloadForms(!showDownloadForms);
-        setShowDownloadFill(false); // Close the fill section when forms are opened
+        setShowFillDocuments(false); // Close the fill section when forms are opened
     };
 
-    const toggleDownloadFill = () => {
-        setShowDownloadFill(!showDownloadFill);
+    const toggleFill = () => {
+        setShowFillDocuments(!showFillDocuments);
         setShowDownloadForms(false); // Close the forms section when fill is opened
     };
 
@@ -66,11 +65,11 @@ const NoSigForm = () => {
         <CardContainer style={{ width: '800px', padding: '20px' }}>
             <Card.Body>
                 {showDownloadForms && (
-                    <Card.Title>These are documents that don't need a signature</Card.Title>
+                    <Card.Title>Replace with logo</Card.Title>
                 )}
                 <div>
-                    <Button onClick={toggleDownloadForms} style={{width: '35%', marginRight: '10px', fontSize: '20px', padding: '15px 25px' }}>Forms</Button>
-                    <Button onClick={toggleDownloadFill} style={{ width: '35%', fontSize: '20px', padding: '15px 25px' }}>Fill</Button>
+                    <Button onClick={toggleDownloadForms} style={{width: '35%', marginRight: '10px', fontSize: '20px', padding: '15px 25px' }}>Get Forms</Button>
+                    <Button onClick={toggleFill} style={{ width: '35%', fontSize: '20px', padding: '15px 25px' }}>Fill Froms</Button>
                 </div>
                 {showDownloadForms && (
                     <Table striped bordered hover variant="dark">
@@ -82,31 +81,37 @@ const NoSigForm = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {docsList.map((doc, index) => (
+                            {noSignDocsList.map((doc, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{doc}</td>
                                     <td>
-                                        <Button variant="primary" onClick={() => handleCOSF(doc)}>Download</Button>
+                                        <Button variant="primary" onClick={() => handleDownload(doc)}>Download</Button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
                 )}
-                {showDownloadFill && (
+                {showFillDocuments && (
                     <Table striped bordered hover variant="dark">
-                        <thead>
+                       <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Empty</th>
+                                <th>Documents</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                {/* Your fill table row content */}
-                            </tr>
+                            {onlySignDocsList.map((doc, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{doc}</td>
+                                    <td>
+                                        <Button variant="primary" onClick={() => handleDownload(doc)}>Fill</Button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 )}

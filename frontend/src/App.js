@@ -12,7 +12,7 @@ import AccountInfoPage from './pages/accountInfoPage';
 import ViewTextPage from './pages/ViewTextPage';
 import backgroundImage from './assests/background.png';
 import NoSigForm from './components/templates/noSigForm';
-import StaffHomePage from './pages/staffPage';
+import StaffHomePage from './pages/staffHomePage';
 
 function App() {
   return (
