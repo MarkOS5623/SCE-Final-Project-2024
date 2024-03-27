@@ -5,6 +5,7 @@ import { fetchTemplate, saveTemplate, fetchTemplatesList } from "../../api/templ
 import CardContainer from "../cardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
+
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState('');
@@ -56,33 +57,6 @@ const TextEditor = () => {
     fetchData();
   }, []);
 
-  const saveToDb = async () => {
-    if (!titleInput) {
-      console.error('A title is needed for saving a document')
-      setError('A title is needed for saving a document')
-      return;
-    }
-    setError(null);
-    const selectedAuthsIds = selectedNames.map(name => {
-      const author = authlist.find(auth => auth.name === name);
-      return author ? author.id : null;
-    });
-    const token = localStorage.getItem('token')
-    const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-    const documentData = documentContainerRef.current.documentEditor.serialize();
-    const author = decodedToken.data.user.id
-    try {
-      const response = await saveTemplate(documentData, titleInput, selectedAuthsIds, author);
-      if (response.status === 200) {
-        console.log('Document saved successfully!');
-      } else {
-        console.error('Failed to save document: status ', response.status);
-      }
-    } catch (error) {
-      console.error('Error saving document:', error);
-    }
-  };
-  
   const fetchTemplateData = async () => {
     if (!selectedDocument) {
       console.error('Please select a document to fetch first')
@@ -118,19 +92,47 @@ const TextEditor = () => {
     setSelectedNames(updatedNames);
   };
 
-  return ( /* צריך להזיז את כל הכפתורים והאינפוטים של השמירה לכרטיס אחד וכל מה שקשור
-           לטעינה של מסמכים לכרטיס אחר ששניהם יהיה בצד שמאל רק בכרטיסים שונים שיהיה יותר ברור מה זה מה*/
-    <CardContainer style={{ ...mainContainerStyle}}>
-      <Row style={{ width: '100%' }}> 
+  const saveToDb = async () => {
+    if (!titleInput) {
+      console.error('A title is needed for saving a document')
+      setError('A title is needed for saving a document')
+      return;
+    }
+    setError(null);
+    const selectedAuthsIds = selectedNames.map(name => {
+      const author = authlist.find(auth => auth.name === name);
+      return author ? author.id : null;
+    });
+    const token = localStorage.getItem('token')
+    const decodedToken = await decodeValue(JSON.stringify({ token: token }));
+    const documentData = documentContainerRef.current.documentEditor.serialize();
+    const author = decodedToken.data.user.id
+    try {
+      const response = await saveTemplate(documentData, titleInput, selectedAuthsIds, author);
+      if (response.status === 200) {
+        console.log('Document saved successfully!');
+      } else {
+        console.error('Failed to save document: status ', response.status);
+      }
+    } catch (error) {
+      console.error('Error saving document:', error);
+    }
+  };
+  
+return (
+  <>
+    <CardContainer style={{ ...mainContainerStyle }}>
+      <Row style={{ width: '100%' }}>
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}
-        <Col xs={8} style={{ width: '80%' }}>
+        <Col xs={8} style={{ width: '80%', height: '82svh' }}>
           <DocumentEditorContainerComponent height="82vh" id="container" style={editorStyle} ref={documentContainerRef}>
             <Inject services={[Toolbar, WordExport]} />
           </DocumentEditorContainerComponent>
         </Col>
-        <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '20%'}} className="d-flex flex-column justify-content-center">
-          <h1 style={{color:'black'}}>This is for fetching and saving templates to the database</h1>
-          <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2">
+        <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '82svh' }} className="d-flex flex-column justify-content-center">
+          
+          <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>This is for fetching and saving templates to the database</h1>
+          <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2" style={{ marginBottom: '20px', textAlign: 'center' }}>
             <Dropdown.Toggle variant="primary" id="documentDropdown">
               {selectedDocument ? selectedDocument : "Select Document"}
             </Dropdown.Toggle>
@@ -140,35 +142,44 @@ const TextEditor = () => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
-          <div>
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="nameDropdown">
-                Add Authorizers
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {namesList.map((name, index) => (
-                  <Dropdown.Item key={index} onClick={() => handleNameSelect(name)}>{name}</Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-            <div>
-              {selectedNames.map((name, index) => (
-                <Badge key={index} variant="primary" style={{ marginRight: '5px', marginTop: '5px' }}>
-                  {name} 
-                  <Button variant="danger" size="sm" onClick={() => removeName(name)} style={{ marginLeft: '3px', height: '40px' }}>X</Button>
-                </Badge>
-              ))}
-            </div>
-          </div>
-          <div className="d-flex justify-content-between">
-            <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
+
+          <div className="d-flex justify-content-center">
             <Button onClick={fetchTemplateData} style={buttonStyle}>Fetch</Button>
+          </div>
+          
+          <div>
+            <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2" />
+            <div>
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="nameDropdown">
+                  Add Authorizers
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {namesList.map((name, index) => (
+                    <Dropdown.Item key={index} onClick={() => handleNameSelect(name)}>{name}</Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <div>
+                {selectedNames.map((name, index) => (
+                  <Badge key={index} variant="primary" style={{ marginRight: '5px', marginTop: '5px' }}>
+                    {name}
+                    <Button variant="danger" size="sm" onClick={() => removeName(name)} style={{ marginLeft: '3px', height: '40px' }}>X</Button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div className="d-flex justify-content-center">
+              <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
+            </div>
           </div>
         </Col>
       </Row>
     </CardContainer>
-  );
+  </>
+);
+
 };
 
 export default TextEditor;
+

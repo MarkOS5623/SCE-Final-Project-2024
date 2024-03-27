@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { UserContext } from '../context/userContext'; // Adjust the path as needed
-import ViewText from '../components/templates/ViewText';
+import ViewText from './templates/ViewText';
 
 export default function MyRequestsList() {
   const { docsList } = useContext(UserContext);

@@ -10,18 +10,44 @@ const FillDocument = ({ documentName, handleSubmit }) => {
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <h2>Exemption From Course</h2>
-            <div>
-                <label>Course:</label>
-                <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+        <div className="card shadow mb-4">
+            <div className="card-header py-3">
+                <h6 className="m-0 font-weight-bold text-primary">Exemption From Course</h6>
             </div>
-            <div>
-                <label>Reason:</label>
-                <input type="text" value={reason} onChange={(e) => setReason(e.target.value)} />
+            <div className="card-body">
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold', color: 'black' }}>Course:</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={course} 
+                            onChange={(e) => setCourse(e.target.value)}
+                            style={{ marginBottom: '10px' }} // Add margin bottom
+                            placeholder="Insert course name" 
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold', color: 'black' }}>Reason:</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={reason} 
+                            onChange={(e) => setReason(e.target.value)}
+                            style={{ marginBottom: '10px' }}
+                            placeholder="Insert reason" 
+                        />
+                    </div>
+                    <button 
+                        type="submit" 
+                        className="btn btn-primary"
+                        style={{ marginTop: '10px' }} 
+                    >
+                        Submit
+                    </button>
+                </form>
             </div>
-            <button type="submit">Submit</button>
-        </form>
+        </div>
     );
 };
 
