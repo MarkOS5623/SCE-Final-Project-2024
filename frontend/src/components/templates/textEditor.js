@@ -129,7 +129,7 @@ const TextEditor = () => {
           </DocumentEditorContainerComponent>
         </Col>
         <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '20%'}} className="d-flex flex-column justify-content-center">
-          <h1 style={{color:'black'}}>This is for fetching and saving templates to the database</h1>
+          <Row style={{ width: '100%' }}> 
           <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2">
             <Dropdown.Toggle variant="primary" id="documentDropdown">
               {selectedDocument ? selectedDocument : "Select Document"}
@@ -140,8 +140,11 @@ const TextEditor = () => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
+          <Button onClick={fetchTemplateData} style={buttonStyle}>Fetch</Button>
+          </Row>
+          <Row style={{ width: '100%', marginTop: '20px', backgroundColor: 'green' }}> 
           <div>
+            <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="nameDropdown">
                 Add Authorizers
@@ -163,8 +166,8 @@ const TextEditor = () => {
           </div>
           <div className="d-flex justify-content-between">
             <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
-            <Button onClick={fetchTemplateData} style={buttonStyle}>Fetch</Button>
           </div>
+          </Row>
         </Col>
       </Row>
     </CardContainer>
