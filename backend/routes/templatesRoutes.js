@@ -3,18 +3,18 @@ const router = express.Router();
 const templateController = require('../controllers/templateController');
 
 //saves a template
-router.post('/saveTemplate', templateController.saveTemplate);
+router.post('/savetemplate', templateController.saveTemplate);
 
 //returns a template
-router.post('/fetchTemplate', templateController.fetchTemplate);
+router.post('/fetchtemplate', templateController.fetchTemplate);
 
 //return an array of templates titles with no signature
-router.get('/fetchNoSignTemplatesList', templateController.fetchNoSignTemplatesList);
+router.get('/fetchnosigntemplateslist', templateController.fetchNoSignTemplatesList);
 
 //return an array of templates titles with signatures
-router.get('/fetchOnlySignTemplatesList', templateController.fetchOnlySignTemplatesList);
+router.get('/fetchonlysigntemplateslist', templateController.fetchOnlySignTemplatesList);
 
 //return an array of all the templates titles 
-router.get('/fetchTemplatesList', templateController.fetchTemplatesList);
+router.get('/fetchtemplateslist', templateController.fetchTemplatesList);
 
 module.exports = router;

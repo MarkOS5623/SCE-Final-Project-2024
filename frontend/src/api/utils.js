@@ -43,7 +43,7 @@ export const pdfConverter = async (objRef) => {
 
 export const decodeValue = async (token) => {
   try {
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/decodeValue', 
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/decodevalue', 
       token
       , {
       headers: {

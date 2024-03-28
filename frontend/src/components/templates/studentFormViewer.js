@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { pdfConverter, decodeValue } from '../../api/utils';
 import FillDocument from '../forms/FillDocument';
+import { saveDocument } from '../../api/documents_reqeusts';
 
 const StudentFormViewer = () => {
     const [noSignDocsList, setNoSignDocsList] = useState([]);
@@ -34,7 +35,28 @@ const StudentFormViewer = () => {
     const tagStyle = { width: '35%', fontSize: '20px', padding: '15px 25px' }
 
     const handleSubmit = async (course, reason) => {
-        // Handle form submission
+        try {
+            const response = await fetchTemplate(choosenDocument);
+            if (response.status === 200) {
+                const data = response.data;
+                documentContainerRef.current.documentEditor.open(data.text);
+                const token = localStorage.getItem('token');
+                const tokenData = await decodeValue(JSON.stringify({token: token}))
+                const decodedTokenData = tokenData.data;
+                const currentDate = new Date();
+                const options = { year: 'numeric', month: 'long', day: '2-digit' };
+                let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
+                let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
+                let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
+                let couresField = { fieldName: 'Course', value: course };
+                let reasonField = { fieldName: 'Reason', value: reason };
+                documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
+                const documentData = documentContainerRef.current.documentEditor.serialize();
+                await saveDocument(documentData, response.data.title, response.data.signatories, decodedTokenData.user.id)
+            }
+        } catch (error) {
+            console.error('Error fetching document:', error);
+        }
     };
 
     const handleDownload = async (documentName) => {

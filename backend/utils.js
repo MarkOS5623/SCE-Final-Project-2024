@@ -35,9 +35,20 @@ const decrpytValue = (value, compared) => {
     }
 }
 
+const generateDocumentId = (subject) => {
+    const words = subject.split(' ');
+    let id = '';
+    words.forEach(word => {
+      id += word.charAt(0);
+    });
+    id += Math.floor(1000 + Math.random() * 9000);
+    return id;
+ };
+
 module.exports = {
     encode,
     encrpytValue,
     decode,
-    decrpytValue
+    decrpytValue,
+    generateDocumentId
 }

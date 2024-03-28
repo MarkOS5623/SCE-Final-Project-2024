@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 const utilsController = require('../controllers/utilsController');
 
-router.post('/decodeValue', utilsController.decodeValue);
+router.post('/decodevalue', utilsController.decodeValue);
 
 module.exports = router;
