@@ -5,30 +5,13 @@ import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from
 import UnsignedDocsTable from './dataTables/unsignedDocsTable';
 import { fetchUnsignedDocumentList } from '../api/documents_reqeusts';
 
-const StaffFormViewer = () => {
-    const [requestsList, setRequestsList] = useState([]);
+const StaffFormViewer = (requestsList) => {
+    console.log('StaffFormViewer', requestsList)
     const [showUnAuthRequestsList, setShowUnAuthRequestsList] = useState(false);
     const [showAuthRequestsList, setShowAuthRequestsList] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [choosenRequest, setChoosenRequest] = useState('');
     const documentContainerRef = useRef(null);
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-              const response = await fetchUnsignedDocumentList(); 
-              if (Array.isArray(response.data.docs)) {
-                console.log(response.data.docs)
-                setRequestsList(response.data.docs);
-              } else {
-                console.error('Response data is not an array:', response.data.docs);
-              }
-            } catch (error) {
-              console.error('Fetching of docs failed:', error.message);
-            }
-          }
-          fetchData();
-    }, []);
     
     const tagStyle = { width: '35%', fontSize: '20px', padding: '15px 25px' }
 
@@ -61,7 +44,7 @@ const StaffFormViewer = () => {
                 <Button onClick={toggleUnAuthorizedRequestsTable} style={tagStyle}>Show Requests</Button>
             </div>
             {showAuthRequestsList}
-            {showUnAuthRequestsList && <UnsignedDocsTable documents={requestsList} handleReview={handleReview} />}
+            {showUnAuthRequestsList && <UnsignedDocsTable documents={requestsList.requestsList} handleReview={handleReview} />}
             {showReviewForm }
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>

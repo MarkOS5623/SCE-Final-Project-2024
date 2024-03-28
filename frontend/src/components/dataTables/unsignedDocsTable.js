@@ -7,15 +7,17 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Documents</th>
+                    <th>Request ID</th>
+                    <th>Request</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {documents.map((doc, index) => (
+                {documents.docs.map((doc, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{doc}</td>
+                        <td>{documents.ids[index]}</td> 
+                        <td>{doc}</td> 
                         <td>
                             <Button variant="primary" onClick={() => handleReview(doc)}>Review</Button>
                         </td>

@@ -6,32 +6,34 @@ const Status = require('../models/status');
 const documentController = {
   fetchUnsignedDocumentList: async (req, res) => { 
     try {
-        const documents = await Document.find({});
-        if (!documents || documents.length === 0) {
-            return res.status(404).send('No documents found');
-        }
-        const unsignedDocuments = [];
-        for (const document of documents) {
-            const authorizerIds = document.authorizers.map(id => id.toString());
-            const statuses = await Status.find({ signatories: { $in: authorizerIds } });
-            let hasUnsigned = false;
-            for (const status of statuses) {
-                if (status.status === "unsigned") {
-                    hasUnsigned = true;
-                    break;
-                }
-            }
-            if (hasUnsigned) {
-                unsignedDocuments.push(document.subject);
-            }
-        }
-        if (unsignedDocuments.length === 0) {
-            return res.status(404).send('No documents with all authorizers unsigned found');
-        }
-        res.status(200).json({ docs: unsignedDocuments });
+      const documents = await Document.find({});
+      if (!documents || documents.length === 0) {
+          return res.status(404).send('No documents found');
+      }
+      const unsignedDocuments = [];
+      const unsignedDocumentsIDs = [];
+      for (const document of documents) {
+          const authorizerIds = document.authorizers.map(id => id.toString());
+          const statuses = await Status.find({ signatories: { $in: authorizerIds } });
+          let hasUnsigned = false;
+          for (const status of statuses) {
+              if (status.status === "unsigned") {
+                  hasUnsigned = true;
+                  break;
+              }
+          }
+          if (hasUnsigned) {
+              unsignedDocuments.push(document.subject);
+              unsignedDocumentsIDs.push(document.documentId);
+          }
+      }
+      if (unsignedDocuments.length === 0) {
+          return res.status(404).send('No documents with all authorizers unsigned found');
+      }
+      res.status(200).json({ docs: unsignedDocuments, ids: unsignedDocumentsIDs });
     } catch (error) {
-        console.error('Error fetching documents:', error);
-        res.status(500).send('Internal server error');
+      console.error('Error fetching documents:', error);
+      res.status(500).send('Internal server error');
     }
   },
   fetchDocument: async (req, res) => {
