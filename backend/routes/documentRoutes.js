@@ -3,12 +3,12 @@ const router = express.Router();
 const documentController = require('../controllers/documentController');
 
 //saves a document
-router.post('/saveDocument', documentController.saveDocuemnt);
+router.post('/savedocument', documentController.saveDocuemnt);
 
 //returns a document
-router.post('/fetchDocument', documentController.fetchDocument);
+router.post('/fetchdocument', documentController.fetchDocument);
 
 //return an array of documents titles with no signature
-router.get('/fetchdocumentList', documentController.fetchdocumentList);
+router.get('/fetchunsigneddocumentlist', documentController.fetchUnsignedDocumentList);
 
 module.exports = router;

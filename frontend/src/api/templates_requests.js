@@ -4,7 +4,7 @@ const ROUTE_URL = "/api/templates"
 
 export const fetchTemplate = async (subject) => {
   try {
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchTemplate', { 
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchtemplate', { 
       title: subject
     }, {
       headers: {
@@ -21,7 +21,7 @@ export const fetchTemplate = async (subject) => {
 export const saveTemplate = async (templateData, titleInput, signatories, author) => {
   try {
     console.log(author)
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/saveTemplate', {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/savetemplate', {
       Data: templateData, title: titleInput, Signatories: signatories, Author: author
     }, {
       headers: {
@@ -37,7 +37,7 @@ export const saveTemplate = async (templateData, titleInput, signatories, author
 
 export const fetchNoSignTemplatesList = async () => {
   try {
-    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchNoSignTemplatesList', {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchnosigntemplateslist', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -51,7 +51,7 @@ export const fetchNoSignTemplatesList = async () => {
 
 export const fetchOnlySignTemplatesList = async () => {
   try {
-    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchOnlySignTemplatesList', {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchonlysigntemplateslist', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -65,7 +65,7 @@ export const fetchOnlySignTemplatesList = async () => {
 
 export const fetchTemplatesList = async () => {
   try {
-    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchTemplatesList', {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchtemplateslist', {
       headers: {
         'Content-Type': 'application/json',
       },

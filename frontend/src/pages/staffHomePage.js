@@ -9,11 +9,13 @@ function StaffHomePage() {
     const [isAutorizerVisible, setisAutorizerVisible] = useState(false);
 
     const toggleEditorVisibility = () => {
-        setIsEditorVisible(!isEditorVisible); 
+        setIsEditorVisible(!isEditorVisible);
+        setisAutorizerVisible(false); 
     };
 
     const toggleAutorizerVisibility = () => {
         setisAutorizerVisible(!isAutorizerVisible); 
+        setIsEditorVisible(false); 
     };
 
     const actionPanel = () => {
