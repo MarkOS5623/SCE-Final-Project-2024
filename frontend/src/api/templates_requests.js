@@ -4,7 +4,7 @@ const ROUTE_URL = "/api/templates"
 
 export const fetchTemplate = async (subject) => {
   try {
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchTemplate', {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchTemplate', { 
       title: subject
     }, {
       headers: {
@@ -18,11 +18,11 @@ export const fetchTemplate = async (subject) => {
   }
 };
 
-export const saveTemplate = async (templateData, titleInput, authorizers, author) => {
+export const saveTemplate = async (templateData, titleInput, signatories, author) => {
   try {
     console.log(author)
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/saveTemplate', {
-      Data: templateData, title: titleInput, Authorizers: authorizers, Author: author
+      Data: templateData, title: titleInput, Signatories: signatories, Author: author
     }, {
       headers: {
         'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const saveTemplate = async (templateData, titleInput, authorizers, author
     });
     return response;
   } catch (error) {
-    console.error('Error fetching template:', error.message);
+    console.error('Error saving template:', error.message);
     throw error;
   }
 };
@@ -44,7 +44,7 @@ export const fetchNoSignTemplatesList = async () => {
     });
     return response;
   } catch (error) {
-    console.error('Error fetching template list:', error.message);
+    console.error('Error fetching noSignTemplate list:', error.message);
     throw error;
   }
 };
@@ -58,7 +58,7 @@ export const fetchOnlySignTemplatesList = async () => {
     });
     return response;
   } catch (error) {
-    console.error('Error fetching template list:', error.message);
+    console.error('Error fetching onlySignTemplate list:', error.message);
     throw error;
   }
 };
@@ -72,7 +72,7 @@ export const fetchTemplatesList = async () => {
     });
     return response;
   } catch (error) {
-    console.error('Error fetching template list:', error.message);
+    console.error('Error fetching templatesList list:', error.message);
     throw error;
   }
 };

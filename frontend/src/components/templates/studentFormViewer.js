@@ -7,6 +7,8 @@ import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { pdfConverter, decodeValue } from '../../api/utils';
 import FillDocument from '../forms/FillDocument';
+import { saveDocument } from '../../api/documents_reqeusts';
+
 const StudentFormViewer = () => {
     const [noSignDocsList, setNoSignDocsList] = useState([]);
     const [onlySignDocsList, setOnlySignDocsList] = useState([]);
@@ -49,7 +51,8 @@ const StudentFormViewer = () => {
                 let couresField = { fieldName: 'Course', value: course };
                 let reasonField = { fieldName: 'Reason', value: reason };
                 documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
-                await pdfConverter(documentContainerRef)
+                const documentData = documentContainerRef.current.documentEditor.serialize();
+                await saveDocument(documentData, response.data.title, response.data.signatories, decodedTokenData.user.id)
             }
         } catch (error) {
             console.error('Error fetching document:', error);
