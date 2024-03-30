@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const templateRoutes = require('./routes/templatesRoutes');
 const utilsRoutes = require('./routes/utilsRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+const statusRoutes = require('./routes/statusRoutes');
 
 mongoose.connect('mongodb+srv://Admin:iCEye8tLh4ehBUgY@sce-project.zywbimp.mongodb.net/', {
   useNewUrlParser: true,
@@ -29,6 +30,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/utils', utilsRoutes);
 app.use('/api/documents', documentRoutes);
+app.use('/api/status', statusRoutes);
 
 //global error handling
 app.use((err, req, res, next) => {

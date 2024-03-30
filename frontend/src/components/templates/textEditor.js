@@ -135,7 +135,7 @@ const TextEditor = () => {
                 <Dropdown.Toggle variant="outline-success" id="documentDropdown">
                   {selectedDocument ? selectedDocument : "Select Document"}
                 </Dropdown.Toggle>
-                <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px', overflowY: 'auto' }}>
+                <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
                   {DocsList.map((docTitle, index) => (
                   <Dropdown.Item key={index} onClick={() => setSelectedDocument(docTitle)} eventKey={docTitle}>
                     <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
@@ -156,7 +156,7 @@ const TextEditor = () => {
                   <Dropdown.Toggle variant="outline-success" id="nameDropdown" style={{ width: '100%' }}>
                     Add Authorizers
                   </Dropdown.Toggle>
-                  <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px',overflowY: 'auto' }}>
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px' }}>
                     {namesList.map((name, index) => (
                       <Dropdown.Item key={index} onClick={() => handleNameSelect(name)} style={{ width: '100%' }}>
                         <Button variant="outline-success"  style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial'}}>{name}</Button>

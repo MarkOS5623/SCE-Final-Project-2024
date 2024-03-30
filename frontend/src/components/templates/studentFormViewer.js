@@ -5,7 +5,7 @@ import DownloadDocsTable from '../dataTables/downloadDocsTable'; // Import the D
 import FillDocumentsTable from '../dataTables/fillDocsTable'; // Import the FillDocumentsTable component
 import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { pdfConverter, decodeValue } from '../../api/utils';
+import { decodeValue } from '../../api/utils';
 import FillDocument from '../forms/FillDocument';
 import { saveDocument } from '../../api/documents_reqeusts';
 

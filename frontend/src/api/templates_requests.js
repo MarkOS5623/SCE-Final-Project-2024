@@ -20,7 +20,6 @@ export const fetchTemplate = async (subject) => {
 
 export const saveTemplate = async (templateData, titleInput, signatories, author) => {
   try {
-    console.log(author)
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/savetemplate', {
       Data: templateData, title: titleInput, Signatories: signatories, Author: author
     }, {
