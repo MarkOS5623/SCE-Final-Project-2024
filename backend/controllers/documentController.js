@@ -44,16 +44,17 @@ const documentController = {
       }
       const signedDocuments = [];
       const signedDocumentsIDs = [];
+      const signedDocumentsStatus = [];
       for (const document of documents) {
           const authorizerIds = document.authorizers.map(_id => _id.toString());
           const statuses = await Status.find({ _id: { $in: authorizerIds } });
           let allSigned = true;
           console.log(statuses)
           for (const status of statuses) {
-              if (status.status != "signed") {
+              if (status.status != "approved" && status.status != "rejected") {
                   allSigned = false;
                   break;
-              }
+              } else signedDocumentsStatus.push(status.status);
           }
           if (allSigned) {
               signedDocuments.push(document.subject);
@@ -63,7 +64,7 @@ const documentController = {
       if (signedDocuments.length === 0) {
           return res.status(201).send('No documents with all authorizers signed found');
       }
-      res.status(200).json({ docs: signedDocuments, ids: signedDocumentsIDs });
+      res.status(200).json({ docs: signedDocuments, ids: signedDocumentsIDs, statuses: signedDocumentsStatus });
     } catch (error) {
       console.error('Error fetching documents:', error);
       res.status(500).send('Internal server error');

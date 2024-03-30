@@ -6,7 +6,7 @@ const SignedDocsTable = ({ documents }) => {
     useEffect(() => {
         function checker() {
             if (!documents) {
-                documents = { docs: [], ids: [] }; 
+                documents = { docs: [], ids: [], statuses: [] }; 
             }
         }
         checker();
@@ -19,6 +19,7 @@ const SignedDocsTable = ({ documents }) => {
                     <th>#</th>
                     <th>Request ID</th>
                     <th>Request</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,7 @@ const SignedDocsTable = ({ documents }) => {
                         <td>{index + 1}</td>
                         <td>{documents.ids[index]}</td> 
                         <td>{doc}</td> 
+                        <td>{documents.statuses[index]}</td> 
                     </tr>
                 ))}
             </tbody>

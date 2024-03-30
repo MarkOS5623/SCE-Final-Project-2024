@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const utils = require('../utils');
 const Document = require('../models/document')
+const Status = require('../models/status')
 
 const userController = {
   signup: async (req, res) => {
@@ -57,9 +58,18 @@ const userController = {
       const { userId } = req.body;
       const user = await User.findOne({ id: userId });
       const userRequests = await Document.find({ _id: {  $in: user.documents } });
-      res.status(201).json(userRequests);
+      const signedDocumentsStatus = [];
+      for (const document of userRequests) {
+          const authorizerIds = document.authorizers.map(_id => _id.toString());
+          const statuses = await Status.find({ _id: { $in: authorizerIds } });
+          for (const status of statuses) {
+            signedDocumentsStatus.push(status.status);
+          }
+      }
+      console.log(signedDocumentsStatus)
+      res.status(201).json({docs: userRequests, statuses: signedDocumentsStatus});
     } catch (error) {
-      console.error('Error fetching auths names:', error);
+      console.error('Error fetching user requests:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }

@@ -5,7 +5,6 @@ const ROUTE_URL = "/api/status"
 
 export const authorizeRequest = async (docID, authorizerID) => {
     try {
-    console.log('im here')
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/authorizerequest', 
       { docID, authorizerID }
     , {
@@ -13,10 +12,25 @@ export const authorizeRequest = async (docID, authorizerID) => {
         'Content-Type': 'application/json'
       }
     });
-    console.log(response)
     return response;
     } catch (error) {
       console.error('Error fetching document:', error.message);
       throw error;
     }
+};
+
+export const rejectRequest = async (docID, authorizerID) => {
+  try {
+  const response = await axios.post(SERVER_BASE + ROUTE_URL + '/rejectrequest', 
+    { docID, authorizerID }
+  , {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
 };

@@ -12,6 +12,7 @@ export default function MyRequestsList({requests}) {
               <th>#</th>
               <th>Request ID</th>
               <th>Request</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -20,6 +21,7 @@ export default function MyRequestsList({requests}) {
                 <td>{index + 1}</td>
                 <td>{requests.ids[index]}</td> 
                 <td>{doc}</td> 
+                <td>{requests.statuses[index]}</td> 
               </tr>
             ))}
           </tbody>

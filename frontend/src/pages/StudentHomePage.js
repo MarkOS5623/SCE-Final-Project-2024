@@ -18,9 +18,10 @@ function StudentHomePage() {
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
                 const response = await fetchRequest(decodedToken.data.user.id);  
                 if (response.status === 201) {
-                    const documentNames = await response.data.map(item => item.subject);
-                    const documentIds = await response.data.map(item => item.documentId);
-                    setUserRequests({ docs: documentNames, ids: documentIds });
+                    const documentNames = await response.data.docs.map(item => item.subject);
+                    const documentIds = await response.data.docs.map(item => item.documentId);
+                    const documentStatuses = response.data.statuses;
+                    setUserRequests({ docs: documentNames, ids: documentIds, statuses: documentStatuses });
                 } else {
                     console.log('Response data is empty');
                 }

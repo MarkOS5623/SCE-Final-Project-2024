@@ -5,5 +5,6 @@ const statusController = require('../controllers/statusController');
 
 router.post('/authorizerequest', statusController.authorizeRequest);
 
+router.post('/rejectrequest', statusController.rejectRequest);
 
 module.exports = router;
