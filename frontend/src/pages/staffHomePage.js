@@ -26,9 +26,8 @@ function StaffHomePage() {
             try {
               const unsignedDocumentList = await fetchUnsignedDocumentList(); 
               const signedDocumentList = await fetchSignedDocumentList(); 
+              console.log(unsignedDocumentList.data)
               if (unsignedDocumentList.status) {
-                console.log('signedDocumentList ', signedDocumentList.data)
-                console.log('unsignedDocumentList ', unsignedDocumentList.data)
                 setRequestsList(unsignedDocumentList.data);
                 setSignedRequestsList(signedDocumentList.data)
               } else {

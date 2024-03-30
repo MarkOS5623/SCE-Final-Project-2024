@@ -48,7 +48,6 @@ export const fetchSignedDocumentList = async () => {
 
 export const fetchDocument = async (documentId) => {
   try {
-    console.log(documentId.documentId)
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchdocument', 
       documentId.documentId
     , {

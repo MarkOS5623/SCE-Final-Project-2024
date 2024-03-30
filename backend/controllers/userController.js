@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const utils = require('../utils');
+const Document = require('../models/document')
 
 const userController = {
   signup: async (req, res) => {
@@ -46,6 +47,17 @@ const userController = {
         name: `${user.fname} ${user.lname}`
       }));
       res.status(200).json(adminNamesWithIds);
+    } catch (error) {
+      console.error('Error fetching auths names:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+  fetchRequests: async (req, res) => {
+    try { 
+      const { userId } = req.body;
+      const user = await User.findOne({ id: userId });
+      const userRequests = await Document.find({ _id: {  $in: user.documents } });
+      res.status(201).json(userRequests);
     } catch (error) {
       console.error('Error fetching auths names:', error);
       res.status(500).json({ error: 'Internal Server Error' });

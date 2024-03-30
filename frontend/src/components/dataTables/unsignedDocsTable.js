@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, Button } from 'react-bootstrap';
 
 const UnsignedDocsTable = ({ documents, handleReview }) => {
-
+    console.log(documents)
     useEffect(() => {
         function checker() {
             if (!documents) {

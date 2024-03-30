@@ -109,6 +109,12 @@ const documentController = {
       statuses.forEach(async (status) => {
         status.save()
       });
+      authorizers.forEach(async (user) => {
+        await User.updateOne(
+            { _id: user._id }, 
+            { $push: { documents: newDocument } } 
+        );
+    });
       res.status(200).send('Document saved successfully');
     } catch (error) {
       console.error('Error saving document:', error);

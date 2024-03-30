@@ -2,46 +2,29 @@ import React, { useContext, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { UserContext } from '../context/userContext'; // Adjust the path as needed
 
-export default function MyRequestsList() {
-  const { docsList } = useContext(UserContext);
-  const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
-  const [title, setTitle] = useState(null)
-  
-  const handleViewClick = (documentTitle) => { // Fetch the selected document directly by its title
-    setTitle(documentTitle)
-    setIsMyRequestsVisible(!isMyRequestsVisible); // Toggle My Requests visibility
-  };
-
+export default function MyRequestsList({requests}) {
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1"> 
         <Table striped bordered hover style={{ width: '100%', minWidth: '300px' }}>
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Actions</th>
+              <th>#</th>
+              <th>Request ID</th>
+              <th>Request</th>
             </tr>
           </thead>
           <tbody>
-            {docsList.map((title, index) => (
-              <tr key={index}>
-                <td>{title}</td>
-                <td>
-                  <div>
-                    <Button onClick={() => handleViewClick(title)}>View</Button>
-                  </div>
-                </td>
+            {requests.docs && requests.docs.map((doc, index) => (
+                <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{requests.ids[index]}</td> 
+                <td>{doc}</td> 
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
-      {isMyRequestsVisible && title === title && (
-        <div className="flex-grow-1" style={{ minWidth: '300px' }}>
-
-        </div>
-      )}
     </div>
   );
-  
 }

@@ -16,7 +16,7 @@ export const login = async (email, password) => {
   } catch (error) {
     return error.response || error; 
   }
-};JSON.stringify()
+};
 
 export const signup = async (formData) => {
     try {
@@ -43,5 +43,19 @@ export const fetchAuthList = async () => {
       return response; 
   } catch (error) {
       return error.response || error; 
+  }
+};
+
+export const fetchRequest = async (userId) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL +  '/fetchrequests', 
+      {userId: userId}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response; 
+  } catch (error) {
+    return error.response || error; 
   }
 };

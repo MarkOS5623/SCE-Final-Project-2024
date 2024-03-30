@@ -1,14 +1,35 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../context/userContext';
+import React, { useState, useEffect} from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../components/MyRequestsList';
 import FormViewer from '../components/templates/studentFormViewer';
 import './Editor.css';
+import { fetchRequest } from '../api/user_requests';
+import { decodeValue } from '../api/utils';
 
 function StudentHomePage() {
-    const { user, userAuthoredDocuments } = useContext(UserContext);
+    const [userRequests, setUserRequests] = useState({});
     const [isRequestFormVisible, setIsRequestFormVisible] = useState(false);
     const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const token = localStorage.getItem('token')
+                const decodedToken = await decodeValue(JSON.stringify({ token: token }));
+                const response = await fetchRequest(decodedToken.data.user.id);  
+                if (response.status === 201) {
+                    const documentNames = await response.data.map(item => item.subject);
+                    const documentIds = await response.data.map(item => item.documentId);
+                    setUserRequests({ docs: documentNames, ids: documentIds });
+                } else {
+                    console.log('Response data is empty');
+                }
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
+            }
+          }
+        fetchData();
+    }, []);
 
     const toggleEditorVisibility = () => {
         setIsRequestFormVisible(!isRequestFormVisible); // Toggle editor visibility
@@ -36,7 +57,7 @@ function StudentHomePage() {
                     <Col md={8}>
                         <div className="right-panel">
                             {isRequestFormVisible && <FormViewer />} 
-                            {isMyRequestsVisible && <MyRequestsList requests={userAuthoredDocuments} />}
+                            {isMyRequestsVisible && <MyRequestsList requests={userRequests} />}
                         </div>
                     </Col>
                 </Row>
