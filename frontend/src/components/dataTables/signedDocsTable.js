@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
-const UnsignedDocsTable = ({ documents, handleReview }) => {
+const SignedDocsTable = ({ documents }) => {
 
     useEffect(() => {
         function checker() {
@@ -19,7 +19,6 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
                     <th>#</th>
                     <th>Request ID</th>
                     <th>Request</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,9 +27,6 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
                         <td>{index + 1}</td>
                         <td>{documents.ids[index]}</td> 
                         <td>{doc}</td> 
-                        <td>
-                            <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>Review</Button>
-                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -38,4 +34,4 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
     );
 };
 
-export default UnsignedDocsTable;
+export default SignedDocsTable;

@@ -11,4 +11,7 @@ router.post('/fetchdocument', documentController.fetchDocument);
 // returns an array of documents titles with no signature
 router.get('/fetchunsigneddocumentlist', documentController.fetchUnsignedDocumentList);
 
+// returns an array of documents titles with no signature
+router.get('/fetchsigneddocumentlist', documentController.fetchSignedDocumentList);
+
 module.exports = router;

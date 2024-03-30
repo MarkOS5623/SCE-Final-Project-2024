@@ -3,12 +3,13 @@ import { Col, Row, Button } from 'react-bootstrap';
 import TextEditor from '../components/templates/textEditor';
 import './Editor.css';
 import StaffFormViewer from '../components/staffFormViewer';
-import { fetchUnsignedDocumentList } from '../api/documents_reqeusts';
+import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../api/documents_reqeusts';
 
 function StaffHomePage() {
     const [isEditorVisible, setIsEditorVisible] = useState(false);
     const [isAutorizerVisible, setisAutorizerVisible] = useState(false);
     const [requestsList, setRequestsList] = useState({});
+    const [signedRequestsList, setSignedRequestsList] = useState({});
 
     const toggleEditorVisibility = () => {
         setIsEditorVisible(!isEditorVisible); 
@@ -23,10 +24,13 @@ function StaffHomePage() {
     useEffect(() => {
         async function fetchData() {
             try {
-              const response = await fetchUnsignedDocumentList(); 
-              if (Array.isArray(response.data.docs)) {
-                console.log(response.data)
-                setRequestsList(response.data);
+              const unsignedDocumentList = await fetchUnsignedDocumentList(); 
+              const signedDocumentList = await fetchSignedDocumentList(); 
+              if (unsignedDocumentList.status) {
+                console.log('signedDocumentList ', signedDocumentList.data)
+                console.log('unsignedDocumentList ', unsignedDocumentList.data)
+                setRequestsList(unsignedDocumentList.data);
+                setSignedRequestsList(signedDocumentList.data)
               } else {
                 console.log('Response data is not an array or is empty');
               }
@@ -54,7 +58,7 @@ function StaffHomePage() {
                     <Col md={8}>
                         <div className="right-panel">
                             {isEditorVisible && <TextEditor/>}
-                            {isAutorizerVisible && <StaffFormViewer requestsList={requestsList}/>}
+                            {isAutorizerVisible && <StaffFormViewer requestsList={requestsList} signedRequestsList={signedRequestsList}/>}
                         </div>
                     </Col>
                 </Row>

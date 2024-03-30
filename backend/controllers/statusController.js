@@ -9,7 +9,8 @@ const statusController = {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
             if (document) {
-                const statuses = await Status.find({ signatories: { $in: document.authorizers } });
+                const authorizerIds = document.authorizers.map(_id => _id.toString());
+                const statuses = await Status.find({ _id: { $in: authorizerIds } });
                 const statusSignatoriesIds = statuses.map(status => status.signatories.toString());
                 const authorizer = await User.findOne({ id: authorizerID });
                 console.log('statusSignatoriesIds: ', statusSignatoriesIds);

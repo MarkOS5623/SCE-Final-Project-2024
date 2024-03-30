@@ -32,6 +32,20 @@ export const fetchUnsignedDocumentList = async () => {
     }
 };
 
+export const fetchSignedDocumentList = async () => {
+  try {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchsigneddocumentlist', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching signedDocument list:', error.message);
+    throw error;
+  }
+};
+
 export const fetchDocument = async (documentId) => {
   try {
     console.log(documentId.documentId)
