@@ -30,4 +30,21 @@ export const fetchUnsignedDocumentList = async () => {
       console.error('Error fetching unSignedDocument list:', error.message);
       throw error;
     }
-  };
+};
+
+export const fetchDocument = async (documentId) => {
+  try {
+    console.log(documentId.documentId)
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchdocument', 
+      documentId.documentId
+    , {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
+};

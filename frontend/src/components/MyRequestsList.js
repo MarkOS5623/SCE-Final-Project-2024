@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { UserContext } from '../context/userContext'; // Adjust the path as needed
-import ViewText from '../components/templates/ViewText';
+
 
 export default function MyRequestsList() {
   const { docsList } = useContext(UserContext);
@@ -39,7 +39,7 @@ export default function MyRequestsList() {
       </div>
       {isMyRequestsVisible && title === title && (
         <div className="flex-grow-1" style={{ minWidth: '300px' }}>
-          <ViewText documentId={title} />
+
         </div>
       )}
     </div>

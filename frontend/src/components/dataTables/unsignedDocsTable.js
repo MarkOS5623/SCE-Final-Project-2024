@@ -19,7 +19,7 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
                         <td>{documents.ids[index]}</td> 
                         <td>{doc}</td> 
                         <td>
-                            <Button variant="primary" onClick={() => handleReview(doc)}>Review</Button>
+                            <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>Review</Button>
                         </td>
                     </tr>
                 ))}

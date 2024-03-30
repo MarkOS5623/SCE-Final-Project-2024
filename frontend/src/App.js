@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EditorPage from './pages/editorPage';
 import NavBarSwitch from './components/navbars/NavBarSwitch';
 import AccountInfoPage from './pages/accountInfoPage';
-import ViewTextPage from './pages/ViewTextPage';
 import backgroundImage from './assests/background.png';
 import FormViewer from './components/templates/studentFormViewer';
 import StaffHomePage from './pages/staffHomePage';
@@ -26,7 +25,6 @@ function App() {
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
-          <Route path="/views" element={<ViewTextPage />} />
           <Route path="/nosig" element={<FormViewer />} />
           <Route path="/staff" element={<StaffHomePage />} />
         </Routes>

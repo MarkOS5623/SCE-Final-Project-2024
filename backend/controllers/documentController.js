@@ -1,5 +1,5 @@
 const utils = require('../utils');
-const Document = require('../models/Document');
+const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
 
@@ -38,9 +38,9 @@ const documentController = {
   },
   fetchDocument: async (req, res) => {
     try {
-      const { subject } = req.body; 
+      const { documentId } = req.body; 
       console.log(req.body);
-      const document = await Document.findOne({ subject: subject }); 
+      const document = await Document.findOne({ documentId: documentId }); 
       if (!document) {
         return res.status(404).send('Document not found');
       }
