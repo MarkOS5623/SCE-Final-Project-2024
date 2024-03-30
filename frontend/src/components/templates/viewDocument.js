@@ -33,7 +33,10 @@ const ViewDocument = ((documentId) => {
         const token = localStorage.getItem('token');
         const decodedToken = await decodeValue(JSON.stringify({ token: token }));
         const response = await authorizeRequest(documentId.documentId.documentId, decodedToken.data.user.id);
-        if(response.status === 200)  console.log('success!')
+        if(response.status === 201) { 
+          console.log('success!')
+          window.location.reload()
+        }
     } catch (error) {
         console.error('Error fetching document:', error);
     }
@@ -44,7 +47,10 @@ const ViewDocument = ((documentId) => {
         const token = localStorage.getItem('token');
         const decodedToken = await decodeValue(JSON.stringify({ token: token }));
         const response = await rejectRequest(documentId.documentId.documentId, decodedToken.data.user.id);
-        if(response.status === 200)  console.log('success!')
+        if(response.status === 201) { 
+          console.log('success!')
+          window.location.reload()
+        }
     } catch (error) {
         console.error('Error fetching document:', error);
     }

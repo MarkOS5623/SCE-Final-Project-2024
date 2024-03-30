@@ -8,6 +8,7 @@ import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from
 import { decodeValue } from '../../api/utils';
 import FillDocument from '../forms/FillDocument';
 import { saveDocument } from '../../api/documents_reqeusts';
+import { pdfConverter } from '../../api/utils';
 
 const StudentFormViewer = () => {
     const [noSignDocsList, setNoSignDocsList] = useState([]);
@@ -53,6 +54,7 @@ const StudentFormViewer = () => {
                 documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
                 const documentData = documentContainerRef.current.documentEditor.serialize();
                 await saveDocument(documentData, response.data.title, response.data.signatories, decodedTokenData.user.id)
+                window.location.reload()
             }
         } catch (error) {
             console.error('Error fetching document:', error);
@@ -60,7 +62,19 @@ const StudentFormViewer = () => {
     };
 
     const handleDownload = async (documentName) => {
-        // Handle document download
+        const response = await fetchTemplate(documentName);
+        const data = response.data;
+        documentContainerRef.current.documentEditor.open(data.text);
+        const token = localStorage.getItem('token');
+        const tokenData = await decodeValue(JSON.stringify({token: token}))
+        const decodedTokenData = tokenData.data;
+        const currentDate = new Date();
+        const options = { year: 'numeric', month: 'long', day: '2-digit' };
+        let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
+        let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
+        let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
+        documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
+        pdfConverter(documentContainerRef)
     };
 
     const toggleDownloadForms = () => {
@@ -84,17 +98,17 @@ const StudentFormViewer = () => {
 
     return (
         <CardContainer style={{ width: 'auto', padding: '20px' }}>
-            <div style={{ marginBottom: '20px' }}> {/* Add margin bottom */}
+            <div style={{ marginBottom: '20px' }}> 
                 <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Forms</Button>
                 <Button onClick={toggleFillFromList} style={tagStyle}>Fill Forms</Button>
             </div>
-            {showDownloadForms && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+            {showDownloadForms && <div style={{ marginBottom: '20px' }}>
                 <DownloadDocsTable documents={noSignDocsList} handleDownload={handleDownload} />
             </div>}
-            {showFillFormsList && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+            {showFillFormsList && <div style={{ marginBottom: '20px' }}>
                 <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />
             </div>}
-            {showFillForm && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+            {showFillForm && <div style={{ marginBottom: '20px' }}>
                 <FillDocument handleSubmit={handleSubmit} />
             </div>}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>

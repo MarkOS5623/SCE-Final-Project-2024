@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
+import { useNavigate } from "react-router-dom";
 import logoImg from '../../assests/sce.jpg';
 import { login } from '../../api/user_requests';
 
@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Obtain the navigate function
+  const navigate = useNavigate(); 
 
   const handleLogin = async () => {
     try {

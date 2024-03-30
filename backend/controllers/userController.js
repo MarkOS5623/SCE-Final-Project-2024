@@ -62,8 +62,29 @@ const userController = {
       for (const document of userRequests) {
           const authorizerIds = document.authorizers.map(_id => _id.toString());
           const statuses = await Status.find({ _id: { $in: authorizerIds } });
-          for (const status of statuses) {
-            signedDocumentsStatus.push(status.status);
+          let approved = 0;
+          let rejected = 0;
+          if(statuses.length > 1){
+            for (const status of statuses) {
+              if(status.status === 'unsigned'){
+                signedDocumentsStatus.push('pending approval');
+              } else if (status.status === 'approved') {
+                approved++
+              } else if (status.status === 'rejected') {
+                rejected++
+              }
+            }
+            if(approved > rejected){
+              signedDocumentsStatus.push('approved');
+            } else {
+              signedDocumentsStatus.push('rejected');
+            }
+          }
+          else {
+            for (const status of statuses) {
+              if(status.status === 'unsigned') signedDocumentsStatus.push('pending approval');
+              else signedDocumentsStatus.push(status.status);
+            }
           }
       }
       console.log(signedDocumentsStatus)
