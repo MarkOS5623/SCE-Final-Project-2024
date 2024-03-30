@@ -118,56 +118,68 @@ const TextEditor = () => {
     setSelectedNames(updatedNames);
   };
 
+
   return ( /* צריך להזיז את כל הכפתורים והאינפוטים של השמירה לכרטיס אחד וכל מה שקשור
            לטעינה של מסמכים לכרטיס אחר ששניהם יהיה בצד שמאל רק בכרטיסים שונים שיהיה יותר ברור מה זה מה*/
     <CardContainer style={{ ...mainContainerStyle}}>
       <Row style={{ width: '100%' }}> 
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}
-        <Col xs={8} style={{ width: '80%' }}>
+        <Col xs={8} style={{ width: '80%', paddingRight: '10px' }}>
           <DocumentEditorContainerComponent height="82vh" id="container" style={editorStyle} ref={documentContainerRef}>
             <Inject services={[Toolbar, WordExport]} />
           </DocumentEditorContainerComponent>
         </Col>
-        <Col xs={4} style={{ width: '20%', paddingTop: '20px', backgroundColor: 'white', height: '20%'}} className="d-flex flex-column justify-content-center">
-          <Row style={{ width: '100%' }}> 
-          <Dropdown onSelect={(eventKey) => setSelectedDocument(eventKey)} className="mb-2">
-            <Dropdown.Toggle variant="primary" id="documentDropdown">
-              {selectedDocument ? selectedDocument : "Select Document"}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {DocsList.map((docTitle, index) => (
-                <Dropdown.Item key={index} eventKey={docTitle}>{docTitle}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Button onClick={fetchTemplateData} style={buttonStyle}>Fetch</Button>
-          </Row>
-          <Row style={{ width: '100%', marginTop: '20px', backgroundColor: 'green' }}> 
-          <div>
-            <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2"/>
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="nameDropdown">
-                Add Authorizers
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {namesList.map((name, index) => (
-                  <Dropdown.Item key={index} onClick={() => handleNameSelect(name)}>{name}</Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-            <div>
-              {selectedNames.map((name, index) => (
-                <Badge key={index} variant="primary" style={{ marginRight: '5px', marginTop: '5px' }}>
-                  {name} 
-                  <Button variant="danger" size="sm" onClick={() => removeName(name)} style={{ marginLeft: '3px', height: '40px' }}>X</Button>
-                </Badge>
-              ))}
+        <Col xs={4} style={{ width: '20%', paddingTop: '20px', height: '20%'}} className="d-flex flex-column justify-content-center">
+          <Row style={{ width: '100%', marginTop: '0px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
+            <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
+              <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold'}}>
+                <Dropdown.Toggle variant="outline-success" id="documentDropdown">
+                  {selectedDocument ? selectedDocument : "Select Document"}
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px', overflowY: 'auto' }}>
+                  {DocsList.map((docTitle, index) => (
+                    <Dropdown.Item key={index} eventKey={docTitle}>
+                      <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
+                    </Dropdown.Item >
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button onClick={fetchTemplateData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>FETCH</Button>
+              </div>
             </div>
-          </div>
-          <div className="d-flex justify-content-between">
-            <Button onClick={saveToDb} style={buttonStyle}>Save</Button>
-          </div>
           </Row>
+          <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}> 
+            <div style={{ width: '70%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', boxShadow: '0px 0px 10px rgba(0,0,0,0.3)', backgroundColor: 'white' }}>
+                <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2" style={{width: '220px', height: '40px', marginBottom: '20px'}}/>
+                <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold' }}>
+                  <Dropdown.Toggle variant="outline-success" id="nameDropdown" style={{ width: '100%' }}>
+                    Add Authorizers
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px',overflowY: 'auto' }}>
+                    {namesList.map((name, index) => (
+                      <Dropdown.Item key={index} onClick={() => handleNameSelect(name)} style={{ width: '100%' }}>
+                        <Button variant="outline-success"  style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial'}}>{name}</Button>
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <div>
+                  {selectedNames.map((name, index) => (
+                   <Badge key={index} variant="primary" style={{ marginRight: '10px', marginTop: '10px', width: '160px' }}>
+                      {name} 
+                      <Button variant="danger" size="lg" onClick={() => removeName(name)} style={{ marginLeft: '10px', height: '70px', width: '70px' }}>X</Button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="d-flex justify-content-center">
+                  <Button onClick={saveToDb} style={{ ...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Save</Button>
+              </div>
+              </div>
+           
+           </div>
+           </Row>
         </Col>
       </Row>
     </CardContainer>

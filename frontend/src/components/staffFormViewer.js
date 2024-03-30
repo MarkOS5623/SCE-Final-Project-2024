@@ -38,10 +38,11 @@ const StaffFormViewer = (requestsList) => {
 
     return (
         <CardContainer style={{ width: 'auto', padding: '20px' }}>
-            <div>
-                <Button onClick={toggleAuthorizedRequestsTable} style={{ ...tagStyle, fontSize: '16px', marginRight: '20px' }}>Show Signed Requests</Button>
-                <Button onClick={toggleUnAuthorizedRequestsTable} style={tagStyle}>Show Requests</Button>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                <Button onClick={toggleAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, marginRight: '20px', height: '60px' }}>Show Signed Requests</Button>
+                <Button onClick={toggleUnAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, height: '60px' }}>Show Requests</Button>
             </div>
+            <div style={{ height: '15px' }}></div>
             {showAuthRequestsList}
             {showUnAuthRequestsList && <UnsignedDocsTable documents={requestsList.requestsList} handleReview={handleReview} />}
             {showReviewForm && <AuthDocumentViewer documentId={choosenRequest}/>}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CardContainer from '../cardContainer';
-import { fetchNoSignTemplatesList, fetchTemplate,  fetchOnlySignTemplatesList } from '../../api/templates_requests';
+import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests';
 import DownloadDocsTable from '../dataTables/downloadDocsTable'; // Import the DownloadDocsTable component
 import FillDocumentsTable from '../dataTables/fillDocsTable'; // Import the FillDocumentsTable component
 import { Button } from 'react-bootstrap';
@@ -60,35 +60,7 @@ const StudentFormViewer = () => {
     };
 
     const handleDownload = async (documentName) => {
-        try {
-            await filling(documentName)
-            await pdfConverter(documentContainerRef)
-        } catch (error) {
-            console.error('Error fetching document:', error);
-        }
-    };
-
-    const filling = async (documentName) => {
-        try {
-            const response = await fetchTemplate(documentName);
-            if (response.status === 200) {
-                const data = response.data;
-                const token = localStorage.getItem('token');
-                const tokenData = await decodeValue(JSON.stringify({token: token}))
-                const decodedTokenData = tokenData.data;
-                const currentDate = new Date();
-                const options = { year: 'numeric', month: 'long', day: '2-digit' };
-                documentContainerRef.current.documentEditor.open(data.text);
-                let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
-                let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
-                let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
-                documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
-            } else {
-                console.error('Failed to fetch document:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching document:', error);
-        }
+        // Handle document download
     };
 
     const toggleDownloadForms = () => {
@@ -112,13 +84,19 @@ const StudentFormViewer = () => {
 
     return (
         <CardContainer style={{ width: '800px', padding: '20px' }}>
-            <div>
+            <div style={{ marginBottom: '20px' }}> {/* Add margin bottom */}
                 <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Forms</Button>
-                <Button onClick={toggleFillFromList} style={tagStyle}>Fill Froms</Button>
+                <Button onClick={toggleFillFromList} style={tagStyle}>Fill Forms</Button>
             </div>
-            {showDownloadForms && <DownloadDocsTable documents={noSignDocsList} handleDownload={handleDownload} />}
-            {showFillFormsList && <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />}
-            {showFillForm && <FillDocument handleSubmit={handleSubmit} />}
+            {showDownloadForms && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+                <DownloadDocsTable documents={noSignDocsList} handleDownload={handleDownload} />
+            </div>}
+            {showFillFormsList && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+                <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />
+            </div>}
+            {showFillForm && <div style={{ marginBottom: '20px' }}>{/* Add margin bottom */}
+                <FillDocument handleSubmit={handleSubmit} />
+            </div>}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>
                     <Inject services={[WordExport, SfdtExport]} />
