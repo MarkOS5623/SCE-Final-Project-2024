@@ -12,10 +12,12 @@ function StaffHomePage() {
 
     const toggleEditorVisibility = () => {
         setIsEditorVisible(!isEditorVisible); 
+        setisAutorizerVisible(false);
     };
 
     const toggleAutorizerVisibility = () => {
         setisAutorizerVisible(!isAutorizerVisible); 
+        setIsEditorVisible(false);
     };
 
     useEffect(() => {
@@ -26,7 +28,7 @@ function StaffHomePage() {
                 console.log(response.data)
                 setRequestsList(response.data);
               } else {
-                console.error('Response data is not an array:', response.data.docs);
+                console.log('Response data is not an array or is empty');
               }
             } catch (error) {
               console.error('Fetching of docs failed:', error.message);

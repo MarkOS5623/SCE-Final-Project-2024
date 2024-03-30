@@ -119,8 +119,7 @@ const TextEditor = () => {
   };
 
 
-  return ( /* צריך להזיז את כל הכפתורים והאינפוטים של השמירה לכרטיס אחד וכל מה שקשור
-           לטעינה של מסמכים לכרטיס אחר ששניהם יהיה בצד שמאל רק בכרטיסים שונים שיהיה יותר ברור מה זה מה*/
+  return ( 
     <CardContainer style={{ ...mainContainerStyle}}>
       <Row style={{ width: '100%' }}> 
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}
@@ -132,15 +131,15 @@ const TextEditor = () => {
         <Col xs={4} style={{ width: '20%', paddingTop: '20px', height: '20%'}} className="d-flex flex-column justify-content-center">
           <Row style={{ width: '100%', marginTop: '0px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
             <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
-              <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold'}}>
+              <Dropdown style={{ width: '220px', fontSize: '15px', fontWeight: 'bold'}}>
                 <Dropdown.Toggle variant="outline-success" id="documentDropdown">
                   {selectedDocument ? selectedDocument : "Select Document"}
                 </Dropdown.Toggle>
-                <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px', overflowY: 'auto' }}>
+                <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px', overflowY: 'auto' }}>
                   {DocsList.map((docTitle, index) => (
-                    <Dropdown.Item key={index} eventKey={docTitle}>
-                      <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
-                    </Dropdown.Item >
+                  <Dropdown.Item key={index} onClick={() => setSelectedDocument(docTitle)} eventKey={docTitle}>
+                    <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
+                  </Dropdown.Item >
                   ))}
                 </Dropdown.Menu>
               </Dropdown>

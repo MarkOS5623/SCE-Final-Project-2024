@@ -83,7 +83,7 @@ const StudentFormViewer = () => {
     };
 
     return (
-        <CardContainer style={{ width: '800px', padding: '20px' }}>
+        <CardContainer style={{ width: 'auto', padding: '20px' }}>
             <div style={{ marginBottom: '20px' }}> {/* Add margin bottom */}
                 <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Forms</Button>
                 <Button onClick={toggleFillFromList} style={tagStyle}>Fill Forms</Button>
