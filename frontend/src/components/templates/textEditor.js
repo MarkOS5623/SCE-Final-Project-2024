@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchTemplate, saveTemplate, fetchTemplatesList } from "../../api/templates_requests";
+import { fetchTemplate, saveTemplate, fetchTemplatesList, deleteTemplate } from "../../api/templates_requests";
 import CardContainer from "../cardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
@@ -75,6 +75,7 @@ const TextEditor = () => {
       const response = await saveTemplate(documentData, titleInput, selectedAuthsIds, author);
       if (response.status === 200) {
         console.log('Document saved successfully!');
+        window.location.reload();
       } else {
         console.error('Failed to save document: status ', response.status);
       }
@@ -103,6 +104,26 @@ const TextEditor = () => {
     }
   };
 
+  const deleteTemplateData = async () => {
+    if (!selectedDocument) {
+      console.error('Please select a document to fetch first')
+      setError('Please select a document to fetch first')
+      return;
+    }
+    setError(null);
+    try {
+      const response = await deleteTemplate(selectedDocument);
+      if (response.status === 200) {
+        documentContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
+        console.log('Document deleted successfully!');
+        window.location.reload();
+      } else {
+        console.error('Failed to delete document: status ', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching document:', error);
+    }
+  };
   const handleTitleChange = (event) => {
     setTitleInput(event.target.value);
   };
@@ -146,6 +167,7 @@ const TextEditor = () => {
               <div style={{display: 'flex', justifyContent: 'center'}}>
                 <Button onClick={fetchTemplateData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>FETCH</Button>
               </div>
+              <Button onClick={deleteTemplateData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Delete</Button>
             </div>
           </Row>
           <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}> 

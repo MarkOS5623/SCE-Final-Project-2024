@@ -18,6 +18,23 @@ export const fetchTemplate = async (subject) => {
   }
 };
 
+export const deleteTemplate = async (subject) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/deletetemplate', { 
+      title: subject
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
+};
+
+
 export const saveTemplate = async (templateData, titleInput, signatories, author) => {
   try {
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/savetemplate', {

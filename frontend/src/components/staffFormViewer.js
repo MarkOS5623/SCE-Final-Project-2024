@@ -10,7 +10,6 @@ const StaffFormViewer = ({ requestsList, signedRequestsList }) => {
     const [showAuthRequestsList, setShowAuthRequestsList] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [choosenRequest, setChoosenRequest] = useState('');
-    console.log('requestsList',  requestsList)
     const tagStyle = { width: '35%', fontSize: '20px', padding: '15px 25px' }
 
     const handleReview = async (documentId) => {

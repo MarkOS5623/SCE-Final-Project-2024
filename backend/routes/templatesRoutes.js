@@ -8,6 +8,8 @@ router.post('/savetemplate', templateController.saveTemplate);
 //returns a template
 router.post('/fetchtemplate', templateController.fetchTemplate);
 
+router.post('/deletetemplate', templateController.deleteTemplate);
+
 //return an array of templates titles with no signature
 router.get('/fetchnosigntemplateslist', templateController.fetchNoSignTemplatesList);
 

@@ -6,7 +6,6 @@ const templateController = {
     saveTemplate: async (req, res) => {
       try {
         const { Data, title, Signatories, Author } = req.body;
-        console.log(Signatories)
         const signatories = await User.find({ id: {  $in: Signatories } });
         const user = await User.findOne({ id: Author });
         const Tem = await Template.findOne({title: title});
@@ -34,7 +33,6 @@ const templateController = {
     fetchTemplate: async (req, res) => {
       try {
         const { title } = req.body; 
-        console.log(req.body);
         const template = await Template.findOne({ title: title }); 
         if (!template) {
           return res.status(404).send('Template not found');
@@ -84,7 +82,17 @@ const templateController = {
         console.error('Error fetching templates:', error);
         res.status(500).send('Internal server error');
       }
-    }  
+    },
+    deleteTemplate: async (req, res) => {
+      try {
+        const { title } = req.body; 
+        const template = await Template.deleteOne({ title: title }); 
+        res.status(200).json('deleted successfully');
+      } catch (error) {
+        console.error('Error fetching template serverside:', error);
+        res.status(500).send('Internal server error');
+      }
+    },
   };
   
   module.exports = templateController;
