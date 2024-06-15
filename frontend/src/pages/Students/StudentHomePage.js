@@ -56,9 +56,9 @@ function StudentHomePage() {
         <div>
             <div className="mt-0">
                 <Row>
-                    <Col md={2}>{actionPanel()}</Col>
-                    <Col md={8}>
-                        <div className="right-panel">
+                    <Col md={1} style={{width: '20%'}}>{actionPanel()}</Col>
+                    <Col md={2} style={{width: '80%'}}>
+                        <div className="right-panel" style={{width: 'auto'}}> {/* Make the tables wider! */}
                             <CardContainer>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }}/>
                                 <h2>Form Manager</h2>

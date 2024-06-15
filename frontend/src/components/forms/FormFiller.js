@@ -12,7 +12,7 @@ const FormFiller = ({ documentName, handleSubmit }) => {
     return (
         <div className="card shadow mb-4">
             <div className="card-header py-3">
-                <h6 className="m-0 font-weight-bold text-primary">{documentName}</h6>
+                <h1 className="m-0 font-weight-bold text-primary">{documentName}</h1>
             </div>
             <div className="card-body">
                 <form onSubmit={onSubmit}>

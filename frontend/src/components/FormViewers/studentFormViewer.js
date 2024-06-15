@@ -108,7 +108,7 @@ const StudentFormViewer = () => {
                 <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />
             </div>}
             {showFillForm && <div style={{ marginBottom: '20px' }}>
-                <FormFiller handleSubmit={handleSubmit} />
+                <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument}/>
             </div>}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>

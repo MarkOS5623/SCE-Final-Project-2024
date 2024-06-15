@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
-import backgroundImage from '../../assests/LoginPage.png'; // Import the background image
 import logoImg from '../../assests/sce.jpg'; // Import the logo image
 import CardContainer from '../../components/cardContainer';
 
