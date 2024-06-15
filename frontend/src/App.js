@@ -14,6 +14,7 @@ import AccountInfoPage from './pages/Shared/accountInfoPage';
 import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
 import TextEditorPage from './pages/Staff/TextEditorPage';
+import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/staff" element={<StaffHomePage />} />
+          <Route path="/privacy" element={<PrivacyInformationPage />} />
         </Routes>
         <Footer/>
       </Router>
