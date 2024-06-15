@@ -1,7 +1,7 @@
 import React from 'react';
 import TextEditor from '../components/templates/textEditor';
 
-function EditorPage() {
+function TextEditorPage() {
   return (
     <div>
         <TextEditor/> 
@@ -9,4 +9,4 @@ function EditorPage() {
   );
 }
 
-export default EditorPage;
+export default TextEditorPage;

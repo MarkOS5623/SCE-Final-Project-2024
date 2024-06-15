@@ -1,17 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import './assests/css/bootstrap.css';
 import './assests/css/App.css';
-import MainPage from './pages/MainPage';
-import SignUp from './components/forms/signupForm'; 
-import Login from './components/forms/loginForm';
-import StudentHomePage from './pages/StudentHomePage';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import EditorPage from './pages/editorPage';
+
 import NavBarSwitch from './components/navbars/NavBarSwitch';
-import AccountInfoPage from './pages/accountInfoPage';
 import backgroundImage from './assests/background.png';
-import FormViewer from './components/templates/studentFormViewer';
-import StaffHomePage from './pages/staffHomePage';
+
+import HomePage from './pages/HomePage';
+import StudentHomePage from './pages/StudentHomePage';
+import StaffHomePage from './pages/StaffHomePage';
+import AccountInfoPage from './pages/accountInfoPage';
+import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage'
+import TextEditorPage from './pages/TextEditorPage';
 
 function App() {
   return (
@@ -19,13 +21,12 @@ function App() {
       <Router>
         <NavBarSwitch />
         <Routes>
-          <Route exact path="/" element={<MainPage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/editor" element={<EditorPage />} />
+          <Route exact path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/editor" element={<TextEditorPage />} />
           <Route path="/student" element={<StudentHomePage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
-          <Route path="/nosig" element={<FormViewer />} />
           <Route path="/staff" element={<StaffHomePage />} />
         </Routes>
       </Router>

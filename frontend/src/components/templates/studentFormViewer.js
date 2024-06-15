@@ -97,7 +97,7 @@ const StudentFormViewer = () => {
     };
 
     return (
-        <CardContainer style={{ width: 'auto', padding: '20px' }}>
+        <>
             <div style={{ marginBottom: '20px' }}> 
                 <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Forms</Button>
                 <Button onClick={toggleFillFromList} style={tagStyle}>Fill Forms</Button>
@@ -116,7 +116,7 @@ const StudentFormViewer = () => {
                     <Inject services={[WordExport, SfdtExport]} />
                 </DocumentEditorContainerComponent>
             </div>
-        </CardContainer>
+        </>
     );
 };
 

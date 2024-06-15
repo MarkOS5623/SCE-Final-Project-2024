@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 
-const AuthRequestsTable = ({ documents, toggleAuthForm }) => {
+const AuthorizedRequestsTable = ({ documents, toggleAuthForm }) => {
     return (
         <Table striped bordered hover variant="dark">
             <thead>
@@ -26,4 +26,4 @@ const AuthRequestsTable = ({ documents, toggleAuthForm }) => {
     );
 };
 
-export default AuthRequestsTable;
+export default AuthorizedRequestsTable;

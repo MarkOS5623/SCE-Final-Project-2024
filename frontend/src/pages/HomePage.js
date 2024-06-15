@@ -5,7 +5,7 @@ import backgroundImage from '../assests/LoginPage.png'; // Import the background
 import logoImg from '../assests/sce.jpg'; // Import the logo image
 import CardContainer from '../components/cardContainer';
 
-function MainPage() {
+function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,4 +49,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default HomePage;

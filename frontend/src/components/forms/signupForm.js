@@ -47,12 +47,7 @@ function Signup() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "10vh"}}>
-      <Card className="mt-3" bg="primary" text="white" style={{ width: "500px" }}>
-        <Card.Body>
-        <Card.Title style={{ fontSize: "30px" }}>
-          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "40px", marginTop: "30px" }}/>
-        </Card.Title>
+    <Container className="d-flex justify-content-center align-items-center" >
           <Form onSubmit={handleSubmit}>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form.Control 
@@ -114,8 +109,6 @@ function Signup() {
             </Button>
             <Button variant="primary" type="submit" style={{marginTop: "10px" }}  block="true">Signup</Button>
           </Form>
-        </Card.Body>
-      </Card>
     </Container>
   );
 }

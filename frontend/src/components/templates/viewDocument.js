@@ -5,7 +5,7 @@ import { fetchDocument } from '../../api/documents_reqeusts';
 import { authorizeRequest, rejectRequest } from '../../api/status_requests';
 import { decodeValue } from '../../api/utils';
 
-const ViewDocument = ((documentId) => {
+const ViewDocument = ((documentId) => { // check what going on with documentID
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
   const editorStyle = { width: "100%", height: "95%" };
