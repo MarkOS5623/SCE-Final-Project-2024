@@ -4,7 +4,7 @@ import { Container, Card } from 'react-bootstrap';
 const CardContainer = ({ children, style }) => {
   return (
     <Container style={{ ...style }}>
-      <Card bg="primary" text="white" className="text-center">
+      <Card text="white" className="text-center custom-bg-primary">
         <Card.Body>
           {children}
         </Card.Body>

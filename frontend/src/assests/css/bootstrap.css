@@ -38,7 +38,7 @@
   --bs-gray-800: #343a40;
   --bs-gray-900: #1a1a1a;
   --bs-primary: #9ec93b;
-  --bs-secondary: #fff;
+  --bs-secondary: #333;
   --bs-success: #4bbf73;
   --bs-info: #1f9bcf;
   --bs-warning: #f0ad4e;
@@ -46,7 +46,7 @@
   --bs-light: #fff;
   --bs-dark: #344039;
   --bs-primary-rgb: 158, 201, 59;
-  --bs-secondary-rgb: 255, 255, 255;
+  --bs-secondary-rgb: 51, 51, 51;
   --bs-success-rgb: 75, 191, 115;
   --bs-info-rgb: 31, 155, 207;
   --bs-warning-rgb: 240, 173, 78;

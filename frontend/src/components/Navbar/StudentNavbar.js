@@ -40,7 +40,7 @@ const StudentNavbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-primary bg-primary" style={{ height: '70px' }}>
+    <nav className="navbar navbar-expand-lg navbar-primary bg-secondary" style={{ height: '70px' }}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/student"><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} /></Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@ const StudentNavbar = () => {
         </button>
         {isAdmin && (
           <li className="nav-item">
-            <span className="nav-link" style={{ fontSize: "15px", fontWeight: "bold", color: "black" }}>logged user is an admin</span>
+            <span className="nav-link" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>logged user is an admin</span>
           </li>
         )}
         <div className="collapse navbar-collapse" id="navbarNav">
@@ -63,7 +63,7 @@ const StudentNavbar = () => {
             )}
             {isLoggedIn && (
               <li className="nav-item">
-                <button className="nav-link btn btn-outline-light" onClick={handleSignOut}>Sign Out</button>
+                <button className="nav-link btn" style={{color: 'white', fontWeight: "bold"}} onClick={handleSignOut}>Sign Out</button>
               </li>
             )}
           </ul>

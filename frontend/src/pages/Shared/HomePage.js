@@ -25,16 +25,8 @@ function HomePage() {
   }, [navigate]);
 
   return (
-    <div style={{
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      minHeight: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-    }}>
-      <CardContainer style={{ width: '500px', padding: '20px' }}>
+    <div >
+      <CardContainer  style={{ width: '500px', padding: '20px' }}>
         <Card.Title>
           <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '125px', marginBottom: "40px" }} />
           <br />SCE Document Manager

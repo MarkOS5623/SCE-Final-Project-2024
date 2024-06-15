@@ -37,7 +37,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-primary bg-primary" style={{ height: '70px' }}>
+    <nav className="navbar navbar-expand-lg navbar-primary bg-secondary" style={{ height: '70px' }}>
       <div className="container-fluid" >
         <Link className="navbar-brand" to="/"><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }}/></Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
