@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import CardContainer from '../cardContainer';
 import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests';
 import DownloadDocsTable from '../Tables/downloadDocsTable'; // Import the DownloadDocsTable component
 import FillDocumentsTable from '../Tables/fillDocsTable'; // Import the FillDocumentsTable component

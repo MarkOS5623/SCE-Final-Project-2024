@@ -3,7 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 
 const FillDocsTable = ({ documents, toggleFillFrom }) => {
     return (
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover>
             <thead>
                 <tr>
                     <th>#</th>

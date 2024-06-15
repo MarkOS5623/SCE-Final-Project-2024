@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Alert, Card } from 'react-bootstrap';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import logoImg from '../../assests/sce.jpg';
 import { login } from '../../api/user_requests';
 
 const LoginForm = () => {

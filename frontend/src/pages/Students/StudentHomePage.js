@@ -5,10 +5,12 @@ import FormViewer from '../../components/FormViewers/studentFormViewer';
 import '../Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
+import CardContainer from '../../components/cardContainer';
+import logoImg from '../../assests/sce.jpg';
 
 function StudentHomePage() {
     const [userRequests, setUserRequests] = useState({});
-    const [isRequestFormVisible, setIsRequestFormVisible] = useState(false);
+    const [isRequestFormVisible, setIsRequestFormVisible] = useState(true);
     const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
 
     useEffect(() => {
@@ -57,8 +59,12 @@ function StudentHomePage() {
                     <Col md={2}>{actionPanel()}</Col>
                     <Col md={8}>
                         <div className="right-panel">
-                            {isRequestFormVisible && <FormViewer />} 
-                            {isMyRequestsVisible && <MyRequestsList requests={userRequests} />}
+                            <CardContainer>
+                                <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }}/>
+                                <h2>Form Manager</h2>
+                                {isRequestFormVisible && (<FormViewer />)} 
+                                {isMyRequestsVisible && (<MyRequestsList requests={userRequests} />)}
+                            </CardContainer>
                         </div>
                     </Col>
                 </Row>

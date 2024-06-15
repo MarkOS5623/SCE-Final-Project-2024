@@ -5,7 +5,7 @@ import './assests/css/bootstrap.css';
 import './assests/css/App.css';
 
 import NavBarSwitch from './components/Navbar/NavBarSwitch';
-import backgroundImage from './assests/background.png';
+import Footer from './components/Footer';
 
 import HomePage from './pages/Shared/HomePage';
 import StudentHomePage from './pages/Students/StudentHomePage';
@@ -17,7 +17,7 @@ import TextEditorPage from './pages/Staff/TextEditorPage';
 
 function App() {
   return (
-    <div className="App"  style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="App" >
       <Router>
         <NavBarSwitch />
         <Routes>
@@ -29,6 +29,7 @@ function App() {
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/staff" element={<StaffHomePage />} />
         </Routes>
+        <Footer/>
       </Router>
     </div>
   );
