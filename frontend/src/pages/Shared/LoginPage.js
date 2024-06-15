@@ -1,7 +1,7 @@
 import React from 'react';
-import CardContainer from '../components/cardContainer';
-import LoginForm from '../components/forms/LoginForm'
-import logoImg from '../assests/sce.jpg';
+import CardContainer from '../../components/cardContainer';
+import LoginForm from '../../components/Forms/LoginForm'
+import logoImg from '../../assests/sce.jpg';
 
 function LoginPage() {
   return (

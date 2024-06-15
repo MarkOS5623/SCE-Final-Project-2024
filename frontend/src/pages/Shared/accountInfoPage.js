@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'react-bootstrap';
-import logoImg from '../assests/sce.jpg';
-import CardContainer from '../components/cardContainer';
+import logoImg from '../../assests/sce.jpg';
+import CardContainer from '../../components/cardContainer';
 function AccountInfoPage() {
   const [accountInfo, setAccountInfo] = useState(null);
 

@@ -4,16 +4,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './assests/css/bootstrap.css';
 import './assests/css/App.css';
 
-import NavBarSwitch from './components/navbars/NavBarSwitch';
+import NavBarSwitch from './components/Navbar/NavBarSwitch';
 import backgroundImage from './assests/background.png';
 
-import HomePage from './pages/HomePage';
-import StudentHomePage from './pages/StudentHomePage';
-import StaffHomePage from './pages/StaffHomePage';
-import AccountInfoPage from './pages/accountInfoPage';
-import SignUpPage from './pages/SignUpPage';
-import LoginPage from './pages/LoginPage'
-import TextEditorPage from './pages/TextEditorPage';
+import HomePage from './pages/Shared/HomePage';
+import StudentHomePage from './pages/Students/StudentHomePage';
+import StaffHomePage from './pages/Staff/StaffHomePage';
+import AccountInfoPage from './pages/Shared/accountInfoPage';
+import SignUpPage from './pages/Shared/SignUpPage';
+import LoginPage from './pages/Shared/LoginPage'
+import TextEditorPage from './pages/Staff/TextEditorPage';
 
 function App() {
   return (

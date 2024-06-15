@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import TextEditor from '../components/templates/textEditor';
-import './Editor.css';
-import StaffFormViewer from '../components/staffFormViewer';
-import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../api/documents_reqeusts';
+import TextEditor from '../../components/Templates/TextEditor';
+import '../Editor.css';
+import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
+import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
 
 function StaffHomePage() {
     const [isEditorVisible, setIsEditorVisible] = useState(false);

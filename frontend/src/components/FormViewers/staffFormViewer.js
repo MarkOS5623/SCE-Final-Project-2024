@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import CardContainer from './cardContainer';
+import CardContainer from '../cardContainer';
 import { Button } from 'react-bootstrap';
-import UnsignedDocsTable from './dataTables/unsignedDocsTable';
-import AuthDocumentViewer from './authDocumentViewer';
-import SignedDocsTable from './dataTables/signedDocsTable';
+import UnsignedDocsTable from '../Tables/unsignedDocsTable';
+import AuthDocumentViewer from '../DocumentViewers/authDocumentViewer';
+import SignedDocsTable from '../Tables/signedDocsTable';
 
 const StaffFormViewer = ({ requestsList, signedRequestsList }) => {
     const [showUnAuthRequestsList, setShowUnAuthRequestsList] = useState(false);

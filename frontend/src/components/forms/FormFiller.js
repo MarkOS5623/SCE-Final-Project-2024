@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FillDocument = ({ documentName, handleSubmit }) => {
+const FormFiller = ({ documentName, handleSubmit }) => {
     const [course, setCourse] = useState('');
     const [reason, setReason] = useState('');
 
@@ -51,4 +51,4 @@ const FillDocument = ({ documentName, handleSubmit }) => {
     );
 };
 
-export default FillDocument;
+export default FormFiller;

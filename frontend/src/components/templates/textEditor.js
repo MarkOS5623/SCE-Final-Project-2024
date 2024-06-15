@@ -5,6 +5,7 @@ import { fetchTemplate, saveTemplate, fetchTemplatesList, deleteTemplate } from 
 import CardContainer from "../cardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
+
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState('');

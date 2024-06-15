@@ -1,10 +1,10 @@
 import React, { useState, useEffect} from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import MyRequestsList from '../components/MyRequestsList';
-import FormViewer from '../components/templates/studentFormViewer';
-import './Editor.css';
-import { fetchRequest } from '../api/user_requests';
-import { decodeValue } from '../api/utils';
+import MyRequestsList from '../../components/MyRequestsList';
+import FormViewer from '../../components/FormViewers/studentFormViewer';
+import '../Editor.css';
+import { fetchRequest } from '../../api/user_requests';
+import { decodeValue } from '../../api/utils';
 
 function StudentHomePage() {
     const [userRequests, setUserRequests] = useState({});

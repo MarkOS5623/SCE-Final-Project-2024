@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CardContainer from '../cardContainer';
 import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests';
-import DownloadDocsTable from '../dataTables/downloadDocsTable'; // Import the DownloadDocsTable component
-import FillDocumentsTable from '../dataTables/fillDocsTable'; // Import the FillDocumentsTable component
+import DownloadDocsTable from '../Tables/downloadDocsTable'; // Import the DownloadDocsTable component
+import FillDocumentsTable from '../Tables/fillDocsTable'; // Import the FillDocumentsTable component
 import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { decodeValue } from '../../api/utils';
-import FillDocument from '../forms/FillDocument';
+import FormFiller from '../Forms/FormFiller';
 import { saveDocument } from '../../api/documents_reqeusts';
 import { pdfConverter } from '../../api/utils';
 
@@ -109,7 +109,7 @@ const StudentFormViewer = () => {
                 <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />
             </div>}
             {showFillForm && <div style={{ marginBottom: '20px' }}>
-                <FillDocument handleSubmit={handleSubmit} />
+                <FormFiller handleSubmit={handleSubmit} />
             </div>}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>

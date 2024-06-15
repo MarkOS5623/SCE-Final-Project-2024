@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewDocument from './templates/viewDocument';
+import ViewDocument from './viewDocument';
 
 const AuthDocumentViewer = (( documentId ) => {
     return (
