@@ -8,12 +8,11 @@ import NavBarSwitch from './components/Navbar/NavBarSwitch';
 import Footer from './components/Footer';
 
 import HomePage from './pages/Shared/HomePage';
-import StudentHomePage from './pages/Students/StudentHomePage';
-import StaffHomePage from './pages/Staff/StaffHomePage';
+import RequestManagerPage from './pages/Students/RequestManagerPage';
+import FormManagerPage from './pages/Staff/FormManagerPage';
 import AccountInfoPage from './pages/Shared/AccountInfoPage';
 import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
-import TextEditorPage from './pages/Staff/TextEditorPage';
 import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';
 
 function App() {
@@ -25,10 +24,9 @@ function App() {
           <Route exact path="/" element={<HomePage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/editor" element={<TextEditorPage />} />
-          <Route path="/student" element={<StudentHomePage />} />
+          <Route path="/requestmanager" element={<RequestManagerPage />} />
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
-          <Route path="/staff" element={<StaffHomePage />} />
+          <Route path="/formmanager" element={<FormManagerPage />} />
           <Route path="/privacy" element={<PrivacyInformationPage />} />
         </Routes>
         <Footer/>

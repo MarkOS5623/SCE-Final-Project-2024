@@ -1,13 +1,13 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 
-const FillDocsTable = ({ documents, toggleFillFrom }) => {
+const ApprovedRequestsTable = ({ documents, toggleAuthForm }) => {
     return (
-        <Table striped bordered hover>
+        <Table striped bordered hover variant="dark">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Documents</th>
+                    <th>Requests</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -17,7 +17,7 @@ const FillDocsTable = ({ documents, toggleFillFrom }) => {
                         <td>{index + 1}</td>
                         <td>{doc}</td>
                         <td>
-                            <Button variant="primary" onClick={() => toggleFillFrom(doc)}>Fill</Button>
+                            <Button variant="primary" onClick={() => toggleAuthForm(doc)}>Review Request</Button>
                         </td>
                     </tr>
                 ))}
@@ -26,4 +26,4 @@ const FillDocsTable = ({ documents, toggleFillFrom }) => {
     );
 };
 
-export default FillDocsTable;
+export default ApprovedRequestsTable;

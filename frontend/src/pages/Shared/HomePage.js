@@ -12,7 +12,7 @@ function HomePage() {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          navigate('/student');
+          navigate('/requestmanager');
         } else {
           console.log('No token found:');
         }

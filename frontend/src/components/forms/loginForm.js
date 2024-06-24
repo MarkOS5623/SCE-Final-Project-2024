@@ -16,7 +16,7 @@ const LoginForm = () => {
         throw new Error('Login failed');
       } else setError(response.data.message);
       localStorage.setItem('token', response.data.token);
-      navigate("/student");
+      navigate("/requestmanager");
     } catch (error) {
       console.error('Login failed:', error);
     }

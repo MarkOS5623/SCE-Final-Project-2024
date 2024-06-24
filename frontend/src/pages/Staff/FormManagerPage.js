@@ -5,7 +5,7 @@ import '../Editor.css';
 import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
 
-function StaffHomePage() {
+function FormManagerPage() {
     const [isEditorVisible, setIsEditorVisible] = useState(false);
     const [isAutorizerVisible, setisAutorizerVisible] = useState(false);
     const [requestsList, setRequestsList] = useState({});
@@ -66,4 +66,4 @@ function StaffHomePage() {
     );
 }
 
-export default StaffHomePage;
+export default FormManagerPage;

@@ -8,7 +8,7 @@ import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/cardContainer';
 import logoImg from '../../assests/sce.jpg';
 
-function StudentHomePage() {
+function RequestManagerPage() {
     const [userRequests, setUserRequests] = useState({});
     const [isRequestFormVisible, setIsRequestFormVisible] = useState(true);
     const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
@@ -73,4 +73,4 @@ function StudentHomePage() {
     );
 }
 
-export default StudentHomePage;
+export default RequestManagerPage;

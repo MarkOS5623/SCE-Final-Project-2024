@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import CardContainer from '../cardContainer';
 import { Button } from 'react-bootstrap';
-import UnsignedDocsTable from '../Tables/unsignedDocsTable';
-import AuthDocumentViewer from '../DocumentViewers/authDocumentViewer';
-import SignedDocsTable from '../Tables/signedDocsTable';
+import PendingRequestsTable from '../Tables/PendingRequestsTable';
+import MyRequestsTable from '../Tables/MyRequestsTable';
+import ApprovedRequestsTable from '../Tables/ApprovedRequestsTable';
 
 const StaffFormViewer = ({ requestsList, signedRequestsList }) => {
     const [showUnAuthRequestsList, setShowUnAuthRequestsList] = useState(false);
@@ -42,9 +42,9 @@ const StaffFormViewer = ({ requestsList, signedRequestsList }) => {
                 <Button onClick={toggleUnAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, height: '60px' }}>Show Requests</Button>
             </div>
             <div style={{ height: '15px' }}></div>
-            {showAuthRequestsList && <SignedDocsTable documents={signedRequestsList}/>}
-            {showUnAuthRequestsList && <UnsignedDocsTable documents={requestsList} handleReview={handleReview} />}
-            {showReviewForm && <AuthDocumentViewer documentId={choosenRequest}/>}
+            {showAuthRequestsList && <MyRequestsTable documents={signedRequestsList}/>}
+            {showUnAuthRequestsList && <PendingRequestsTable documents={requestsList} handleReview={handleReview} />}
+            {showReviewForm && <ApprovedRequestsTable documentId={choosenRequest}/>}
         </CardContainer>
     );
 };

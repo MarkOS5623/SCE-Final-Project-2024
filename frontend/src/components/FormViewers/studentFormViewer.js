@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests';
 import DownloadDocsTable from '../Tables/downloadDocsTable'; // Import the DownloadDocsTable component
-import FillDocumentsTable from '../Tables/fillDocsTable'; // Import the FillDocumentsTable component
+import FillDocumentsTable from '../Tables/RequestFillingTable'; // Import the FillDocumentsTable component
 import { Button } from 'react-bootstrap';
 import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { decodeValue } from '../../api/utils';

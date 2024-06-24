@@ -62,8 +62,8 @@ const ViewDocument = ((documentId) => { // check what going on with documentID
           <h3>Request Number - {documentId.documentId.documentId}</h3> 
           {error && <Alert variant="danger">{error}</Alert>}
           <DocumentEditorComponent height="500px" width="95%" id="container" style={editorStyle} ref={documentContainerRef} restrictediting={'true'} />
-          <Button style={buttonStyle} variant='success' onClick={() => AuthorizeRequest()}>Authorize</Button>
-          <Button style={buttonStyle} variant='danger' onClick={() => RejectRequest()}>Reject</Button>
+          <Button style={buttonStyle} variant='success' onClick={() => AuthorizeRequest()}>Approve</Button>
+          <Button style={buttonStyle} variant='danger' onClick={() => RejectRequest()}>Deny</Button>
         </Card.Body>
     </Container>
   );

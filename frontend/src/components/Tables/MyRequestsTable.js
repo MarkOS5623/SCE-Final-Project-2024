@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
-const UnsignedDocsTable = ({ documents, handleReview }) => {
-    console.log(documents)
+const MyRequestsTable = ({ documents }) => {
+
     useEffect(() => {
         function checker() {
             if (!documents) {
-                documents = { docs: [], ids: [] }; 
+                documents = { docs: [], ids: [], statuses: [] }; 
             }
         }
         checker();
@@ -19,7 +19,7 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
                     <th>#</th>
                     <th>Request ID</th>
                     <th>Request</th>
-                    <th>Action</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,9 +28,7 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
                         <td>{index + 1}</td>
                         <td>{documents.ids[index]}</td> 
                         <td>{doc}</td> 
-                        <td>
-                            <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>Review</Button>
-                        </td>
+                        <td>{documents.statuses[index]}</td> 
                     </tr>
                 ))}
             </tbody>
@@ -38,4 +36,4 @@ const UnsignedDocsTable = ({ documents, handleReview }) => {
     );
 };
 
-export default UnsignedDocsTable;
+export default MyRequestsTable;
