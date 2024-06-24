@@ -98,8 +98,8 @@ const StudentFormViewer = () => {
     return (
         <>
             <div style={{ marginBottom: '20px' }}> 
-                <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Forms</Button>
-                <Button onClick={toggleFillFromList} style={tagStyle}>Fill Forms</Button>
+                <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Documents</Button>
+                <Button onClick={toggleFillFromList} style={tagStyle}>File Requests</Button>
             </div>
             {showDownloadForms && <div style={{ marginBottom: '20px' }}>
                 <DownloadDocsTable documents={noSignDocsList} handleDownload={handleDownload} />

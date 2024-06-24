@@ -10,7 +10,7 @@ import Footer from './components/Footer';
 import HomePage from './pages/Shared/HomePage';
 import StudentHomePage from './pages/Students/StudentHomePage';
 import StaffHomePage from './pages/Staff/StaffHomePage';
-import AccountInfoPage from './pages/Shared/accountInfoPage';
+import AccountInfoPage from './pages/Shared/AccountInfoPage';
 import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
 import TextEditorPage from './pages/Staff/TextEditorPage';

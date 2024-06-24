@@ -58,7 +58,7 @@ const StudentNavbar = () => {
             </li>
             {isAdmin && (
               <li className="nav-item">
-                <Link className="nav-link" to="/staff" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>Staff Page</Link>
+                <Link className="nav-link" to="/staff" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>Form Manager</Link>
               </li>
             )}
             {isLoggedIn && (
