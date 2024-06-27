@@ -10,10 +10,12 @@ import Footer from './components/Footer';
 import HomePage from './pages/Shared/HomePage';
 import RequestManagerPage from './pages/Students/RequestManagerPage';
 import FormManagerPage from './pages/Staff/FormManagerPage';
-import AccountInfoPage from './pages/Shared/AccountInfoPage';
+import AccountInfoPage from './pages/Shared/accountInfoPage';
 import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
 import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';
+import ContactPage from './pages/Shared/ContactPage';
+import AboutusPage from './pages/Shared/AboutusPage';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/accountinfopage" element={<AccountInfoPage />} />
           <Route path="/formmanager" element={<FormManagerPage />} />
           <Route path="/privacy" element={<PrivacyInformationPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutusPage />} />
         </Routes>
         <Footer/>
       </Router>
