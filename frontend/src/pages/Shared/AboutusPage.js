@@ -13,11 +13,11 @@ function AboutUS() {
       </header>
      
         <h2 style={{ color: 'white' }}>About SCE</h2>
-        <p>Shamoon College of Engineering (SCE) is Israel's largest college dedicated to engineering the future.</p>
+        <p style={{ fontSize: '1.5em' }} >Shamoon College of Engineering (SCE) is Israel's largest college dedicated to engineering the future.</p>
         
         <div className="about-us-container">
           <div style={{ padding: '50px ' }} className="section about-sce">
-            <h2></h2>
+
             <p>Combining world-class academic excellence with a unique approach to education and social responsibility, SCE is much more than a college; it is a source of inspiration and cultivation which encourages forward-thinking and facilitates significant achievements. "Engineering the future" is both our promise and our mission, which propels our students forward and leads them to set an example of excellence amongst their peers and within their communities. With two campuses located in southern Israel, a continuously growing body of over 6,000 students, six different engineering tracks and new faculty of design and architecture, SCE is, and will always be, a pioneering academic powerhouse.</p>
             <p>At SCE, engineering goes way beyond the academic framework; it is a way of thinking, analyzing and solving fundamental questions that design the way people live their lives. Driven by a vision of outstanding education and social responsibility, SCE is committed to the pursuit of excellence, innovation, and promoting all communities.</p>
             <a style={{color: 'rgba(0, 0, 0)'}} href="https://en.sce.ac.il/sce/about/strategic_plan_for_sce_%E2%80%93_shamoon_college_of_engineering" target="_blank" rel="noopener noreferrer">Strategic Plan for SCE - Shamoon College of Engineering</a>

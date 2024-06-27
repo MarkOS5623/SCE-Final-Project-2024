@@ -1,42 +1,46 @@
 .App {
-    text-align: center; /* Example styling for centering content */
-    color: white; /* Set default text color to white */
-    padding-left: 10px; /* Adjust as needed */
-  }
-  
-  .about-us-container {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .about-sce,
-  .sce-video {
-    flex-basis: calc(50% - 10px); /* Adjust width here; subtract padding */
-    margin-bottom: 20px; /* Optional: Increase or decrease as needed */
-  }
-  
-  p {
-    color: white; /* Set color of paragraphs to white */
-  }
-  
-  .App-footer {
-    background-color: #282c34; /* Example background color for footer */
-    padding: 10px;
-  }
-  
-  .video-container {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
-    overflow: hidden;
-  }
-  
-  .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
+  text-align: center; /* Example styling for centering content */
+  color: white; /* Set default text color to white */
+  padding-left: 10px; /* Adjust as needed */
+}
+
+.about-us-container {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5em;
+}
+
+.section {
+  flex-basis: 50%; /* Adjust width here */
+  margin-bottom: 0; /* Remove bottom margin */
+}
+
+p {
+  color: white; /* Set color of paragraphs to white */
+}
+
+h2 {
+  color: white; /* Set color for headings */
+  font-size: 2.2em; /* Example of heading font size */
+}
+
+.App-footer {
+  background-color: #282c34; /* Example background color for footer */
+  padding: 10px;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
