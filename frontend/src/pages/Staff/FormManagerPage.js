@@ -53,9 +53,9 @@ function FormManagerPage() {
                 const unsignedDocumentList = await fetchUnsignedDocumentList(); 
                 const signedDocumentList = await fetchSignedDocumentList(); 
               if (unsignedDocumentList.status) {
-                setRequestsList(unsignedDocumentList.data);
-                setSignedRequestsList(signedDocumentList.data)
-                setAllFormsList(allForms.data.docs)
+                await setSignedRequestsList(signedDocumentList.data)
+                await setRequestsList(unsignedDocumentList.data);
+                await setAllFormsList(allForms.data.docs)
               } else {
                 console.log('Response data is not an array or is empty');
               }
