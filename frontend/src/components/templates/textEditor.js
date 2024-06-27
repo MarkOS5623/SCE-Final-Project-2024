@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchTemplate, saveTemplate, fetchTemplatesList, deleteTemplate } from "../../api/templates_requests";
+import { fetchForm, saveForm, fetchAllFormsList, deleteForm } from "../../api/form_requests";
 import CardContainer from "../cardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
 
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
-  const [selectedDocument, setSelectedDocument] = useState('');
+  const [selectedForm, setSelectedForm] = useState('');
   const [titleInput, setTitleInput] = useState('');
   const [error, setError] = useState('');
   const [selectedNames, setSelectedNames] = useState([]);
@@ -31,12 +31,12 @@ const TextEditor = () => {
     width: '100px'
   }
 
-  const documentContainerRef = useRef(null);
+  const formContainerRef = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetchTemplatesList();
+        const response = await fetchAllFormsList();
         if (Array.isArray(response.data.docs)) {
           setDocsList(response.data.docs);
         } else {
@@ -59,8 +59,8 @@ const TextEditor = () => {
 
   const saveToDb = async () => {
     if (!titleInput) {
-      console.error('A title is needed for saving a document')
-      setError('A title is needed for saving a document')
+      console.error('A title is needed for saving a form')
+      setError('A title is needed for saving a form')
       return;
     }
     setError(null);
@@ -70,59 +70,59 @@ const TextEditor = () => {
     });
     const token = localStorage.getItem('token')
     const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-    const documentData = documentContainerRef.current.documentEditor.serialize();
+    const formData = formContainerRef.current.documentEditor.serialize();
     const author = decodedToken.data.user.id
     try {
-      const response = await saveTemplate(documentData, titleInput, selectedAuthsIds, author);
+      const response = await saveForm(formData, titleInput, selectedAuthsIds, author);
       if (response.status === 200) {
         console.log('Document saved successfully!');
         window.location.reload();
       } else {
-        console.error('Failed to save document: status ', response.status);
+        console.error('Failed to save form: status ', response.status);
       }
     } catch (error) {
-      console.error('Error saving document:', error);
+      console.error('Error saving form:', error);
     }
   };
   
-  const fetchTemplateData = async () => {
-    if (!selectedDocument) {
-      console.error('Please select a document to fetch first')
-      setError('Please select a document to fetch first')
+  const fetchFormData = async () => {
+    if (!selectedForm) {
+      console.error('Please select a form to fetch first')
+      setError('Please select a form to fetch first')
       return;
     }
     setError(null);
     try {
-      const response = await fetchTemplate(selectedDocument);
+      const response = await fetchForm(selectedForm);
       if (response.status === 200) {
-        documentContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
+        formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
         console.log('Document fetched successfully!');
       } else {
-        console.error('Failed to fetch document: status ', response.status);
+        console.error('Failed to fetch form: status ', response.status);
       }
     } catch (error) {
-      console.error('Error fetching document:', error);
+      console.error('Error fetching form:', error);
     }
   };
 
-  const deleteTemplateData = async () => {
-    if (!selectedDocument) {
-      console.error('Please select a document to fetch first')
-      setError('Please select a document to fetch first')
+  const deleteFormData = async () => {
+    if (!selectedForm) {
+      console.error('Please select a form to fetch first')
+      setError('Please select a form to fetch first')
       return;
     }
     setError(null);
     try {
-      const response = await deleteTemplate(selectedDocument);
+      const response = await deleteForm(selectedForm);
       if (response.status === 200) {
-        documentContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
+        formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
         console.log('Document deleted successfully!');
         window.location.reload();
       } else {
-        console.error('Failed to delete document: status ', response.status);
+        console.error('Failed to delete form: status ', response.status);
       }
     } catch (error) {
-      console.error('Error fetching document:', error);
+      console.error('Error fetching form:', error);
     }
   };
   const handleTitleChange = (event) => {
@@ -146,7 +146,7 @@ const TextEditor = () => {
       <Row style={{ width: '100%' }}> 
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{error}</Alert>}
         <Col xs={8} style={{ width: '80%', paddingRight: '10px' }}>
-          <DocumentEditorContainerComponent height="82vh" id="container" style={editorStyle} ref={documentContainerRef}>
+          <DocumentEditorContainerComponent height="82vh" id="container" style={editorStyle} ref={formContainerRef}>
             <Inject services={[Toolbar, WordExport]} />
           </DocumentEditorContainerComponent>
         </Col>
@@ -154,27 +154,27 @@ const TextEditor = () => {
           <Row style={{ width: '100%', marginTop: '0px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
             <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
               <Dropdown style={{ width: '220px', fontSize: '15px', fontWeight: 'bold'}}>
-                <Dropdown.Toggle variant="outline-success" id="documentDropdown">
-                  {selectedDocument ? selectedDocument : "Select Document"}
+                <Dropdown.Toggle variant="outline-success" id="formDropdown">
+                  {selectedForm ? selectedForm : "Select Document"}
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
                   {DocsList.map((docTitle, index) => (
-                  <Dropdown.Item key={index} onClick={() => setSelectedDocument(docTitle)} eventKey={docTitle}>
+                  <Dropdown.Item key={index} onClick={() => setSelectedForm(docTitle)} eventKey={docTitle}>
                     <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
                   </Dropdown.Item >
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
               <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Button onClick={fetchTemplateData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>FETCH</Button>
+                <Button onClick={fetchFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>FETCH</Button>
               </div>
-              <Button onClick={deleteTemplateData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Delete</Button>
+              <Button onClick={deleteFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Delete</Button>
             </div>
           </Row>
           <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}> 
             <div style={{ width: '70%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', boxShadow: '0px 0px 10px rgba(0,0,0,0.3)', backgroundColor: 'white' }}>
-                <input type="text" placeholder="Title for document you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2" style={{width: '220px', height: '40px', marginBottom: '20px'}}/>
+                <input type="text" placeholder="Title for form you want to save" value={titleInput} onChange={handleTitleChange} className="mb-2" style={{width: '220px', height: '40px', marginBottom: '20px'}}/>
                 <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold' }}>
                   <Dropdown.Toggle variant="outline-success" id="nameDropdown" style={{ width: '100%' }}>
                     Add Authorizers

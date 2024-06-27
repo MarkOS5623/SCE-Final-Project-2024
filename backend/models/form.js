@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
     it is simillar to the document template expect it has an array of Users instead of Status's
     the signatories is used to create the array of Status for the document model
 */
-const templateSchema = new mongoose.Schema({
+const formSchema = new mongoose.Schema({
   title: { type: String, required: true },
   text: { type: String, required: true },
   department: { type: String, required: true },
@@ -12,6 +12,6 @@ const templateSchema = new mongoose.Schema({
   signatories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }],
 });
 
-const Template = mongoose.model('Template', templateSchema);
+const Form = mongoose.model('Form', formSchema);
 
-module.exports = Template;
+module.exports = Form;

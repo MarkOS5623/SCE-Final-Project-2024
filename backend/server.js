@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
-const templateRoutes = require('./routes/templatesRoutes');
+const formRoutes = require('./routes/formRoutes');
 const utilsRoutes = require('./routes/utilsRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const statusRoutes = require('./routes/statusRoutes');
@@ -27,7 +27,7 @@ app.use(morgan('dev'));
 
 // Mount routes
 app.use('/api/users', userRoutes);
-app.use('/api/templates', templateRoutes);
+app.use('/api/forms', formRoutes);
 app.use('/api/utils', utilsRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/status', statusRoutes);

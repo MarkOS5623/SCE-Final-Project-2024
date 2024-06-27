@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { fetchNoSignTemplatesList, fetchTemplate, fetchOnlySignTemplatesList } from '../../api/templates_requests';
+import { fetchUnSignedFormsList, fetchForm, fetchSignedFormsList } from '../../api/form_requests';
 import DownloadDocsTable from '../Tables/downloadDocsTable'; // Import the DownloadDocsTable component
 import FillDocumentsTable from '../Tables/RequestFillingTable'; // Import the FillDocumentsTable component
 import { Button } from 'react-bootstrap';
@@ -21,8 +21,8 @@ const StudentFormViewer = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const noSignDocs = await fetchNoSignTemplatesList();
-                const onlySignDocs = await fetchOnlySignTemplatesList();
+                const noSignDocs = await fetchUnSignedFormsList();
+                const onlySignDocs = await fetchSignedFormsList();
                 setNoSignDocsList(noSignDocs.data.docs);
                 setOnlySignDocsList(onlySignDocs.data.docs);
             } catch (error) {
@@ -36,7 +36,7 @@ const StudentFormViewer = () => {
 
     const handleSubmit = async (course, reason) => {
         try {
-            const response = await fetchTemplate(choosenDocument);
+            const response = await fetchForm(choosenDocument);
             if (response.status === 200) {
                 const data = response.data;
                 documentContainerRef.current.documentEditor.open(data.text);
@@ -61,7 +61,7 @@ const StudentFormViewer = () => {
     };
 
     const handleDownload = async (documentName) => {
-        const response = await fetchTemplate(documentName);
+        const response = await fetchForm(documentName);
         const data = response.data;
         documentContainerRef.current.documentEditor.open(data.text);
         const token = localStorage.getItem('token');

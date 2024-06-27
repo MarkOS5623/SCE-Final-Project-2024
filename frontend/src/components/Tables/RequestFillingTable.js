@@ -7,7 +7,7 @@ const RequestFillingTable = ({ documents, toggleFillFrom }) => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Documents</th>
+                    <th>Reqeusts</th>
                     <th>Action</th>
                 </tr>
             </thead>
