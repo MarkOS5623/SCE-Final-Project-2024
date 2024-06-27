@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchForm, saveForm, fetchAllFormsList, deleteForm } from "../../api/form_requests";
+import { fetchForm, saveForm, fetchAllFormsList } from "../../api/form_requests";
 import CardContainer from "../cardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
@@ -14,6 +14,7 @@ const TextEditor = () => {
   const [selectedNames, setSelectedNames] = useState([]);
   const [namesList, setNamesList] = useState([]);
   const [authlist, setAuthsList] = useState({});
+  const [selectedType, setSelectedType] = useState('');
 
   const mainContainerStyle = {
     all: "unset",
@@ -68,12 +69,13 @@ const TextEditor = () => {
       const author = authlist.find(auth => auth.name === name);
       return author ? author.id : null;
     });
+    const type = selectedType
     const token = localStorage.getItem('token')
     const decodedToken = await decodeValue(JSON.stringify({ token: token }));
     const formData = formContainerRef.current.documentEditor.serialize();
     const author = decodedToken.data.user.id
     try {
-      const response = await saveForm(formData, titleInput, selectedAuthsIds, author);
+      const response = await saveForm(formData, titleInput, selectedAuthsIds, author, type);
       if (response.status === 200) {
         console.log('Document saved successfully!');
         window.location.reload();
@@ -105,26 +107,6 @@ const TextEditor = () => {
     }
   };
 
-  const deleteFormData = async () => {
-    if (!selectedForm) {
-      console.error('Please select a form to fetch first')
-      setError('Please select a form to fetch first')
-      return;
-    }
-    setError(null);
-    try {
-      const response = await deleteForm(selectedForm);
-      if (response.status === 200) {
-        formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
-        console.log('Document deleted successfully!');
-        window.location.reload();
-      } else {
-        console.error('Failed to delete form: status ', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching form:', error);
-    }
-  };
   const handleTitleChange = (event) => {
     setTitleInput(event.target.value);
   };
@@ -140,6 +122,9 @@ const TextEditor = () => {
     setSelectedNames(updatedNames);
   };
 
+  const handleTypeSelect = (option) => {
+    setSelectedType(option);
+  };
 
   return ( 
     <CardContainer style={{ ...mainContainerStyle}}>
@@ -166,9 +151,8 @@ const TextEditor = () => {
                 </Dropdown.Menu>
               </Dropdown>
               <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Button onClick={fetchFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>FETCH</Button>
+                <Button onClick={fetchFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Load</Button>
               </div>
-              <Button onClick={deleteFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Delete</Button>
             </div>
           </Row>
           <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}> 
@@ -195,6 +179,16 @@ const TextEditor = () => {
                     </Badge>
                   ))}
                 </div>
+                <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', marginTop: '20px' }}>
+                  <Dropdown.Toggle variant="outline-success" id="optionDropdown" style={{ width: '100%' }}>
+                    {selectedType || "Select Form Type"}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold' }}>
+                    <Dropdown.Item onClick={() => handleTypeSelect('Student')}>Student</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleTypeSelect('Staff')}>Staff</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleTypeSelect('Everybody')}>Everybody</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
                 <div className="d-flex justify-content-center">
                   <Button onClick={saveToDb} style={{ ...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>Save</Button>
               </div>

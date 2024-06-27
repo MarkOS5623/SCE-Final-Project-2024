@@ -32,7 +32,8 @@ const ViewDocument = ((documentId) => { // check what going on with documentID
     try {
         const token = localStorage.getItem('token');
         const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-        const response = await authorizeRequest(documentId.documentId.documentId, decodedToken.data.user.id);
+        console.log(documentId.documentId)
+        const response = await authorizeRequest(documentId.documentId, decodedToken.data.user.id);
         if(response.status === 201) { 
           console.log('success!')
           window.location.reload()
@@ -46,7 +47,7 @@ const ViewDocument = ((documentId) => { // check what going on with documentID
     try {
         const token = localStorage.getItem('token');
         const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-        const response = await rejectRequest(documentId.documentId.documentId, decodedToken.data.user.id);
+        const response = await rejectRequest(documentId.documentId, decodedToken.data.user.id);
         if(response.status === 201) { 
           console.log('success!')
           window.location.reload()

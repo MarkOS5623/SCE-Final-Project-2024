@@ -5,7 +5,7 @@ const formController = {
     // save template to the database if a template with the same name already exists it will overide it
     saveForm: async (req, res) => {
       try {
-        const { Data, title, Signatories, Author } = req.body;
+        const { Data, title, Signatories, Author, Type } = req.body;
         const signatories = await User.find({ id: {  $in: Signatories } });
         const user = await User.findOne({ id: Author });
         const Tem = await Form.findOne({title: title});
@@ -18,6 +18,7 @@ const formController = {
             title: title,
             text: Data,
             department: "test",
+            type: Type,
             author: user,
             signatories: signatories
           });

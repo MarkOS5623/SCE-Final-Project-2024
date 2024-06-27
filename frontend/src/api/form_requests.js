@@ -35,10 +35,10 @@ export const deleteForm = async (subject) => {
 };
 
 
-export const saveForm = async (formData, titleInput, signatories, author) => {
+export const saveForm = async (formData, titleInput, signatories, author, type) => {
   try {
     const response = await axios.post(SERVER_BASE + ROUTE_URL + '/saveform', {
-      Data: formData, title: titleInput, Signatories: signatories, Author: author
+      Data: formData, title: titleInput, Signatories: signatories, Author: author, Type: type
     }, {
       headers: {
         'Content-Type': 'application/json'
