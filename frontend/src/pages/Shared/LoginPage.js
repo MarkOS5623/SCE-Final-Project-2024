@@ -1,6 +1,6 @@
 import React from 'react';
 import CardContainer from '../../components/cardContainer';
-import LoginForm from '../../components/Forms/LoginForm'
+import LoginForm from '../../components/Forms/loginForm'
 import logoImg from '../../assests/sce.jpg';
 
 function LoginPage() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import CardContainer from '../../components/cardContainer';
-import SignUpForm from '../../components/Forms/SignUpForm'
+import SignUpForm from '../../components/Forms/signupForm'
 import logoImg from '../../assests/sce.jpg';
 function SignUpPage() {
   return (
