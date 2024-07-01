@@ -86,7 +86,7 @@ const documentController = {
   },
   saveDocuemnt: async (req, res) => {
     try {
-      const { text, subject, signatories, author } = req.body;
+      const { text, subject, signatories, author, type } = req.body;
       const authorizers = await User.find({ _id: {  $in: signatories } });
       const statuses = [];
       authorizers.forEach(async (user) => {
@@ -104,7 +104,8 @@ const documentController = {
         department: "test",
         author: user,
         authorizers: statuses,
-        documentId: id 
+        documentId: id ,
+        type: type
       });
       await newDocument.save();
       statuses.forEach(async (status) => {

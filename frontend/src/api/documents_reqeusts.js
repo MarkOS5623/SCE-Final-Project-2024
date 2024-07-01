@@ -2,10 +2,10 @@ import axios from "axios"
 import { SERVER_BASE } from "./config";
 const ROUTE_URL = "/api/documents"
 
-export const saveDocument = async (text, subject, signatories, author) => {
+export const saveDocument = async (text, subject, signatories, author, type) => {
     try {
       const response = await axios.post(SERVER_BASE + ROUTE_URL + '/savedocument', {
-        text, subject, signatories, author
+        text, subject, signatories, author, type
       }, {
         headers: {
           'Content-Type': 'application/json'

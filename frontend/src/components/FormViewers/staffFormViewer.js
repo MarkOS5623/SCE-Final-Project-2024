@@ -15,9 +15,6 @@ const StaffFormViewer = ({ requestsList, signedRequestsNameList, signedRequestsI
         setChoosenRequest(documentId)
         toggleShowReviewForm()
     };
-    console.log(signedRequestsNameList)
-    console.log(signedRequestsIDList)
-    console.log(signedRequestsStatusList)
     const toggleUnAuthorizedRequestsTable = () => {
         setShowUnAuthRequestsList(!showUnAuthRequestsList);
         setShowAuthRequestsList(false);
