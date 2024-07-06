@@ -1,0 +1,24 @@
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Aligns all nav items to the right */
+  width: 28%;
+}
+
+.language-switcher {
+  margin: 0px; /* Adjusts space around the language switcher */
+}
+
+.nav-item .form-select {
+  background-color: #6c757d; /* Adjust dropdown background color to match navbar */
+  color: white; /* Adjust dropdown text color to match navbar */
+  border: none; /* Remove border for better appearance */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.nav-item .form-select option {
+  color: black; /* Option text color */
+}
+
+

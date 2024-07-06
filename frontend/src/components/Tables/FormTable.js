@@ -1,15 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
+import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
 
 const FormTable = ({ forms, handleDelete }) => {
-    console.log(forms)
+    const { language } = useContext(LanguageContext);
+
+    // Translations for different languages
+    const translations = {
+        en: {
+            formsHeader: "Forms",
+            actionHeader: "Action",
+            deleteButton: "Delete"
+        },
+        he: {
+            formsHeader: "טפסים",
+            actionHeader: "פעולה",
+            deleteButton: "מחק"
+        },
+        ar: {
+            formsHeader: "النماذج",
+            actionHeader: "العملية",
+            deleteButton: "حذف"
+        }
+    };
+
     return (
         <Table striped bordered hover>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Forms</th>
-                    <th>Action</th>
+                    <th>{translations[language].formsHeader}</th>
+                    <th>{translations[language].actionHeader}</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +39,9 @@ const FormTable = ({ forms, handleDelete }) => {
                         <td>{index + 1}</td>
                         <td>{doc}</td>
                         <td>
-                            <Button variant="primary" onClick={() => handleDelete(doc)}>Delete</Button>
+                            <Button variant="primary" onClick={() => handleDelete(doc)}>
+                                {translations[language].deleteButton}
+                            </Button>
                         </td>
                     </tr>
                 ))}

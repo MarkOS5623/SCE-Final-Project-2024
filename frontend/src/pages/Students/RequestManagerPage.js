@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import MyRequestsList from '../../components/MyRequestsList';
 import FormViewer from '../../components/FormViewers/studentFormViewer';
@@ -7,8 +7,11 @@ import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/cardContainer';
 import logoImg from '../../assets/sce.jpg';
+import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
 
 function RequestManagerPage() {
+    const { language } = useContext(LanguageContext);
+
     const [userRequests, setUserRequests] = useState({});
     const [isRequestFormVisible, setIsRequestFormVisible] = useState(true);
     const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
@@ -53,26 +56,55 @@ function RequestManagerPage() {
 
     const actionPanel = () => (
         <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary'>Make a new request</Button>
-            <Button onClick={showMyRequests} className='btn btn-primary'>My requests</Button>
+            <Button onClick={toggleEditorVisibility} className='btn btn-primary'>
+                {translations[language].makeNewRequest}
+            </Button>
+            <Button onClick={showMyRequests} className='btn btn-primary'>
+                {translations[language].myRequests}
+            </Button>
         </div>
     );
+
+    // Translations for different languages
+    const translations = {
+        en: {
+            pageTitle: "Request Manager",
+            makeNewRequest: "Make a new request",
+            myRequests: "My requests",
+            actions: "<<Actions"
+        },
+        he: {
+            pageTitle: "מנהל בקשות",
+            makeNewRequest: "להגיש בקשה חדשה",
+            myRequests: "הבקשות שלי",
+            actions: "<<פעולות"
+        },
+        ar: {
+            pageTitle: "مدير الطلبات",
+            makeNewRequest: "تقديم طلب جديد",
+            myRequests: "طلباتي",
+            actions: "<<الإجراءات"
+        },
+    };
+
+    if (!translations[language]) return null;
 
     return (
         <div>
             <div className="mt-0">
                 <Row>
                     <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`}>
-                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`}>
-                            {isActionPanelCollapsed ? 'Action Panel >' : '< Action Panel'}
-                        </Button>
+                    <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`}>
+                        {isActionPanelCollapsed ? translations[language].actions : translations[language].actions}
+                    </Button>
+
                         {!isActionPanelCollapsed && actionPanel()}
                     </Col>
                     <Col md={isActionPanelCollapsed ? 14 : 10 } style={{ transition: 'width 0.3s' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '175vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
-                                <h2>Request Manager</h2>
+                                <h2>{translations[language].pageTitle}</h2>
                                 {isRequestFormVisible && (<FormViewer />)}
                                 {isMyRequestsVisible && (<MyRequestsList requests={userRequests} />)}
                             </CardContainer>

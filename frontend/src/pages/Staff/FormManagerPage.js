@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext,useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import TextEditor from '../../components/Templates/TextEditor';
+import TextEditor from '../../components/Templates/textEditor';
 import '../Editor.css';
 import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
 import { fetchAllFormsList, deleteForm } from '../../api/form_requests';
 import FormTable from '../../components/Tables/FormTable';
+import { LanguageContext } from '../../context/LanguageContextProvider';
 
 function FormManagerPage() {
+    const { language } = useContext(LanguageContext);
     const [isEditorVisible, setIsEditorVisible] = useState(false);
     const [isAutorizerVisible, setIsAutorizerVisible] = useState(false);
     const [isFormTableVisible, setIsFormTableVisible] = useState(false);
@@ -74,13 +76,47 @@ function FormManagerPage() {
         fetchData();
     }, []);
 
+
     const actionPanel = () => (
         <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary'>{isEditorVisible ? 'Close Document Editor' : 'Open Document Editor'}</Button>
-            <Button onClick={toggleAutorizerVisibility} className='btn btn-primary'>{isAutorizerVisible ? 'Close Request Manager' : 'Open Request Manager'}</Button>
-            <Button onClick={toggleFormTableVisibility} className='btn btn-primary'>{isFormTableVisible ? 'Close Form Table' : 'Open Form Table'}</Button>
+            <Button onClick={toggleEditorVisibility} className='btn btn-primary'>
+                {translations[language].openEditor}
+            </Button>
+            <Button onClick={toggleAutorizerVisibility} className='btn btn-primary'>
+                {translations[language].openRequestManager}
+            </Button>
+            <Button onClick={toggleFormTableVisibility} className='btn btn-primary'>
+                {translations[language].openFormTable}
+            </Button>
         </div>
     );
+
+    // Translations for different languages
+    const translations = {
+        en: {
+            pageTitle: "Form Manager",
+            openEditor: "Open Document Editor",
+            openRequestManager: "Open Request Manager",
+            openFormTable: "Open Form Table",
+            actions: "<<Actions"
+        },
+        he: {
+            pageTitle: "מנהל טופס",
+            openEditor: "פתח עורך מסמך",
+            openRequestManager: "פתח מנהל בקשות",
+            openFormTable: "פתח טבלת טפסים",
+            actions: "<<פעולות"
+        },
+        ar: {
+            pageTitle: "مدير النماذج",
+            openEditor: "فتح محرر المستندات",
+            openRequestManager: "فتح مدير الطلبات",
+            openFormTable: "فتح جدول النماذج",
+            actions: "<<الإجراءات"
+        },
+    };
+
+    if (!translations[language]) return null;
 
     return (
         <div>
@@ -88,7 +124,7 @@ function FormManagerPage() {
                 <Row>
                     <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`}>
                         <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`}>
-                            {isActionPanelCollapsed ? 'Action Panel >' : '< Action Panel'}
+                            {isActionPanelCollapsed ? translations[language].actions : translations[language].actions}
                         </Button>
                         {!isActionPanelCollapsed && actionPanel()}
                     </Col>
