@@ -1,11 +1,10 @@
 import React from 'react';
 import CardContainer from '../../components/cardContainer';
-import '../ContactUs.css'; // Import your CSS file for styling
-import imageSrc1 from '../../assests/linkedin.png'; // Corrected path to your image file
-import imageSrc2 from '../../assests/facebook.png'; // Corrected path to your image file
-import imageSrc3 from '../../assests/instagram.png'; // Corrected path to your image file
-import imageSrc from '../../assests/youtube.png'; // Corrected path to your image file
-
+import '../ContactUs.css'; 
+import imageSrc1 from '../../assets/linkedin.png';
+import imageSrc2 from '../../assets/facebook.png'; 
+import imageSrc3 from '../../assets/instagram.png'; 
+import imageSrc from '../../assets/youtube.png'; 
 function ContactUs() {
   return (
     <CardContainer style={{ marginTop: '5px', textAlign: 'left' }}>

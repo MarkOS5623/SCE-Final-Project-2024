@@ -1,7 +1,7 @@
 import React from 'react';
 import CardContainer from '../../components/cardContainer';
 import SignUpForm from '../../components/Forms/signupForm'
-import logoImg from '../../assests/sce.jpg';
+import logoImg from '../../assets/sce.jpg';
 function SignUpPage() {
   return (
       <CardContainer style={{ width: '500px', padding: '20px' }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import imageSrc from '../../assests/1496042374449-0.jpg'; // Corrected path to your image file
+import imageSrc from '../../assets/1496042374449-0.jpg'; // Corrected path to your image file
 import '../AboutUs.css'; // Import your CSS file for styling
 import CardContainer from '../../components/cardContainer';
 function AboutUS() {

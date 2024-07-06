@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logoImg from '../../assests/sce.jpg';
+import logoImg from '../../assets/sce.jpg';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

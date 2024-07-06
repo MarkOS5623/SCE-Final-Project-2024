@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import './assests/css/bootstrap.css';
-import './assests/css/App.css';
+import './assets/css/bootstrap.css';
+import './assets/css/App.css';
 
 import NavBarSwitch from './components/Navbar/NavBarSwitch';
 import Footer from './components/Footer';

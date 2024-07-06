@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logoImg from '../../assests/sce.jpg';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import logoImg from '../../assets/sce.jpg';
 import { decodeValue } from '../../api/utils';
 
 const StudentNavbar = () => {
@@ -42,30 +43,39 @@ const StudentNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-primary bg-secondary" style={{ height: '70px' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager"><img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} /></Link>
+        <Link className="navbar-brand" to="/requestmanager">
+          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
+        </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        {isAdmin && (
-          <li className="nav-item">
-            <span className="nav-link" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>logged user is an admin</span>
-          </li>
-        )}
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/accountinfopage" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>Account Info</Link>
+              {isAdmin && (
+                <span className="nav-link" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>
+                  Logged user is an admin
+                </span>
+              )}
             </li>
-            {isAdmin && (
-              <li className="nav-item">
-                <Link className="nav-link" to="/formmanager" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>Form Manager</Link>
-              </li>
-            )}
-            {isLoggedIn && (
-              <li className="nav-item">
-                <button className="nav-link btn" style={{color: 'white', fontWeight: "bold"}} onClick={handleSignOut}>Sign Out</button>
-              </li>
-            )}
+            <li className="nav-item dropdown">
+              <DropdownButton
+                id="dropdown-basic-button"
+                title="Account"
+                menuAlign="right"
+                variant="secondary"
+                className="btn btn-link nav-link"
+                style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
+              >
+                <Dropdown.Item as={Link} to="/accountinfopage">Account Info</Dropdown.Item>
+                {isAdmin && (
+                  <Dropdown.Item as={Link} to="/formmanager">Form Manager</Dropdown.Item>
+                )}
+                {isLoggedIn && (
+                  <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
+                )}
+              </DropdownButton>
+            </li>
           </ul>
         </div>
       </div>
