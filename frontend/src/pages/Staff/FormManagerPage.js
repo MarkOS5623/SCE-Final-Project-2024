@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import TextEditor from '../../components/Templates/textEditor';
+import TextEditor from '../../components/Templates/TextEditor';
 import '../Editor.css';
 import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';

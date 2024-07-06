@@ -42,7 +42,7 @@ const StaffFormViewer = ({ requestsList, signedRequestsNameList, signedRequestsI
             <div style={{ height: '15px' }}></div>
             {showAuthRequestsList && <ApprovedRequestsTable documents={signedRequestsNameList} documentIds={signedRequestsIDList} documentStatuses={signedRequestsStatusList}/>}
             {showUnAuthRequestsList && <PendingRequestsTable documents={requestsList} handleReview={handleReview} />}
-            {showReviewForm && <ViewDocument documentId={choosenRequest}/>}
+            {showReviewForm && <ViewDocument documentId={choosenRequest} flag={true}/>}
         </CardContainer>
     );
 };

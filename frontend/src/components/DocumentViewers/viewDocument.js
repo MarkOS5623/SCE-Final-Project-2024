@@ -5,7 +5,7 @@ import { fetchDocument } from '../../api/documents_reqeusts';
 import { authorizeRequest, rejectRequest } from '../../api/status_requests';
 import { decodeValue } from '../../api/utils';
 
-const ViewDocument = ((documentId) => { // check what going on with documentID
+const ViewDocument = ((documentId, flag) => { // check what going on with documentID
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
   const editorStyle = { width: "100%", height: "95%" };
@@ -25,7 +25,7 @@ const ViewDocument = ((documentId) => { // check what going on with documentID
       }
     }
     fetchDoc();
-  }, [documentId]);
+  }, [documentId], flag);
 
 
   const AuthorizeRequest = async () => {
@@ -63,8 +63,12 @@ const ViewDocument = ((documentId) => { // check what going on with documentID
           <h3>Request Number - {documentId.documentId.documentId}</h3> 
           {error && <Alert variant="danger">{error}</Alert>}
           <DocumentEditorComponent height="500px" width="95%" id="container" style={editorStyle} ref={documentContainerRef} restrictediting={'true'} />
-          <Button style={buttonStyle} variant='success' onClick={() => AuthorizeRequest()}>Approve</Button>
-          <Button style={buttonStyle} variant='danger' onClick={() => RejectRequest()}>Deny</Button>
+          {flag === true && (
+          <>
+            <Button style={buttonStyle} variant='success' onClick={() => AuthorizeRequest()}>Approve</Button>
+            <Button style={buttonStyle} variant='danger' onClick={() => RejectRequest()}>Deny</Button>
+          </>
+          )}
         </Card.Body>
     </Container>
   );
