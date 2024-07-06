@@ -18,8 +18,8 @@ const TextEditor = () => {
 
   const mainContainerStyle = {
     all: "unset",
-    width: "100vw",
-    height: "90vw",
+    width: "auto",
+    height: "auto",
   }
 
   const editorStyle = {

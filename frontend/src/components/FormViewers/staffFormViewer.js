@@ -34,7 +34,7 @@ const StaffFormViewer = ({ requestsList, signedRequestsNameList, signedRequestsI
     };
 
     return (
-        <CardContainer style={{ width: 'auto', padding: '20px' }}>
+        <CardContainer style={{ width: '150vh', padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 <Button onClick={toggleAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, marginRight: '20px', height: '60px' }}>Show Signed Requests</Button>
                 <Button onClick={toggleUnAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, height: '60px' }}>Show Requests</Button>

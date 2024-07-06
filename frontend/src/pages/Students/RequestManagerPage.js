@@ -59,7 +59,7 @@ function RequestManagerPage() {
                     <Col md={1} style={{width: '20%'}}>{actionPanel()}</Col>
                     <Col md={2} style={{width: '80%'}}>
                         <div className="right-panel" style={{width: 'auto'}}> {/* Make the tables wider! */}
-                            <CardContainer>
+                            <CardContainer style={{ width: '150vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }}/>
                                 <h2>Request Manager</h2>
                                 {isRequestFormVisible && (<FormViewer />)} 
