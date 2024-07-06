@@ -7,6 +7,7 @@ import { decodeValue } from '../../api/utils';
 const StudentNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userMessages, setUserMessages] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +19,12 @@ const StudentNavbar = () => {
         } else {
           setIsLoggedIn(true);
           const response = await decodeValue(JSON.stringify({ token: token }));
-          if (response.data.user.role === 'admin') setIsAdmin(true);
+          const user = response.data.user;
+          if (user.role === 'admin') setIsAdmin(true);
+
+          const messages = JSON.parse(localStorage.getItem('messages')) || [];
+          const userMessages = messages.filter(message => message.author === user._id || message.signatories.includes(user._id));
+          setUserMessages(userMessages);
         }
       } catch (error) {
         console.error('Network error while checking token status:', error);
@@ -31,13 +37,23 @@ const StudentNavbar = () => {
     try {
       const token = localStorage.getItem('token');
       if (token && isLoggedIn === true) {
-        localStorage.removeItem('token', token);
+        localStorage.removeItem('token');
         setIsLoggedIn(false);
         navigate('/');
       }
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+
+  const handleDeleteAllMessages = async () => {
+    const token = localStorage.getItem('token');
+    const response = await decodeValue(JSON.stringify({ token: token }));
+    const user = response.data.user;
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
+    const remainingMessages = messages.filter(message => message.author !== user._id);
+    localStorage.setItem('messages', JSON.stringify(remainingMessages));
+    setUserMessages([]);
   };
 
   return (
@@ -58,6 +74,32 @@ const StudentNavbar = () => {
                 </span>
               )}
             </li>
+            {isLoggedIn && (
+              <li className="nav-item dropdown">
+                <DropdownButton
+                  id="messages-dropdown"
+                  title="Messages"
+                  menuAlign="right"
+                  variant="secondary"
+                  className="btn btn-link nav-link"
+                  style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
+                >
+                  {userMessages.length > 0 ? (
+                    userMessages.map((message, index) => (
+                      <Dropdown.Item key={index}>
+                          {message.type === "requester"
+                          ? `Your request ${message.subject} has been filed and is pending approval`
+                          : `A new ${message.subject} request is pending your review`}<br />
+                      </Dropdown.Item>
+                    ))
+                  ) : (
+                    <Dropdown.Item>No messages</Dropdown.Item>
+                  )}
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={handleDeleteAllMessages} className="text-danger">Delete All Messages</Dropdown.Item>
+                </DropdownButton>
+              </li>
+            )}
             <li className="nav-item dropdown">
               <DropdownButton
                 id="dropdown-basic-button"

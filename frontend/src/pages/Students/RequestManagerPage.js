@@ -70,7 +70,7 @@ function RequestManagerPage() {
                     </Col>
                     <Col md={isActionPanelCollapsed ? 14 : 10 } style={{ transition: 'width 0.3s' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
-                            <CardContainer style={{ width: '175vh', padding: '20px' }}>
+                            <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
                                 <h2>Request Manager</h2>
                                 {isRequestFormVisible && (<FormViewer />)}

@@ -3,19 +3,37 @@ import { SERVER_BASE } from "./config";
 const ROUTE_URL = "/api/documents"
 
 export const saveDocument = async (text, subject, signatories, author, type) => {
-    try {
+  try {
       const response = await axios.post(SERVER_BASE + ROUTE_URL + '/savedocument', {
-        text, subject, signatories, author, type
+          text, subject, signatories, author, type
       }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+          headers: {
+              'Content-Type': 'application/json'
+          }
       });
+      const newMessageForAuthor = {
+          author,
+          subject,
+          status: 'pending approval',
+          type: 'requester'
+      };
+      const existingMessages = JSON.parse(localStorage.getItem('messages')) || [];
+      const updatedMessages = [...existingMessages, newMessageForAuthor];
+      signatories.forEach(signatory => {
+          const newMessageForSignatory = {
+              author: signatory,
+              subject,
+              status: 'pending approval',
+              type: 'authorizer'
+          };
+          updatedMessages.push(newMessageForSignatory);
+      });
+      localStorage.setItem('messages', JSON.stringify(updatedMessages));
       return response;
-    } catch (error) {
+  } catch (error) {
       console.error('Error saving document:', error.message);
       throw error;
-    }
+  }
 };
 
 export const fetchUnsignedDocumentList = async () => {

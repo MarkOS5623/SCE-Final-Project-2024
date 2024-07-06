@@ -52,7 +52,7 @@ const StudentFormViewer = () => {
                 let reasonField = { fieldName: 'Reason', value: reason };
                 documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
                 const documentData = documentContainerRef.current.documentEditor.serialize();
-                await saveDocument(documentData, response.data.title, response.data.signatories, decodedTokenData.user.id, response.data.type)
+                await saveDocument(documentData, response.data.title, response.data.signatories, decodedTokenData.user._id, response.data.type)
                 window.location.reload()
             }
         } catch (error) {

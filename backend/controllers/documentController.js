@@ -96,7 +96,7 @@ const documentController = {
         });
         statuses.push(status);
       });
-      const user = await User.findOne({ id: author });
+      const user = await User.findOne({ _id: author });
       const id = utils.generateDocumentId(subject);
       const newDocument = new Document({
         subject: subject,
