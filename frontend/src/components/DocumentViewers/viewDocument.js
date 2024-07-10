@@ -1,21 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Alert, Card, Container, Button } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument } from '../../api/documents_reqeusts';
 import { authorizeRequest, rejectRequest } from '../../api/status_requests';
 import { decodeValue } from '../../api/utils';
+import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
 
-const ViewDocument = ((documentId, flag) => { // check what going on with documentID
+const ViewDocument = ({ documentId, flag }) => {
   const [error, setError] = useState(null);
   const documentContainerRef = useRef(null);
   const editorStyle = { width: "100%", height: "95%" };
-  const buttonStyle = { marginTop: '10px', marginLeft: '10px' }
+  const buttonStyle = { marginTop: '10px', marginLeft: '10px' };
+  const { language } = useContext(LanguageContext); // Accessing language context
 
   useEffect(() => {
     async function fetchDoc() {
       try {
-        const response = await fetchDocument(documentId)
-        if (!response.status === 200) {
+        const response = await fetchDocument(documentId);
+        if (response.status !== 200) {
           throw new Error('Failed to fetch document');
         }
         documentContainerRef.current.open(response.data.text);
@@ -25,53 +27,69 @@ const ViewDocument = ((documentId, flag) => { // check what going on with docume
       }
     }
     fetchDoc();
-  }, [documentId], flag);
+  }, [documentId]);
 
+  const translations = {
+    en: {
+      approveButton: 'Approve',
+      denyButton: 'Deny',
+      requestNumberLabel: 'Request Number'
+    },
+    he: {
+      approveButton: 'לאשר',
+      denyButton: 'לדחות',
+      requestNumberLabel: 'מספר בקשה'
+    },
+    ar: {
+      approveButton: 'الموافقة',
+      denyButton: 'رفض',
+      requestNumberLabel: 'رقم الطلب'
+    }
+  };
 
   const AuthorizeRequest = async () => {
     try {
-        const token = localStorage.getItem('token');
-        const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-        console.log(documentId.documentId)
-        const response = await authorizeRequest(documentId.documentId, decodedToken.data.user.id);
-        if(response.status === 201) { 
-          console.log('success!')
-          window.location.reload()
-        }
+      const token = localStorage.getItem('token');
+      const decodedToken = await decodeValue(JSON.stringify({ token: token }));
+      const response = await authorizeRequest(documentId, decodedToken.data.user.id);
+      if (response.status === 201) {
+        console.log('Success!');
+        window.location.reload();
+      }
     } catch (error) {
-        console.error('Error fetching document:', error);
+      console.error('Error authorizing request:', error);
     }
   };
 
   const RejectRequest = async () => {
     try {
-        const token = localStorage.getItem('token');
-        const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-        const response = await rejectRequest(documentId.documentId, decodedToken.data.user.id);
-        if(response.status === 201) { 
-          console.log('success!')
-          window.location.reload()
-        }
+      const token = localStorage.getItem('token');
+      const decodedToken = await decodeValue(JSON.stringify({ token: token }));
+      const response = await rejectRequest(documentId, decodedToken.data.user.id);
+      if (response.status === 201) {
+        console.log('Success!');
+        window.location.reload();
+      }
     } catch (error) {
-        console.error('Error fetching document:', error);
+      console.error('Error rejecting request:', error);
     }
   };
 
   return (
     <Container className="d-flex justify-content-center align-items-center">
-        <Card.Body>
-          <h3>Request Number - {documentId.documentId.documentId}</h3> 
-          {error && <Alert variant="danger">{error}</Alert>}
-          <DocumentEditorComponent height="500px" width="95%" id="container" style={editorStyle} ref={documentContainerRef} restrictediting={'true'} />
-          {flag === true && (
+      <Card.Body>
+        <h3>{translations[language].requestNumberLabel} - {documentId}</h3>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <DocumentEditorComponent height="500px" width="95%" id="container" style={editorStyle} ref={documentContainerRef} restrictediting={'true'} />
+        {flag && (
           <>
-            <Button style={buttonStyle} variant='success' onClick={() => AuthorizeRequest()}>Approve</Button>
-            <Button style={buttonStyle} variant='danger' onClick={() => RejectRequest()}>Deny</Button>
+            <Button style={buttonStyle} variant='success' onClick={AuthorizeRequest}>{translations[language].approveButton}</Button>
+            <Button style={buttonStyle} variant='danger' onClick={RejectRequest}>{translations[language].denyButton}</Button>
           </>
-          )}
-        </Card.Body>
+        )}
+      </Card.Body>
     </Container>
   );
-});
+};
 
 export default ViewDocument;

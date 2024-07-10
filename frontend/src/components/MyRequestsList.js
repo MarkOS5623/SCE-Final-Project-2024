@@ -1,9 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument } from '../api/documents_reqeusts';
+import { LanguageContext } from '../context/LanguageContextProvider'; // Adjust path if necessary
 
 export default function MyRequestsList({ requests }) {
+  const { language } = useContext(LanguageContext);
+
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [documentContent, setDocumentContent] = useState('');
   const documentContainerRef = useRef(null);
@@ -28,6 +31,31 @@ export default function MyRequestsList({ requests }) {
     }
   }, [showReviewForm, documentContent]);
 
+  // Translations for different languages
+  const translations = {
+    en: {
+      requestID: "Request ID",
+      request: "Request",
+      status: "Status",
+      review: "Review",
+      close: "Close"
+    },
+    he: {
+      requestID: "מספר בקשה",
+      request: "בקשה",
+      status: "סטטוס",
+      review: "ביקורת",
+      close: "סגור"
+    },
+    ar: {
+      requestID: "معرف الطلب",
+      request: "طلب",
+      status: "الحالة",
+      review: "مراجعة",
+      close: "إغلاق"
+    }
+  };
+
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1">
@@ -36,10 +64,10 @@ export default function MyRequestsList({ requests }) {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Request ID</th>
-                <th>Request</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>{translations[language].requestID}</th>
+                <th>{translations[language].request}</th>
+                <th>{translations[language].status}</th>
+                <th>{translations[language].review}</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +78,9 @@ export default function MyRequestsList({ requests }) {
                   <td>{doc}</td>
                   <td>{requests.statuses[index]}</td>
                   <td>
-                    <Button variant="primary" onClick={() => handleReview(requests.ids[index])}>Review</Button>
+                    <Button variant="primary" onClick={() => handleReview(requests.ids[index])}>
+                      {translations[language].review}
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -67,7 +97,9 @@ export default function MyRequestsList({ requests }) {
               restrictediting={'true'}
             />
             <br></br>
-            <Button variant="primary"  onClick={() => setShowReviewForm(false)}>Close</Button>
+            <Button variant="primary" onClick={() => setShowReviewForm(false)}>
+              {translations[language].close}
+            </Button>
           </>
         )}
       </div>

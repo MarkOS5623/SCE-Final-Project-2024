@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { fetchUnSignedFormsList, fetchForm, fetchSignedFormsList } from '../../api/form_requests';
-import DownloadDocsTable from '../Tables/downloadDocsTable'; // Import the DownloadDocsTable component
-import FillDocumentsTable from '../Tables/RequestFillingTable'; // Import the FillDocumentsTable component
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
-import { SfdtExport, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
+import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import { decodeValue } from '../../api/utils';
+import { fetchUnSignedFormsList, fetchForm, fetchSignedFormsList } from '../../api/form_requests';
+import DownloadDocsTable from '../Tables/downloadDocsTable';
+import FillDocumentsTable from '../Tables/RequestFillingTable';
 import FormFiller from '../Forms/FormFiller';
 import { saveDocument } from '../../api/documents_reqeusts';
 import { pdfConverter } from '../../api/utils';
+import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
 
 const StudentFormViewer = () => {
+    const { language } = useContext(LanguageContext);
+
     const [noSignDocsList, setNoSignDocsList] = useState([]);
     const [onlySignDocsList, setOnlySignDocsList] = useState([]);
     const [showDownloadForms, setShowDownloadForms] = useState(false);
@@ -31,8 +34,8 @@ const StudentFormViewer = () => {
         }
         fetchData();
     }, []);
-    
-    const tagStyle = { width: '35%', fontSize: '20px', padding: '15px 25px' }
+
+    const tagStyle = { width: '35%', fontSize: '20px', padding: '15px 25px' };
 
     const handleSubmit = async (course, reason) => {
         try {
@@ -41,7 +44,7 @@ const StudentFormViewer = () => {
                 const data = response.data;
                 documentContainerRef.current.documentEditor.open(data.text);
                 const token = localStorage.getItem('token');
-                const tokenData = await decodeValue(JSON.stringify({token: token}))
+                const tokenData = await decodeValue(JSON.stringify({ token: token }));
                 const decodedTokenData = tokenData.data;
                 const currentDate = new Date();
                 const options = { year: 'numeric', month: 'long', day: '2-digit' };
@@ -65,7 +68,7 @@ const StudentFormViewer = () => {
         const data = response.data;
         documentContainerRef.current.documentEditor.open(data.text);
         const token = localStorage.getItem('token');
-        const tokenData = await decodeValue(JSON.stringify({token: token}))
+        const tokenData = await decodeValue(JSON.stringify({ token: token }));
         const decodedTokenData = tokenData.data;
         const currentDate = new Date();
         const options = { year: 'numeric', month: 'long', day: '2-digit' };
@@ -73,19 +76,19 @@ const StudentFormViewer = () => {
         let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
         let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
         documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
-        pdfConverter(documentContainerRef)
+        pdfConverter(documentContainerRef);
     };
 
     const toggleDownloadForms = () => {
         setShowDownloadForms(!showDownloadForms);
         setShowFillFormsList(false);
-        setShowFillForm(false)
+        setShowFillForm(false);
     };
 
     const toggleFillFromList = () => {
         setShowFillFormsList(!showFillFormsList);
         setShowDownloadForms(false);
-        setShowFillForm(false)
+        setShowFillForm(false);
     };
 
     const toggleFillFrom = (doc) => {
@@ -95,11 +98,31 @@ const StudentFormViewer = () => {
         setShowDownloadForms(false);
     };
 
+    // Translations for different languages
+    const translations = {
+        en: {
+            downloadDocuments: "Download Documents",
+            fileRequests: "File Requests"
+        },
+        he: {
+            downloadDocuments: "הורדת מסמכים",
+            fileRequests: "בקשות קובץ"
+        },
+        ar: {
+            downloadDocuments: "تحميل المستندات",
+            fileRequests: "طلبات الملف"
+        }
+    };
+
     return (
         <>
-            <div style={{ marginBottom: '20px' }}> 
-                <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>Download Documents</Button>
-                <Button onClick={toggleFillFromList} style={tagStyle}>File Requests</Button>
+            <div style={{ marginBottom: '20px' }}>
+                <Button onClick={toggleDownloadForms} style={{ ...tagStyle, fontSize: '20px', marginRight: '20px' }}>
+                    {translations[language].downloadDocuments}
+                </Button>
+                <Button onClick={toggleFillFromList} style={tagStyle}>
+                    {translations[language].fileRequests}
+                </Button>
             </div>
             {showDownloadForms && <div style={{ marginBottom: '20px' }}>
                 <DownloadDocsTable documents={noSignDocsList} handleDownload={handleDownload} />
@@ -108,7 +131,7 @@ const StudentFormViewer = () => {
                 <FillDocumentsTable documents={onlySignDocsList} toggleFillFrom={toggleFillFrom} />
             </div>}
             {showFillForm && <div style={{ marginBottom: '20px' }}>
-                <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument}/>
+                <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument} />
             </div>}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
                 <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={documentContainerRef}>

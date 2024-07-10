@@ -1,34 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Table } from 'react-bootstrap';
+import { LanguageContext } from '../context/LanguageContextProvider'; // Adjust path if necessary
 
 const MyRequestsTable = ({ documents }) => {
+    const { language } = useContext(LanguageContext);
 
-    useEffect(() => {
-        function checker() {
-            if (!documents) {
-                documents = { docs: [], ids: [], statuses: [] }; 
-            }
+    // Translations for different languages
+    const translations = {
+        en: {
+            requestID: "Request ID",
+            request: "Request",
+            status: "Status"
+        },
+        he: {
+            requestID: "מספר בקשה",
+            request: "בקשה",
+            status: "סטטוס"
+        },
+        ar: {
+            requestID: "رقم الطلب",
+            request: "الطلب",
+            status: "الحالة"
         }
-        checker();
-    }, []);
+    };
+
+    // Ensure documents has default values
+    if (!documents) {
+        documents = { docs: [], ids: [], statuses: [] };
+    }
 
     return (
         <Table striped bordered hover variant="dark">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Request ID</th>
-                    <th>Request</th>
-                    <th>Status</th>
+                    <th>{translations[language].requestID}</th>
+                    <th>{translations[language].request}</th>
+                    <th>{translations[language].status}</th>
                 </tr>
             </thead>
             <tbody>
-                {documents.docs && documents.docs.map((doc, index) => (
+                {documents.docs.map((doc, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{documents.ids[index]}</td> 
-                        <td>{doc}</td> 
-                        <td>{documents.statuses[index]}</td> 
+                        <td>{documents.ids[index]}</td>
+                        <td>{doc}</td>
+                        <td>{documents.statuses[index]}</td>
                     </tr>
                 ))}
             </tbody>
