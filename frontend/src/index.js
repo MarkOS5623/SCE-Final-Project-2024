@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { registerLicense  } from '@syncfusion/ej2-base';
-// import { UserProvider } from './context/userContext';
 
 import '../node_modules/@syncfusion/ej2-base/styles/material.css';
 import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
@@ -20,8 +19,6 @@ registerLicense ('Ngo9BigBOggjHTQxAR8/V1NAaF5cWWJCf1FpRmJGdld5fUVHYVZUTXxaS00DNH
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-
         <App />
-
 );
 

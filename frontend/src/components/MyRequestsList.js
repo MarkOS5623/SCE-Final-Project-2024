@@ -14,7 +14,7 @@ export default function MyRequestsList({ requests }) {
 
   const handleReview = async (documentId) => {
     try {
-      const response = await fetchDocument({ documentId });
+      const response = await fetchDocument(documentId);
       if (response.status !== 200) {
         throw new Error('Failed to fetch document');
       }

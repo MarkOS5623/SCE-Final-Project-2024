@@ -1,4 +1,0 @@
-/*  send staff token to backend
-    get all docs in backend and look for docs where the status contains 
-    
-*/
