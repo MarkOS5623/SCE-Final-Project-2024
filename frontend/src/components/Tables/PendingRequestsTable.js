@@ -4,7 +4,7 @@ import { LanguageContext } from '../../context/LanguageContextProvider'; // Adju
 
 const PendingRequestsTable = ({ documents, handleReview }) => {
     const { language } = useContext(LanguageContext);
-
+    console.log(documents)
     // Translations for different languages
     const translations = {
         en: {
@@ -28,9 +28,14 @@ const PendingRequestsTable = ({ documents, handleReview }) => {
     };
 
     // Ensure documents has default values
-    if (!documents) {
+    if (
+        typeof documents !== 'object' || 
+        documents === null || 
+        !Array.isArray(documents.docs) || 
+        !Array.isArray(documents.ids)
+      ) {
         documents = { docs: [], ids: [] };
-    }
+      }
 
     return (
         <Table striped bordered hover variant="dark">

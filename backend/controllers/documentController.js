@@ -84,6 +84,23 @@ const documentController = {
       res.status(500).send('Internal server error');
     }
   },
+  fetchDocumentAuthor: async (req, res) => {
+    try {
+      const { documentId } = req.body; 
+      const document = await Document.findOne({ documentId: documentId }); 
+      if (!document) {
+        return res.status(404).send('Document not found');
+      }
+      const user = await User.findOne({ documents: document._id });
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Error fetching document serverside:', error);
+      res.status(500).send('Internal server error');
+    }
+  },  
   saveDocuemnt: async (req, res) => {
     try {
       const { text, subject, signatories, author, type } = req.body;

@@ -71,19 +71,19 @@ function RequestManagerPage() {
             pageTitle: "Request Manager",
             makeNewRequest: "Make a new request",
             myRequests: "My requests",
-            actions: "<<Actions"
+            actions: "<< Actions"
         },
         he: {
             pageTitle: "מנהל בקשות",
             makeNewRequest: "להגיש בקשה חדשה",
             myRequests: "הבקשות שלי",
-            actions: "<<פעולות"
+            actions: "<< פעולות"
         },
         ar: {
             pageTitle: "مدير الطلبات",
             makeNewRequest: "تقديم طلب جديد",
             myRequests: "طلباتي",
-            actions: "<<الإجراءات"
+            actions: "<< الإجراءات"
         },
     };
 
@@ -93,11 +93,10 @@ function RequestManagerPage() {
         <div>
             <div className="mt-0">
                 <Row>
-                    <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`}>
-                    <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`}>
-                        {isActionPanelCollapsed ? translations[language].actions : translations[language].actions}
-                    </Button>
-
+                    <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`} style={{backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b"}}>
+                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`} style={{backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b"}}>
+                            {isActionPanelCollapsed ? translations[language].actions : translations[language].actions}
+                        </Button>
                         {!isActionPanelCollapsed && actionPanel()}
                     </Col>
                     <Col md={isActionPanelCollapsed ? 14 : 10 } style={{ transition: 'width 0.3s' }}>

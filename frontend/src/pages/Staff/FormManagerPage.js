@@ -22,21 +22,21 @@ function FormManagerPage() {
         setIsEditorVisible(!isEditorVisible); 
         setIsAutorizerVisible(false);
         setIsFormTableVisible(false);
-        setIsActionPanelCollapsed(true); // Collapse action panel when opening another panel
+        setIsActionPanelCollapsed(true); 
     };
 
     const toggleAutorizerVisibility = () => {
         setIsAutorizerVisible(!isAutorizerVisible); 
         setIsEditorVisible(false);
         setIsFormTableVisible(false);
-        setIsActionPanelCollapsed(true); // Collapse action panel when opening another panel
+        setIsActionPanelCollapsed(true); 
     };
 
     const toggleFormTableVisibility = () => {
         setIsAutorizerVisible(false); 
         setIsEditorVisible(false);
         setIsFormTableVisible(!isFormTableVisible);
-        setIsActionPanelCollapsed(true); // Collapse action panel when opening another panel
+        setIsActionPanelCollapsed(true); 
     };
 
     const toggleActionPanelCollapse = () => {
@@ -61,13 +61,13 @@ function FormManagerPage() {
             try {
                 const allForms = await fetchAllFormsList();
                 const unsignedDocumentList = await fetchUnsignedDocumentList(); 
-                const signedDocumentList = await fetchSignedDocumentList(); 
+                const signedDocumentList = await fetchSignedDocumentList();
                 if (unsignedDocumentList.status) {
-                    await setSignedRequestsList(signedDocumentList.data);
-                    await setRequestsList(unsignedDocumentList.data);
-                    await setAllFormsList(allForms.data.docs);
+                    setSignedRequestsList(signedDocumentList.data);
+                    setRequestsList(unsignedDocumentList.data);
+                    setAllFormsList(allForms.data);
                 } else {
-                    console.log('Response data is not an array or is empty');
+                    console.log('Unsigned document response is not valid');
                 }
             } catch (error) {
                 console.error('Fetching of docs failed:', error.message);
@@ -75,7 +75,6 @@ function FormManagerPage() {
         }
         fetchData();
     }, []);
-
 
     const actionPanel = () => (
         <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>

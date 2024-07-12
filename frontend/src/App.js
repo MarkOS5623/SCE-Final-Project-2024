@@ -6,7 +6,7 @@ import './assets/css/App.css';
 import NavBarSwitch from './components/Navbar/NavBarSwitch';
 import Footer from './components/Footer';
 import HomePage from './pages/Shared/HomePage';
-import RequestManagerPage from './pages/Students/RequestManagerPage';
+import RequestManagerPage from './pages/Shared/RequestManagerPage';
 import FormManagerPage from './pages/Staff/FormManagerPage';
 import AccountInfoPage from './pages/Shared/accountInfoPage';
 import SignUpPage from './pages/Shared/SignUpPage';

@@ -8,6 +8,9 @@ router.post('/savedocument', documentController.saveDocuemnt);
 // get the document id and returns the document
 router.post('/fetchdocument', documentController.fetchDocument);
 
+// returns the author of a document
+router.post('/fetchdocumentauthor', documentController.fetchDocumentAuthor);
+
 // returns an array of documents titles with no signature
 router.get('/fetchunsigneddocumentlist', documentController.fetchUnsignedDocumentList);
 

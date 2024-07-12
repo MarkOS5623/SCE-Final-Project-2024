@@ -43,7 +43,8 @@ export const fetchUnsignedDocumentList = async () => {
           'Content-Type': 'application/json',
         },
       });
-      return response;
+      console.log(response)
+      return await response;
     } catch (error) {
       console.error('Error fetching unSignedDocument list:', error.message);
       throw error;
@@ -57,7 +58,7 @@ export const fetchSignedDocumentList = async () => {
         'Content-Type': 'application/json',
       },
     });
-    return response;
+    return await response;
   } catch (error) {
     console.error('Error fetching signedDocument list:', error.message);
     throw error;
@@ -73,6 +74,24 @@ export const fetchDocument = async (documentId) => {
         'Content-Type': 'application/json'
       }
     });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
+};
+
+export const fetchDocumentAuthor = async (documentId) => {
+  try {
+    console.log(documentId)
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/fetchdocumentauthor', 
+      {documentId}
+    , {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(response)
     return response;
   } catch (error) {
     console.error('Error fetching document:', error.message);

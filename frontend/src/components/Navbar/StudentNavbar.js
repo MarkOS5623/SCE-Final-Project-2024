@@ -50,7 +50,7 @@ const StudentNavbar = () => {
           if (user.role === 'admin') setIsAdmin(true);
 
           const messages = JSON.parse(localStorage.getItem('messages')) || [];
-          const userMessages = messages.filter(message => message.author === user._id || message.signatories.includes(user._id));
+          const userMessages = messages.filter(message => message.author === user._id || message.author.includes(user._id));
           setUserMessages(userMessages);
         }
       } catch (error) {
@@ -119,7 +119,6 @@ const StudentNavbar = () => {
                 <DropdownButton
                   id="messages-dropdown"
                   title="Messages"
-                  menuAlign="right"
                   variant="secondary"
                   className="btn btn-link nav-link"
                   style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
@@ -127,9 +126,14 @@ const StudentNavbar = () => {
                   {userMessages.length > 0 ? (
                     userMessages.map((message, index) => (
                       <Dropdown.Item key={index}>
-                          {message.type === "requester"
-                          ? `Your request ${message.subject} has been filed and is pending approval`
-                          : `A new ${message.subject} request is pending your review`}<br />
+                        { (message.type === "requester" && (message.status !== "approved" && message.status !== "denied")) ? (
+                          `Your request ${message.subject} has been filed and is pending approval`
+                        ) : (message.type === "requester" && (message.status === "approved" || message.status === "denied")) ? (
+                          `Your request ${message.subject} has been ${message.status}`
+                        ) : (
+                          `A new ${message.subject} request is pending your review`
+                        )}
+                        <br />
                       </Dropdown.Item>
                     ))
                   ) : (
@@ -144,7 +148,6 @@ const StudentNavbar = () => {
               <DropdownButton
                 id="dropdown-basic-button"
                 title={translations[language].account}
-                menuAlign="right"
                 variant="secondary"
                 className="btn btn-link nav-link"
                 style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
