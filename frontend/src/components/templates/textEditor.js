@@ -99,6 +99,7 @@ const TextEditor = () => {
     setError(null);
     try {
       const response = await fetchForm(selectedForm);
+      setTitleInput(response.data.title)
       if (response.status === 200) {
         formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
         console.log('Document fetched successfully!');

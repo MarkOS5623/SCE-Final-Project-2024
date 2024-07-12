@@ -4,7 +4,7 @@ import { LanguageContext } from '../../context/LanguageContextProvider'; // Adju
 
 const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => {
     const { language } = useContext(LanguageContext);
-
+    console.log(documents)
     // Translations for different languages
     const translations = {
         en: {

@@ -4,7 +4,6 @@ import { LanguageContext } from '../../context/LanguageContextProvider'; // Adju
 
 const FormTable = ({ forms, handleDelete }) => {
     const { language } = useContext(LanguageContext);
-
     // Translations for different languages
     const translations = {
         en: {
@@ -24,6 +23,14 @@ const FormTable = ({ forms, handleDelete }) => {
         }
     };
 
+    if (
+        typeof forms !== 'object' || 
+        forms === null || 
+        !Array.isArray(forms.docs)
+      ) {
+        forms = { docs: [] };
+      }
+
     return (
         <Table striped bordered hover>
             <thead>
@@ -34,7 +41,7 @@ const FormTable = ({ forms, handleDelete }) => {
                 </tr>
             </thead>
             <tbody>
-                {forms.map((doc, index) => (
+                {forms.docs.map((doc, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{doc}</td>
