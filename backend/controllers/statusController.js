@@ -1,4 +1,6 @@
 const utils = require('../utils');
+const nodemailer = require('nodemailer');
+const transporter = require('../config/nodemailer.config'); 
 const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
@@ -8,49 +10,68 @@ const statusController = {
         try {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
+    
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id.toString());
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
                 const statusSignatoriesIds = statuses.map(status => status.signatories.toString());
                 const authorizer = await User.findOne({ id: authorizerID });
+    
                 console.log('statusSignatoriesIds: ', statusSignatoriesIds);
+    
                 if (statusSignatoriesIds.includes(authorizer._id.toString())) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
                             await status.updateOne({ status: "approved" });
-                            return res.status(201).json('successfuly approved request');
+                            const mailOptions = {
+                                from: 'academicsecretery@ac.sce.ac.il',
+                                to: authorizer.email,
+                                subject: 'Request Approved',
+                                text: `Your request ${document.subject} has been approved.`,
+                            };
+                            await transporter.sendMail(mailOptions);
+                            return res.status(201).json('Successfully approved request and sent email');
                         }
                     }
                 }
             }
-            return res.status(401).json('failed approving request');
+            return res.status(401).json('Failed approving request');
         } catch (error) {
             console.error('Error approving request:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
     rejectRequest: async (req, res) => {
         try {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
+    
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id.toString());
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
                 const statusSignatoriesIds = statuses.map(status => status.signatories.toString());
                 const authorizer = await User.findOne({ id: authorizerID });
+    
                 if (statusSignatoriesIds.includes(authorizer._id.toString())) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
                             await status.updateOne({ status: "rejected" });
-                            return res.status(201).json('successfuly rejected request');
+                            const mailOptions = {
+                                from: 'your-email@example.com',
+                                to: authorizer.email,
+                                subject: 'Request Rejected',
+                                text: `Your request ${document.subject} has been approved.`,
+                            };
+                            await transporter.sendMail(mailOptions);
+                            return res.status(201).json('Successfully rejected request and sent email');
                         }
                     }
                 }
             }
-            return res.status(401).json('failed rejecting request');
+            return res.status(401).json('Failed rejecting request');
         } catch (error) {
             console.error('Error rejecting request:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 };
