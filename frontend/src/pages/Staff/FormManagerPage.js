@@ -7,6 +7,7 @@ import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/do
 import { fetchAllFormsList, deleteForm } from '../../api/form_requests';
 import FormTable from '../../components/Tables/FormTable';
 import { LanguageContext } from '../../context/LanguageContextProvider';
+import expandSidebarIcon from '../../assets/actionpanelicon.png'; 
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);
@@ -97,21 +98,18 @@ function FormManagerPage() {
             openEditor: "Open Document Editor",
             openRequestManager: "Open Request Manager",
             openFormTable: "Open Form Table",
-            actions: "<<Actions"
         },
         he: {
             pageTitle: "מנהל טופס",
             openEditor: "פתח עורך מסמך",
             openRequestManager: "פתח מנהל בקשות",
             openFormTable: "פתח טבלת טפסים",
-            actions: "<<פעולות"
         },
         ar: {
             pageTitle: "مدير النماذج",
             openEditor: "فتح محرر المستندات",
             openRequestManager: "فتح مدير الطلبات",
             openFormTable: "فتح جدول النماذج",
-            actions: "<<الإجراءات"
         },
     };
 
@@ -121,9 +119,9 @@ function FormManagerPage() {
         <div>
             <div className="mt-0">
                 <Row>
-                    <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`}>
-                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-100' : ''}`}>
-                            {isActionPanelCollapsed ? translations[language].actions : translations[language].actions}
+                <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`} style={{ backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b" }}>
+                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-200' : ''}`} style={{ backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b", padding: '5px', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: isActionPanelCollapsed ? '30px' : '40px', height: isActionPanelCollapsed ? '30px' : '40px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
                         {!isActionPanelCollapsed && actionPanel()}
                     </Col>

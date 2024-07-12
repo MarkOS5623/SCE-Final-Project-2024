@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import logoImg from '../../assets/sce.jpg';
+import sendMailIcon from '../../assets/send-mail.png'; // Import the icon image
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../context/LanguageContextProvider';
 import './StudentNavbar.css';
@@ -118,7 +119,7 @@ const StudentNavbar = () => {
               <li className="nav-item dropdown">
                 <DropdownButton
                   id="messages-dropdown"
-                  title="Messages"
+                  title={<img src={sendMailIcon} alt="Messages" style={{ width: '20px', marginRight: '0px' }} />}
                   variant="secondary"
                   className="btn btn-link nav-link"
                   style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
