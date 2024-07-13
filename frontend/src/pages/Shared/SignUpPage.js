@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import CardContainer from '../../components/Utils/CardContainer';
 import SignUpForm from '../../components/Forms/SignupForm';
-import logoImg from '../../assets/jpgs/sce.jpg';
+import logoImg from '../../assets/pictures/sce.jpg';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const SignUpPage = () => {

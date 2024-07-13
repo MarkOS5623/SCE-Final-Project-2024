@@ -5,6 +5,7 @@ import PendingRequestsTable from '../Tables/PendingRequestsTable';
 import ApprovedRequestsTable from '../Tables/ApprovedRequestsTable';
 import ViewDocument from '../DocumentViewers/ViewDocument';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import logo from '../../assets/pictures/sce.jpg'
 
 const FormManagerViewer = ({ requestsList, signedRequestsNameList, signedRequestsIDList, signedRequestsStatusList }) => {
     const [showUnAuthRequestsList, setShowUnAuthRequestsList] = useState(false);
@@ -56,7 +57,11 @@ const FormManagerViewer = ({ requestsList, signedRequestsNameList, signedRequest
     };
 
     return (
-        <CardContainer style={{ width: '150vh', padding: '20px' }}>
+        <CardContainer style={{ width: '150vh', padding: '20px' }}>        
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+                <img src={logo} alt="Logo" style={{ height: '100px', marginRight: '20px' }} />
+                <h2>{translations[language].formManagerHeader}</h2>
+            </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 <Button onClick={toggleAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, marginRight: '20px', height: '60px' }}>{translations[language].showSignedRequests}</Button>
                 <Button onClick={toggleUnAuthorizedRequestsTable} style={{ ...tagStyle, flexGrow: 1, height: '60px' }}>{translations[language].showRequests}</Button>

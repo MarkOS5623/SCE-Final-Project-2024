@@ -7,7 +7,7 @@ import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/do
 import { fetchAllFormsList } from '../../api/form_requests';
 import FormManagingTable from '../../components/Tables/FormManagingTable';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
+import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png'; 
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);

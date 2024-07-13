@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Card, Table } from 'react-bootstrap';
-import logoImg from '../../assets/jpgs/sce.jpg';
+import logoImg from '../../assets/pictures/sce.jpg';
 import CardContainer from '../../components/Utils/CardContainer';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 

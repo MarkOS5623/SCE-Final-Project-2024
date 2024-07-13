@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import imageSrc from '../../assets/jpgs/1496042374449-0.jpg'; 
+import imageSrc from '../../assets/pictures/1496042374449-0.jpg'; 
 import '../../assets/css/AboutUs.css'; 
 import CardContainer from '../../components/Utils/CardContainer';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; 

@@ -5,9 +5,9 @@ import '../../assets/css/Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/Utils/CardContainer';
-import logoImg from '../../assets/jpgs/sce.jpg';
+import logoImg from '../../assets/pictures/sce.jpg';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; 
-import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
+import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png'; 
 import RequestTable from '../../components/Tables/RequestTable';
 
 function RequestManagerPage() {
@@ -133,7 +133,7 @@ function RequestManagerPage() {
                     <Col md={12} style={{ transition: 'width 0.3s', position: 'relative' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
-                                <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
+                                <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
                                 <h2>{translations[language].pageTitle}</h2>
                                 {requestFormVisible && (<FormViewer />)}
                                 {requestsVisible && (<RequestTable documents={userRequests} />)}

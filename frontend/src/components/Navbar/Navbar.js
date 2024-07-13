@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import logoImg from '../../assets/jpgs/sce.jpg';
-import sendMailIcon from '../../assets/jpgs/send-mail.png';
+import logoImg from '../../assets/pictures/sce.jpg';
+import sendMailIcon from '../../assets/pictures/send-mail.png';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import '../../assets/css/Navbar.css';

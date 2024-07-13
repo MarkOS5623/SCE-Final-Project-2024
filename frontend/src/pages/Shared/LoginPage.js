@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import CardContainer from '../../components/Utils/CardContainer';
 import LoginForm from '../../components/Forms/LoginForm';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
-import logoImg from '../../assets/jpgs/sce.jpg';
+import logoImg from '../../assets/pictures/sce.jpg';
 
 function LoginPage() {
   const { language } = useContext(LanguageContext);
