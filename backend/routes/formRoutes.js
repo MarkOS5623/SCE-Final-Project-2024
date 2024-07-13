@@ -19,4 +19,7 @@ router.get('/fetchonlysignformslist', formController.fetchOnlySignedFormsList);
 //return an array of all the form titles 
 router.get('/fetchformslist', formController.fetchAllFormsList);
 
+// changes the subject(name) of a document
+router.post('/updateformtitle', formController.updateFormTitle);
+
 module.exports = router;

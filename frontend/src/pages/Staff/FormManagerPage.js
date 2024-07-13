@@ -4,8 +4,8 @@ import TextEditor from '../../components/DocumentViewers/TextEditor';
 import '../../assets/css/Editor.css';
 import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
-import { fetchAllFormsList, deleteForm } from '../../api/form_requests';
-import FormTable from '../../components/Tables/FormManagingTable';
+import { fetchAllFormsList } from '../../api/form_requests';
+import FormManagingTable from '../../components/Tables/FormManagingTable';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
 
@@ -42,19 +42,6 @@ function FormManagerPage() {
 
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);
-    };
-
-    const handleDeleteForm = async (selectedForm) => {
-        try {
-            const response = await deleteForm(selectedForm);
-            if (response.status === 200) {
-                console.log('Document deleted successfully!');
-            } else {
-                console.error('Failed to delete form: status ', response.status);
-            }
-        } catch (error) {
-            console.error('Error fetching form:', error);
-        }
     };
 
     useEffect(() => {
@@ -154,7 +141,7 @@ function FormManagerPage() {
                         <div className="right-panel" style={{ width: 'auto' }}>
                             {EditorVisible && <TextEditor />}
                             {AutorizerVisible && <StaffFormViewer requestsList={requestsList} signedRequestsNameList={signedRequestsList.docs} signedRequestsIDList={signedRequestsList.ids} signedRequestsStatusList={signedRequestsList.statuses} />}
-                            {FormTableVisible && <FormTable forms={allFormsList} handleDelete={handleDeleteForm} />}
+                            {FormTableVisible && <FormManagingTable forms={allFormsList} />}
                         </div>
                     </Col>
                 </Row>

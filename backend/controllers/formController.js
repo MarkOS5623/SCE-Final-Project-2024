@@ -93,6 +93,21 @@ const formController = {
         console.error('Error fetching form serverside:', error);
         res.status(500).send('Internal server error');
       }
+    },  
+    updateFormTitle: async (req, res) => {
+      try {
+        const { oldTitle, newTitle } = req.body;
+        const form = await Form.findOne({ title: oldTitle });
+        if (!form) {
+          return res.status(404).send('Form not found');
+        }
+        await form.updateOne({ title: newTitle });
+        await form.save();
+        res.status(200).send('Form title updated successfully');
+      } catch (error) {
+        console.error('Error updating form title:', error);
+        res.status(500).send('Internal server error');
+      }
     },
   };
   

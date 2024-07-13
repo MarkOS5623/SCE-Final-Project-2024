@@ -93,3 +93,18 @@ export const fetchAllFormsList = async () => {
   }
 };
 
+export const updateFormTitle = async (oldTitle, newTitle) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/updateformtitle', 
+      {oldTitle, newTitle}
+    , {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
+};
