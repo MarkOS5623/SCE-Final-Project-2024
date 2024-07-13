@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import logoImg from '../../assets/sce.jpg';
-import sendMailIcon from '../../assets/send-mail.png'; // Import the icon image
+import sendMailIcon from '../../assets/icons8-messages-100.png';
+import accountIcon from '../../assets/icons8-profile-96.png';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../context/LanguageContextProvider';
 import './StudentNavbar.css';
@@ -96,7 +97,7 @@ const StudentNavbar = () => {
         </Link>
         <div className="navbar-left">
           <div className="language-switcher">
-            <select id="language-select" value={language} onChange={handleLanguageChange}>
+            <select id="language-select" value={language} onChange={handleLanguageChange} style={{ borderRadius: '15px' }}>
               <option value="he">HE</option>
               <option value="en">EN</option>
               <option value="ar">AR</option>
@@ -119,7 +120,7 @@ const StudentNavbar = () => {
               <li className="nav-item dropdown">
                 <DropdownButton
                   id="messages-dropdown"
-                  title={<img src={sendMailIcon} alt="Messages" style={{ width: '20px', marginRight: '0px' }} />}
+                  title={<img src={sendMailIcon} alt="Messages" style={{ width: 'auto', height: '35px', marginRight: '0px' }} />}
                   variant="secondary"
                   className="btn btn-link nav-link"
                   style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
@@ -147,11 +148,11 @@ const StudentNavbar = () => {
             )}
             <li className="nav-item dropdown">
               <DropdownButton
-                id="dropdown-basic-button"
-                title={translations[language].account}
-                variant="secondary"
-                className="btn btn-link nav-link"
-                style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
+                  id="account-dropdown"
+                  title={<img src={accountIcon} alt="account" style={{ width: 'auto', height: '35px', marginRight: '0px' }} />}
+                  variant="secondary"
+                  className="btn btn-link nav-link"
+                  style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
               >
                 <Dropdown.Item as={Link} to="/accountinfopage">{translations[language].accountInfo}</Dropdown.Item>
                 {isAdmin && (

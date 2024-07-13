@@ -1,24 +1,57 @@
+/* Aligns all nav items to the right */
 .navbar-nav {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Aligns all nav items to the right */
+  justify-content: flex-end;
   width: 28%;
 }
 
+/* Adjusts space around the language switcher */
 .language-switcher {
-  margin: 0px; /* Adjusts space around the language switcher */
+  margin: 0px;
 }
 
+/* Adjust dropdown background color to match navbar */
 .nav-item .form-select {
-  background-color: #6c757d; /* Adjust dropdown background color to match navbar */
-  color: white; /* Adjust dropdown text color to match navbar */
-  border: none; /* Remove border for better appearance */
+  background-color: #6c757d;
+  color: white;
+  border: none;
   padding: 5px 10px;
   border-radius: 5px;
 }
 
+/* Option text color */
 .nav-item .form-select option {
-  color: black; /* Option text color */
+  color: black;
 }
 
+/* Style for both dropdown buttons */
+#messages-dropdown .dropdown-toggle,
+#account-dropdown .dropdown-toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
 
+#messages-dropdown .dropdown-toggle img,
+#account-dropdown .dropdown-toggle img {
+  background: transparent;
+  width: 16px; /* Adjust the icon size */
+  height: 16px; /* Ensure the icon height matches */
+}
+
+/* Ensures the dropdown buttons fit the icon size */
+#messages-dropdown,
+#account-dropdown {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+/* Style for the logo image */
+.navbar-brand img {
+  width: auto;
+  height: 30px; /* Adjust the height as needed */
+}
