@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { LanguageContext } from '../../context/LanguageContextProvider';
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 
 const PendingRequestsTable = ({ documents, handleReview }) => {
     const { language } = useContext(LanguageContext);

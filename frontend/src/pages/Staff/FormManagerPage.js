@@ -1,13 +1,13 @@
 import React, { useContext,useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import TextEditor from '../../components/Templates/textEditor';
-import '../Editor.css';
+import TextEditor from '../../components/DocumentViewers/TextEditor';
+import '../../assets/css/Editor.css';
 import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
 import { fetchAllFormsList, deleteForm } from '../../api/form_requests';
-import FormTable from '../../components/Tables/FormTable';
-import { LanguageContext } from '../../context/LanguageContextProvider';
-import expandSidebarIcon from '../../assets/actionpanelicon.png'; 
+import FormTable from '../../components/Tables/FormManagingTable';
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);

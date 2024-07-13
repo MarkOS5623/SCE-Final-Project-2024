@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { signup } from '../../api/user_requests';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 function Signup() {
   const { language } = useContext(LanguageContext); // Accessing language context

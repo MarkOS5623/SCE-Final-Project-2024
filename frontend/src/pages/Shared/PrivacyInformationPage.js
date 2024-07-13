@@ -1,5 +1,5 @@
 import React from 'react';
-import CardContainer from '../../components/cardContainer';
+import CardContainer from '../../components/Utils/CardContainer';
 
 function PrivacyInformationPage() {
   return (

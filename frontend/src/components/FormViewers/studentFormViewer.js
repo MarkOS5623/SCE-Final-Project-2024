@@ -3,12 +3,12 @@ import { Button } from 'react-bootstrap';
 import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import { decodeValue } from '../../api/utils';
 import { fetchUnSignedFormsList, fetchForm, fetchSignedFormsList } from '../../api/form_requests';
-import DownloadDocsTable from '../Tables/downloadDocsTable';
+import DownloadDocsTable from '../Tables/DownloadDocsTable';
 import FillDocumentsTable from '../Tables/RequestFillingTable';
 import FormFiller from '../Forms/FormFiller';
 import { saveDocument } from '../../api/documents_reqeusts';
 import { pdfConverter } from '../../api/utils';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const StudentFormViewer = () => {
     const { language } = useContext(LanguageContext);

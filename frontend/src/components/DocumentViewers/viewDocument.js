@@ -4,7 +4,7 @@ import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument,fetchDocumentAuthor } from '../../api/documents_reqeusts';
 import { authorizeRequest, rejectRequest } from '../../api/status_requests';
 import { decodeValue } from '../../api/utils';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const ViewDocument = ({ documentId, flag }) => {
   const [error, setError] = useState(null);

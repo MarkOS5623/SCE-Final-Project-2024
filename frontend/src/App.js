@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LanguageContextProvider from '../src/context/LanguageContextProvider';
+import LanguageContextProvider from './Context/LanguageContextProvider.js';
 import './assets/css/bootstrap.css';
 import './assets/css/App.css';
 import Navbar from './components/Navbar/Navbar.js';
-import Footer from './components/Footer';
+import Footer from './components/Utils/Footer.js';
 import HomePage from './pages/Shared/HomePage';
 import RequestManagerPage from './pages/Shared/RequestManagerPage';
 import FormManagerPage from './pages/Staff/FormManagerPage';
-import AccountInfoPage from './pages/Shared/accountInfoPage';
+import AccountInfoPage from './pages/Shared/AccountInfoPage.js';
 import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
 import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';

@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import MyRequestsList from '../../components/MyRequestsList';
 import FormViewer from '../../components/FormViewers/studentFormViewer';
-import '../Editor.css';
+import '../../assets/css/Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
-import CardContainer from '../../components/cardContainer';
-import logoImg from '../../assets/sce.jpg';
-import { LanguageContext } from '../../context/LanguageContextProvider'; 
-import expandSidebarIcon from '../../assets/actionpanelicon.png'; 
-import RequestHistoryTable from '../../components/Tables/RequestHistoryTable';
+import CardContainer from '../../components/Utils/CardContainer';
+import logoImg from '../../assets/jpgs/sce.jpg';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
+import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
+import RequestTable from '../../components/Tables/RequestTable';
 
 function RequestManagerPage() {
     const { language } = useContext(LanguageContext);
@@ -137,8 +136,8 @@ function RequestManagerPage() {
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
                                 <h2>{translations[language].pageTitle}</h2>
                                 {requestFormVisible && (<FormViewer />)}
-                                {requestsVisible && (<MyRequestsList requests={userRequests} />)}
-                                {myRequestHistoryVisible && (<RequestHistoryTable documents={userRequestHistory} />)}
+                                {requestsVisible && (<RequestTable documents={userRequests} />)}
+                                {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} />)}
                             </CardContainer>
                         </div>
                     </Col>

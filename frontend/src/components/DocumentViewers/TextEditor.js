@@ -2,10 +2,10 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchForm, saveForm, fetchAllFormsList } from "../../api/form_requests";
-import CardContainer from "../cardContainer";
+import CardContainer from "../Utils/CardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
-import { LanguageContext } from "../../context/LanguageContextProvider"; // Adjust path if necessary
+import { LanguageContext } from "../../Context/LanguageContextProvider"; // Adjust path if necessary
 
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
