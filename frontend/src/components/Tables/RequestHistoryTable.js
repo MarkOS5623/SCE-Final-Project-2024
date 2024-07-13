@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Table } from 'react-bootstrap';
-import { LanguageContext } from '../context/LanguageContextProvider'; 
+import { LanguageContext } from '../../context/LanguageContextProvider';
 
-const MyRequestsTable = ({ documents }) => {
+const RequestHistoryTable = ({ documents }) => {
     const { language } = useContext(LanguageContext);
-
+    console.log(documents)
     // Translations for different languages
     const translations = {
         en: {
@@ -30,7 +30,7 @@ const MyRequestsTable = ({ documents }) => {
     }
 
     return (
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
             <thead>
                 <tr>
                     <th>#</th>
@@ -53,4 +53,4 @@ const MyRequestsTable = ({ documents }) => {
     );
 };
 
-export default MyRequestsTable;
+export default RequestHistoryTable;

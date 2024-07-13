@@ -27,7 +27,7 @@ const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => 
     return (
         <>
             {documents && documentIds && documentStatuses ? (
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover variant="light">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -48,7 +48,7 @@ const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => 
                     </tbody>
                 </Table>
             ) : (
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover variant="light">
                     <thead>
                         <tr>
                             <th>#</th>
