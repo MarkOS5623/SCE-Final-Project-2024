@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import '../assets/css/Footer.css';
-import { LanguageContext } from '../context/LanguageContextProvider'; // Adjust path if necessary
+import '../../assets/css/Footer.css';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const Footer = () => {
   const { language } = useContext(LanguageContext);

@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import MyRequestsList from '../../components/MyRequestsList';
-import FormViewer from '../../components/FormViewers/studentFormViewer';
-import '../Editor.css';
+import FormViewer from '../../components/FormViewers/FormViewer';
+import '../../assets/css/Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
-import CardContainer from '../../components/cardContainer';
-import logoImg from '../../assets/sce.jpg';
-import { LanguageContext } from '../../context/LanguageContextProvider'; 
-import expandSidebarIcon from '../../assets/actionpanelicon.png'; 
+import CardContainer from '../../components/Utils/CardContainer';
+import logoImg from '../../assets/jpgs/sce.jpg';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
+import expandSidebarIcon from '../../assets/jpgs/actionpanelicon.png'; 
+import RequestTable from '../../components/Tables/RequestTable';
 
 function RequestManagerPage() {
     const { language } = useContext(LanguageContext);
     const [userRequests, setUserRequests] = useState({});
-    const [isRequestFormVisible, setIsRequestFormVisible] = useState(true);
-    const [isMyRequestsVisible, setIsMyRequestsVisible] = useState(false);
-    const [isActionPanelCollapsed, setIsActionPanelCollapsed] = useState(false);
+    const [userRequestHistory, setUserRequestHistory] = useState({});
+    const [requestFormVisible, setIsRequestFormVisible] = useState(true);
+    const [requestsVisible, setMyRequestsVisible] = useState(false);
+    const [myRequestHistoryVisible, setMyRequestHistoryVisible] = useState(false);
+    const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -24,10 +26,34 @@ function RequestManagerPage() {
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
                 const response = await fetchRequest(decodedToken.data.user.id);
                 if (response.status === 201) {
-                    const documentNames = response.data.docs.map(item => item.subject);
-                    const documentIds = response.data.docs.map(item => item.documentId);
                     const documentStatuses = response.data.statuses;
-                    setUserRequests({ docs: documentNames, ids: documentIds, statuses: documentStatuses });
+                    const pendingApprovalDocs = [];
+                    const requestHistoryDocs = [];
+                    response.data.docs.forEach((doc, index) => {
+                        if (documentStatuses[index] === "pending approval") {
+                            pendingApprovalDocs.push({
+                                subject: doc.subject,
+                                documentId: doc.documentId,
+                                status: documentStatuses[index],
+                            });
+                        } else {
+                            requestHistoryDocs.push({
+                                subject: doc.subject,
+                                documentId: doc.documentId,
+                                status: documentStatuses[index],
+                            });
+                        }
+                    });
+                    setUserRequests({
+                        docs: pendingApprovalDocs.map(doc => doc.subject),
+                        ids: pendingApprovalDocs.map(doc => doc.documentId),
+                        statuses: pendingApprovalDocs.map(doc => doc.status),
+                    });
+                    setUserRequestHistory({
+                        docs: requestHistoryDocs.map(doc => doc.subject),
+                        ids: requestHistoryDocs.map(doc => doc.documentId),
+                        statuses: requestHistoryDocs.map(doc => doc.status),
+                    });
                 } else {
                     console.log('Response data is empty');
                 }
@@ -40,18 +66,27 @@ function RequestManagerPage() {
 
     const toggleEditorVisibility = () => {
         setIsRequestFormVisible(true);
-        setIsMyRequestsVisible(false);
-        setIsActionPanelCollapsed(true);
+        setMyRequestsVisible(false);
+        setActionPanelCollapsed(true);
+        setMyRequestHistoryVisible(false);
     };
 
     const showMyRequests = () => {
-        setIsMyRequestsVisible(true);
+        setMyRequestsVisible(true);
         setIsRequestFormVisible(false);
-        setIsActionPanelCollapsed(true);
+        setActionPanelCollapsed(true);
+        setMyRequestHistoryVisible(false);
+    };
+
+    const showMyRequestHistory = () => {
+        setMyRequestsVisible(false);
+        setIsRequestFormVisible(false);
+        setActionPanelCollapsed(true);
+        setMyRequestHistoryVisible(true);
     };
 
     const toggleActionPanelCollapse = () => {
-        setIsActionPanelCollapsed(!isActionPanelCollapsed);
+        setActionPanelCollapsed(!actionPanelCollapsed);
     };
 
     const actionPanel = () => (
@@ -62,6 +97,9 @@ function RequestManagerPage() {
             <Button onClick={showMyRequests} className='btn btn-primary'>
                 {translations[language].myRequests}
             </Button>
+            <Button onClick={showMyRequestHistory} className='btn btn-primary'>
+                {translations[language].myRequestHistory}
+            </Button>
         </div>
     );
 
@@ -71,11 +109,13 @@ function RequestManagerPage() {
             pageTitle: "Request Manager",
             makeNewRequest: "Make a new request",
             myRequests: "My requests",
+            myRequestHistory: "Request History"
         },
         he: {
             pageTitle: "מנהל בקשות",
             makeNewRequest: "להגיש בקשה חדשה",
             myRequests: "הבקשות שלי",
+            myRequestHistory: "היסטוריית בקשות"
         },
         ar: {
             pageTitle: "مدير الطلبات",
@@ -90,22 +130,48 @@ function RequestManagerPage() {
         <div>
             <div className="mt-0">
                 <Row>
-                    <Col md={isActionPanelCollapsed ? 1 : 2} className={`action-panel ${isActionPanelCollapsed ? 'collapsed' : ''}`} style={{ backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b" }}>
-                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${isActionPanelCollapsed ? 'w-200' : ''}`} style={{ backgroundColor: isActionPanelCollapsed ? '' : "#9ec93b", padding: '5px', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: isActionPanelCollapsed ? '30px' : '40px', height: isActionPanelCollapsed ? '30px' : '40px', transition: 'width 0.3s, height 0.3s' }} />
-                        </Button>
-                        {!isActionPanelCollapsed && actionPanel()}
-                    </Col>
-                    <Col md={isActionPanelCollapsed ? 14 : 10} style={{ transition: 'width 0.3s' }}>
+                    <Col md={12} style={{ transition: 'width 0.3s', position: 'relative' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
                                 <h2>{translations[language].pageTitle}</h2>
-                                {isRequestFormVisible && (<FormViewer />)}
-                                {isMyRequestsVisible && (<MyRequestsList requests={userRequests} />)}
+                                {requestFormVisible && (<FormViewer />)}
+                                {requestsVisible && (<RequestTable documents={userRequests} />)}
+                                {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} />)}
                             </CardContainer>
                         </div>
                     </Col>
+                    <div 
+                        className={`action-panel ${actionPanelCollapsed ? 'collapsed' : ''}`} 
+                        style={{ 
+                            background: actionPanelCollapsed 
+                                ? '' 
+                                : 'linear-gradient(to left, rgba(126, 156, 56, 1) 0%, rgba(158, 201, 59, 1) 100%)', 
+                            position: 'fixed', 
+                            border: 'auto',
+                            top: '70px', 
+                            bottom: '70px', 
+                            left: -11, 
+                            width: actionPanelCollapsed ? '80px' : '300px', 
+                            zIndex: 1000,
+                            transition: 'width 0.3s'
+                        }}
+                    >
+                        <Button 
+                            onClick={toggleActionPanelCollapse} 
+                            className={`btn btn-secondary mb-2 ${actionPanelCollapsed ? 'w-100' : ''}`} 
+                            style={{ 
+                                background: 'rgba(158, 201, 59, 1)', 
+                                padding: '5px', 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                alignItems: 'center' 
+                            }}
+                        >
+                            <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
+                        </Button>
+                        {!actionPanelCollapsed && actionPanel()}
+                    </div>
                 </Row>
             </div>
         </div>

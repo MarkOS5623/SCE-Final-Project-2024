@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import imageSrc from '../../assets/1496042374449-0.jpg'; // Corrected path to your image file
-import '../AboutUs.css'; // Import your CSS file for styling
-import CardContainer from '../../components/cardContainer';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Import LanguageContext
+import imageSrc from '../../assets/jpgs/1496042374449-0.jpg'; 
+import '../../assets/css/AboutUs.css'; 
+import CardContainer from '../../components/Utils/CardContainer';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
 
 const translations = {
   en: {

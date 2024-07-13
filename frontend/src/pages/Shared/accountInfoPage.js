@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Card, Table } from 'react-bootstrap';
-import logoImg from '../../assets/sce.jpg';
-import CardContainer from '../../components/cardContainer';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import logoImg from '../../assets/jpgs/sce.jpg';
+import CardContainer from '../../components/Utils/CardContainer';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const AccountInfoPage = () => {
   const { language } = useContext(LanguageContext);

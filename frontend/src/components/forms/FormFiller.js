@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const FormFiller = ({ documentName, handleSubmit }) => {
     const { language } = useContext(LanguageContext); // Accessing language context

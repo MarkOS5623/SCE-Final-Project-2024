@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import CardContainer from '../../components/cardContainer';
-import '../ContactUs.css';
-import imageSrc1 from '../../assets/linkedin.png';
-import imageSrc2 from '../../assets/facebook.png';
-import imageSrc3 from '../../assets/instagram.png';
-import imageSrc4 from '../../assets/youtube.png';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import CardContainer from '../../components/Utils/CardContainer';
+import '../../assets/css/ContactUs.css';
+import imageSrc1 from '../../assets/jpgs/linkedin.png';
+import imageSrc2 from '../../assets/jpgs/facebook.png';
+import imageSrc3 from '../../assets/jpgs/instagram.png';
+import imageSrc4 from '../../assets/jpgs/youtube.png';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const ContactUs = () => {
   const { language } = useContext(LanguageContext);

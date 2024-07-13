@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchDocument } from '../api/documents_reqeusts';
-import { LanguageContext } from '../context/LanguageContextProvider'; // Adjust path if necessary
+import { fetchDocument } from '../../api/documents_reqeusts';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
-export default function MyRequestsList({ requests }) {
+export default function RequestTable({ documents }) {
   const { language } = useContext(LanguageContext);
 
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -71,14 +71,14 @@ export default function MyRequestsList({ requests }) {
               </tr>
             </thead>
             <tbody>
-              {requests.docs && requests.docs.map((doc, index) => (
+              {documents.docs && documents.docs.map((doc, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{requests.ids[index]}</td>
+                  <td>{documents.ids[index]}</td>
                   <td>{doc}</td>
-                  <td>{requests.statuses[index]}</td>
+                  <td>{documents.statuses[index]}</td>
                   <td>
-                    <Button variant="primary" onClick={() => handleReview(requests.ids[index])}>
+                    <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
                       {translations[language].review}
                     </Button>
                   </td>
@@ -89,7 +89,7 @@ export default function MyRequestsList({ requests }) {
         ) : (
           <>
             <DocumentEditorComponent
-              height="500px"
+              height="85vh"
               width="95%"
               id="container"
               style={editorStyle}

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const DownloadDocsTable = ({ documents, handleDownload }) => {
     const { language } = useContext(LanguageContext);

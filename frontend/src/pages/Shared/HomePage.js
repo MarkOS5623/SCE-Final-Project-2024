@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
-import logoImg from '../../assets/sce.jpg';
-import CardContainer from '../../components/cardContainer';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import logoImg from '../../assets/jpgs/sce.jpg';
+import CardContainer from '../../components/Utils/CardContainer';
 
 function HomePage() {
   const navigate = useNavigate();

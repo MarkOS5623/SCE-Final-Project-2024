@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import CardContainer from '../../components/cardContainer';
-import SignUpForm from '../../components/Forms/signupForm';
-import logoImg from '../../assets/sce.jpg';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import CardContainer from '../../components/Utils/CardContainer';
+import SignUpForm from '../../components/Forms/SignupForm';
+import logoImg from '../../assets/jpgs/sce.jpg';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const SignUpPage = () => {
   const { language } = useContext(LanguageContext);

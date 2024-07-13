@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 
 const PendingRequestsTable = ({ documents, handleReview }) => {
     const { language } = useContext(LanguageContext);
     console.log(documents)
-    // Translations for different languages
+
     const translations = {
         en: {
             requestID: "Request ID",
@@ -38,7 +38,7 @@ const PendingRequestsTable = ({ documents, handleReview }) => {
       }
 
     return (
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
             <thead>
                 <tr>
                     <th>#</th>

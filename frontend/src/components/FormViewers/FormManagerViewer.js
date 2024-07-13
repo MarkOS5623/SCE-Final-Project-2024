@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
-import CardContainer from '../cardContainer';
+import CardContainer from '../Utils/CardContainer';
 import { Button } from 'react-bootstrap';
 import PendingRequestsTable from '../Tables/PendingRequestsTable';
 import ApprovedRequestsTable from '../Tables/ApprovedRequestsTable';
-import ViewDocument from '../DocumentViewers/viewDocument';
-import { LanguageContext } from '../../context/LanguageContextProvider'; // Adjust path if necessary
+import ViewDocument from '../DocumentViewers/ViewDocument';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
-const StaffFormViewer = ({ requestsList, signedRequestsNameList, signedRequestsIDList, signedRequestsStatusList }) => {
+const FormManagerViewer = ({ requestsList, signedRequestsNameList, signedRequestsIDList, signedRequestsStatusList }) => {
     const [showUnAuthRequestsList, setShowUnAuthRequestsList] = useState(false);
     const [showAuthRequestsList, setShowAuthRequestsList] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
@@ -69,4 +69,4 @@ const StaffFormViewer = ({ requestsList, signedRequestsNameList, signedRequestsI
     );
 };
 
-export default StaffFormViewer;
+export default FormManagerViewer;

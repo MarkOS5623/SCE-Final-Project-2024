@@ -2,10 +2,10 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchForm, saveForm, fetchAllFormsList } from "../../api/form_requests";
-import CardContainer from "../cardContainer";
+import CardContainer from "../Utils/CardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
-import { LanguageContext } from "../../context/LanguageContextProvider"; // Adjust path if necessary
+import { LanguageContext } from "../../Context/LanguageContextProvider"; // Adjust path if necessary
 
 const TextEditor = () => {
   const [DocsList, setDocsList] = useState([]);
@@ -194,7 +194,7 @@ const TextEditor = () => {
         <Col xs={4} style={{ width: '20%', paddingTop: '20px', height: '20%'}} className="d-flex flex-column justify-content-center">
           <Row style={{ width: '100%', marginTop: '0px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
             <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
-              <Dropdown style={{ width: '220px', fontSize: '15px', fontWeight: 'bold'}}>
+              <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold'}}>
                 <Dropdown.Toggle variant="outline-success" id="formDropdown">
                   {selectedForm ? selectedForm : translations[language].selectDocument}
                 </Dropdown.Toggle>
