@@ -2,7 +2,7 @@ import React, { useContext,useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import TextEditor from '../../components/DocumentViewers/TextEditor';
 import '../../assets/css/Editor.css';
-import StaffFormViewer from '../../components/FormViewers/staffFormViewer';
+import FormManagerViewer from '../../components/FormViewers/FormManagerViewer';
 import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
 import { fetchAllFormsList } from '../../api/form_requests';
 import FormManagingTable from '../../components/Tables/FormManagingTable';
@@ -140,7 +140,7 @@ function FormManagerPage() {
                     <Col md={12} style={{ transition: 'width 0.3s', position: 'relative' , marginTop: '35px'}}>
                         <div className="right-panel" style={{ width: 'auto' }}>
                             {EditorVisible && <TextEditor />}
-                            {AutorizerVisible && <StaffFormViewer requestsList={requestsList} signedRequestsNameList={signedRequestsList.docs} signedRequestsIDList={signedRequestsList.ids} signedRequestsStatusList={signedRequestsList.statuses} />}
+                            {AutorizerVisible && <FormManagerViewer requestsList={requestsList} signedRequestsNameList={signedRequestsList.docs} signedRequestsIDList={signedRequestsList.ids} signedRequestsStatusList={signedRequestsList.statuses} />}
                             {FormTableVisible && <FormManagingTable forms={allFormsList} />}
                         </div>
                     </Col>

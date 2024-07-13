@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import FormViewer from '../../components/FormViewers/studentFormViewer';
+import FormViewer from '../../components/FormViewers/FormViewer';
 import '../../assets/css/Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';

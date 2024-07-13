@@ -10,7 +10,7 @@ import { saveDocument } from '../../api/documents_reqeusts';
 import { pdfConverter } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
-const StudentFormViewer = () => {
+const FormViewer = () => {
     const { language } = useContext(LanguageContext);
 
     const [noSignDocsList, setNoSignDocsList] = useState([]);
@@ -142,4 +142,4 @@ const StudentFormViewer = () => {
     );
 };
 
-export default StudentFormViewer;
+export default FormViewer;

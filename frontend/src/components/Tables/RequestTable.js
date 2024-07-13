@@ -89,7 +89,7 @@ export default function RequestTable({ documents }) {
         ) : (
           <>
             <DocumentEditorComponent
-              height="auto"
+              height="85vh"
               width="95%"
               id="container"
               style={editorStyle}
