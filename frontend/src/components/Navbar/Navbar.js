@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import logoImg from '../../assets/jpgs/sce.jpg';
-import sendMailIcon from '../../assets/jpgs/send-mail.png';
+import logoImg from '../../assets/pictures/sce.jpg';
+import messagesIcon from '../../assets/pictures/icons8-messages-100.png'; // Default messages icon
+import messagesWithMessagesIcon from '../../assets/pictures/icons8-messages-1001.png'; // Messages icon when there are messages
+import accountIcon from '../../assets/pictures/icons8-profile-96.png';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import '../../assets/css/Navbar.css';
+import '../../assets/css/Navbar.css'; // Make sure to adjust the path if needed
 
 const translations = {
   en: {
@@ -96,10 +98,10 @@ const StudentNavbar = () => {
         </Link>
         <div className="navbar-left">
           <Dropdown onSelect={handleLanguageChange}>
-            <Dropdown.Toggle variant="secondary" id="language-dropdown">
+            <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill language-dropdown">
               {language.toUpperCase()}
             </Dropdown.Toggle>
-            <Dropdown.Menu>
+            <Dropdown.Menu className="dropdown-menu rounded">
               <Dropdown.Item eventKey="he">HE</Dropdown.Item>
               <Dropdown.Item eventKey="en">EN</Dropdown.Item>
               <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
@@ -122,7 +124,7 @@ const StudentNavbar = () => {
               <li className="nav-item dropdown">
                 <DropdownButton
                   id="messages-dropdown"
-                  title={<img src={sendMailIcon} alt="Messages" style={{ width: '20px', marginRight: '0px' }} />}
+                  title={<img src={userMessages.length > 0 ? messagesWithMessagesIcon : messagesIcon} alt="Messages" style={{ width: '35px', marginRight: '0px' }} />}
                   variant="secondary"
                   className="btn btn-link nav-link"
                   style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
@@ -150,11 +152,11 @@ const StudentNavbar = () => {
             )}
             <li className="nav-item dropdown">
               <DropdownButton
-                id="dropdown-basic-button"
-                title={translations[language].account}
-                variant="secondary"
-                className="btn btn-link nav-link"
-                style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
+                  id="account-dropdown"
+                  title={<img src={accountIcon} alt="account" style={{ width: '35px', marginRight: '0px' }} />}
+                  variant="secondary"
+                  className="btn btn-link nav-link"
+                  style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}
               >
                 <Dropdown.Item as={Link} to="/accountinfopage">{translations[language].accountInfo}</Dropdown.Item>
                 {isAdmin && (

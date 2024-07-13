@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import CardContainer from '../../components/Utils/CardContainer';
 import '../../assets/css/ContactUs.css';
-import imageSrc1 from '../../assets/jpgs/linkedin.png';
-import imageSrc2 from '../../assets/jpgs/facebook.png';
-import imageSrc3 from '../../assets/jpgs/instagram.png';
-import imageSrc4 from '../../assets/jpgs/youtube.png';
+import imageSrc1 from '../../assets/pictures/linkedin.png';
+import imageSrc2 from '../../assets/pictures/facebook.png';
+import imageSrc3 from '../../assets/pictures/instagram.png';
+import imageSrc4 from '../../assets/pictures/youtube.png';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 
 const ContactUs = () => {
