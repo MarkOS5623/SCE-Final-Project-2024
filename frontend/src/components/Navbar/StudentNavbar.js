@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import logoImg from '../../assets/sce.jpg';
-import sendMailIcon from '../../assets/icons8-messages-100.png';
-import accountIcon from '../../assets/icons8-profile-96.png';
+import sendMailIcon from '../../assets/pictures/icons8-messages-100.png';
+import accountIcon from '../../assets/pictures/icons8-profile-96.png';
 import { decodeValue } from '../../api/utils';
-import { LanguageContext } from '../../context/LanguageContextProvider';
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 import './StudentNavbar.css';
 
 const translations = {
