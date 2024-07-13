@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LanguageContextProvider from '../src/context/LanguageContextProvider';
 import './assets/css/bootstrap.css';
 import './assets/css/App.css';
-import NavBarSwitch from './components/Navbar/NavBarSwitch';
+import Navbar from './components/Navbar/Navbar.js';
 import Footer from './components/Footer';
 import HomePage from './pages/Shared/HomePage';
 import RequestManagerPage from './pages/Shared/RequestManagerPage';
@@ -21,7 +21,7 @@ function App() {
       <div className="App">
         <Router>
         <LanguageContextProvider>
-          <NavBarSwitch />
+          <Navbar />
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUpPage />} />

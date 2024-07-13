@@ -194,7 +194,7 @@ const TextEditor = () => {
         <Col xs={4} style={{ width: '20%', paddingTop: '20px', height: '20%'}} className="d-flex flex-column justify-content-center">
           <Row style={{ width: '100%', marginTop: '0px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
             <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
-              <Dropdown style={{ width: '220px', fontSize: '15px', fontWeight: 'bold'}}>
+              <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold'}}>
                 <Dropdown.Toggle variant="outline-success" id="formDropdown">
                   {selectedForm ? selectedForm : translations[language].selectDocument}
                 </Dropdown.Toggle>

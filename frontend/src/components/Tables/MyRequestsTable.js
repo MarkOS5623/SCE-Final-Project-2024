@@ -25,9 +25,14 @@ const MyRequestsTable = ({ documents }) => {
     };
 
     // Ensure documents has default values
-    if (!documents) {
-        documents = { docs: [], ids: [], statuses: [] };
-    }
+    if (
+        typeof documents !== 'object' || 
+        documents === null || 
+        !Array.isArray(documents.docs) || 
+        !Array.isArray(documents.ids)
+      ) {
+        documents = { docs: [], ids: [] };
+      }
 
     return (
         <Table striped bordered hover variant="dark">

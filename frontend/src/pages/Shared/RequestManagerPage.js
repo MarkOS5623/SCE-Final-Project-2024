@@ -13,12 +13,12 @@ import RequestHistoryTable from '../../components/Tables/RequestHistoryTable';
 
 function RequestManagerPage() {
     const { language } = useContext(LanguageContext);
-    const [ userRequests, setUserRequests ] = useState({});
-    const [ userRequestHistory, setUserRequestHistory ] = useState({});
-    const [ requestFormVisible, setIsRequestFormVisible ] = useState(true);
-    const [ requestsVisible, setMyRequestsVisible ] = useState(false);
-    const [ myRequestHistoryVisible, setMyRequestHistoryVisible ] = useState(false);
-    const [ actionPanelCollapsed, setIsActionPanelCollapsed ] = useState(false);
+    const [userRequests, setUserRequests] = useState({});
+    const [userRequestHistory, setUserRequestHistory] = useState({});
+    const [requestFormVisible, setIsRequestFormVisible] = useState(true);
+    const [requestsVisible, setMyRequestsVisible] = useState(false);
+    const [myRequestHistoryVisible, setMyRequestHistoryVisible] = useState(false);
+    const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -55,7 +55,6 @@ function RequestManagerPage() {
                         ids: requestHistoryDocs.map(doc => doc.documentId),
                         statuses: requestHistoryDocs.map(doc => doc.status),
                     });
-                    console.log(requestHistoryDocs)
                 } else {
                     console.log('Response data is empty');
                 }
@@ -65,31 +64,30 @@ function RequestManagerPage() {
         }
         fetchData();
     }, []);
-    
 
     const toggleEditorVisibility = () => {
         setIsRequestFormVisible(true);
         setMyRequestsVisible(false);
-        setIsActionPanelCollapsed(true);
+        setActionPanelCollapsed(true);
         setMyRequestHistoryVisible(false);
     };
 
     const showMyRequests = () => {
         setMyRequestsVisible(true);
         setIsRequestFormVisible(false);
-        setIsActionPanelCollapsed(true);
+        setActionPanelCollapsed(true);
         setMyRequestHistoryVisible(false);
     };
 
     const showMyRequestHistory = () => {
         setMyRequestsVisible(false);
         setIsRequestFormVisible(false);
-        setIsActionPanelCollapsed(false);
+        setActionPanelCollapsed(true);
         setMyRequestHistoryVisible(true);
     };
 
     const toggleActionPanelCollapse = () => {
-        setIsActionPanelCollapsed(!actionPanelCollapsed);
+        setActionPanelCollapsed(!actionPanelCollapsed);
     };
 
     const actionPanel = () => (
@@ -133,23 +131,48 @@ function RequestManagerPage() {
         <div>
             <div className="mt-0">
                 <Row>
-                    <Col md={actionPanelCollapsed ? 1 : 2} className={`action-panel ${actionPanelCollapsed ? 'collapsed' : ''}`} style={{ backgroundColor: actionPanelCollapsed ? '' : "#9ec93b" }}>
-                        <Button onClick={toggleActionPanelCollapse} className={`btn btn-secondary mb-2 ${actionPanelCollapsed ? 'w-200' : ''}`} style={{ backgroundColor: actionPanelCollapsed ? '' : "#9ec93b", padding: '5px', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: actionPanelCollapsed ? '30px' : '40px', height: actionPanelCollapsed ? '30px' : '40px', transition: 'width 0.3s, height 0.3s' }} />
-                        </Button>
-                        {!actionPanelCollapsed && actionPanel()}
-                    </Col>
-                    <Col md={actionPanelCollapsed ? 14 : 10} style={{ transition: 'width 0.3s' }}>
+                    <Col md={12} style={{ transition: 'width 0.3s', position: 'relative' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '50px', marginBottom: "10px", marginTop: "10px" }} />
                                 <h2>{translations[language].pageTitle}</h2>
                                 {requestFormVisible && (<FormViewer />)}
                                 {requestsVisible && (<MyRequestsList requests={userRequests} />)}
-                                {myRequestHistoryVisible && (<RequestHistoryTable documents={userRequestHistory}/>)}
+                                {myRequestHistoryVisible && (<RequestHistoryTable documents={userRequestHistory} />)}
                             </CardContainer>
                         </div>
                     </Col>
+                    <div 
+                        className={`action-panel ${actionPanelCollapsed ? 'collapsed' : ''}`} 
+                        style={{ 
+                            background: actionPanelCollapsed 
+                                ? '' 
+                                : 'linear-gradient(to left, rgba(126, 156, 56, 1) 0%, rgba(158, 201, 59, 1) 100%)', 
+                            position: 'fixed', 
+                            border: 'auto',
+                            top: '70px', 
+                            bottom: '70px', 
+                            left: -11, 
+                            width: actionPanelCollapsed ? '80px' : '300px', 
+                            zIndex: 1000,
+                            transition: 'width 0.3s'
+                        }}
+                    >
+                        <Button 
+                            onClick={toggleActionPanelCollapse} 
+                            className={`btn btn-secondary mb-2 ${actionPanelCollapsed ? 'w-100' : ''}`} 
+                            style={{ 
+                                background: 'rgba(158, 201, 59, 1)', 
+                                padding: '5px', 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                alignItems: 'center' 
+                            }}
+                        >
+                            <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
+                        </Button>
+                        {!actionPanelCollapsed && actionPanel()}
+                    </div>
                 </Row>
             </div>
         </div>
