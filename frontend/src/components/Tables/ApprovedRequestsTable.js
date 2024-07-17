@@ -23,7 +23,6 @@ const ApprovedRequestsTable = () => {
         fetchData();
     }, []);
 
-
     // Translations for different languages
     const translations = {
         en: {

@@ -44,7 +44,7 @@ const userController = {
     try {
       const userList = await User.find({ role: 'admin' });
       const adminNamesWithIds = userList.map(user => ({
-        id: user.id,
+        id: user._id,
         name: `${user.fname} ${user.lname}`
       }));
       res.status(200).json(adminNamesWithIds);

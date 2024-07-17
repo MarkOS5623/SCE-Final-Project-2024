@@ -13,11 +13,11 @@ import logoImg from '../../assets/pictures/sce.jpg';
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);
-    const [EditorVisible, setEditorVisible] = useState(false);
-    const [AutorizerVisible, setAutorizerVisible] = useState(false);
-    const [AutorizerHistoryVisible, setAutorizerHistoryVisible] = useState(false);
-    const [FormTableVisible, setFormTableVisible] = useState(false);
-    const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
+    const [ EditorVisible, setEditorVisible ] = useState(true);
+    const [ AutorizerVisible, setAutorizerVisible ] = useState(false);
+    const [ AutorizerHistoryVisible, setAutorizerHistoryVisible ] = useState(false);
+    const [ FormTableVisible, setFormTableVisible ] = useState(false);
+    const [ actionPanelCollapsed, setActionPanelCollapsed ] = useState(true);
 
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);

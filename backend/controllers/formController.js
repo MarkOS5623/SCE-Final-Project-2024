@@ -6,7 +6,7 @@ const formController = {
     saveForm: async (req, res) => {
       try {
         const { Data, title, Signatories, Author, Type } = req.body;
-        const signatories = await User.find({ id: {  $in: Signatories } });
+        const signatories = await User.find({ _id: {  $in: Signatories } });
         const user = await User.findOne({ id: Author });
         const Tem = await Form.findOne({title: title});
         if(Tem){

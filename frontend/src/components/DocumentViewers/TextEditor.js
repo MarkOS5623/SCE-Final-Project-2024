@@ -8,14 +8,14 @@ import { decodeValue } from "../../api/utils";
 import { LanguageContext } from "../../Context/LanguageContextProvider"; // Adjust path if necessary
 
 const TextEditor = () => {
-  const [DocsList, setDocsList] = useState([]);
-  const [selectedForm, setSelectedForm] = useState('');
-  const [titleInput, setTitleInput] = useState('');
-  const [error, setError] = useState('');
-  const [selectedNames, setSelectedNames] = useState([]);
-  const [namesList, setNamesList] = useState([]);
-  const [authlist, setAuthsList] = useState({});
-  const [selectedType, setSelectedType] = useState('');
+  const [ DocsList, setDocsList ] = useState([]);
+  const [ selectedForm, setSelectedForm ] = useState('');
+  const [ titleInput, setTitleInput ] = useState('');
+  const [ error, setError ] = useState('');
+  const [ selectedNames, setSelectedNames ] = useState([]);
+  const [ namesList, setNamesList ] = useState([]);
+  const [ authlist, setAuthsList ] = useState({});
+  const [ selectedType, setSelectedType ] = useState('');
 
   const { language } = useContext(LanguageContext); // Accessing language context
 
@@ -99,6 +99,12 @@ const TextEditor = () => {
     setError(null);
     try {
       const response = await fetchForm(selectedForm);
+      const selectedAuthorNames = response.data.signatories.map(id => {
+        const author = authlist.find(auth => auth.id === id);
+        console.log(authlist)
+        return author ? author.name : null;
+      }).filter(name => name !== null);
+      setSelectedNames(selectedAuthorNames)
       setTitleInput(response.data.title)
       if (response.status === 200) {
         formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
