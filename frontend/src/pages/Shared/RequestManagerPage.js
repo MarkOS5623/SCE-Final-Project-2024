@@ -1,20 +1,21 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
-import FormViewer from '../../components/FormViewers/FormViewer';
 import '../../assets/css/Editor.css';
 import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
-import { LanguageContext } from '../../Context/LanguageContextProvider';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
 import RequestTable from '../../components/Tables/RequestTable';
+import UserActionPanel from '../../components/ActionPanels/UserActionPanel';
+import DownloadDocsTable from '../../components/Tables/DownloadDocsTable';
+import RequestFillingTable from '../../components/Tables/RequestFillingTable';
 
 function RequestManagerPage() {
-    const { language } = useContext(LanguageContext);
     const [userRequests, setUserRequests] = useState({});
     const [userRequestHistory, setUserRequestHistory] = useState({});
-    const [requestFormVisible, setIsRequestFormVisible] = useState(true);
+    const [requestFormVisible, setRequestFormVisible] = useState(true);
+    const [downloadFormVisible, setDownloadFormVisible] = useState(false);
     const [requestsVisible, setMyRequestsVisible] = useState(false);
     const [myRequestHistoryVisible, setMyRequestHistoryVisible] = useState(false);
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
@@ -64,67 +65,9 @@ function RequestManagerPage() {
         fetchData();
     }, []);
 
-    const toggleEditorVisibility = () => {
-        setIsRequestFormVisible(true);
-        setMyRequestsVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(false);
-    };
-
-    const showMyRequests = () => {
-        setMyRequestsVisible(true);
-        setIsRequestFormVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(false);
-    };
-
-    const showMyRequestHistory = () => {
-        setMyRequestsVisible(false);
-        setIsRequestFormVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(true);
-    };
-
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);
     };
-
-    const actionPanel = () => (
-        <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary rounded-pill'>
-                {translations[language].makeNewRequest}
-            </Button>
-            <Button onClick={showMyRequests} className='btn btn-primary rounded-pill'>
-                {translations[language].myRequests}
-            </Button>
-            <Button onClick={showMyRequestHistory} className='btn btn-primary rounded-pill'>
-                {translations[language].myRequestHistory}
-            </Button>
-        </div>
-    );
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            pageTitle: "Request Manager",
-            makeNewRequest: "Make a new request",
-            myRequests: "My requests",
-            myRequestHistory: "Request History"
-        },
-        he: {
-            pageTitle: "מנהל בקשות",
-            makeNewRequest: "להגיש בקשה חדשה",
-            myRequests: "הבקשות שלי",
-            myRequestHistory: "היסטוריית בקשות"
-        },
-        ar: {
-            pageTitle: "مدير الطلبات",
-            makeNewRequest: "تقديم طلب جديد",
-            myRequests: "طلباتي",
-        },
-    };
-
-    if (!translations[language]) return null;
 
     return (
         <div>
@@ -134,10 +77,10 @@ function RequestManagerPage() {
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
-                                <h2>{translations[language].pageTitle}</h2>
-                                {requestFormVisible && (<FormViewer />)}
                                 {requestsVisible && (<RequestTable documents={userRequests} />)}
                                 {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} />)}
+                                {downloadFormVisible && (<DownloadDocsTable/>)}
+                                {requestFormVisible && (<RequestFillingTable/>)}
                             </CardContainer>
                         </div>
                     </Col>
@@ -146,23 +89,24 @@ function RequestManagerPage() {
                         style={{
                             background: actionPanelCollapsed
                                 ? ''
-                                : 'linear-gradient(to left, rgba(126, 156, 56, 1) 0%, rgba(126, 156, 56, 1) 100%)',
+                                : 'rgba(158, 201, 59)',
                             position: 'fixed',
-                            border: 'auto',
+                            borderRight: actionPanelCollapsed
+                            ? ''
+                            : '2px solid white',
                             top: '70px',
                             bottom: '70px',
-                            left: -11,
+                            left: -15,
                             width: actionPanelCollapsed ? '80px' : '300px',
                             zIndex: 1000,
                             transition: 'width 0.3s',
-                            borderRadius: '20px'
                         }}
                     >
                         <Button
                             onClick={toggleActionPanelCollapse}
                             className={`btn btn-secondary mb-2 ${actionPanelCollapsed ? 'w-100' : ''}`}
                             style={{
-                                background: 'rgba(126, 156, 56, 1)',
+                                background: 'rgba(158, 201, 59)',
                                 padding: '5px',
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -172,7 +116,12 @@ function RequestManagerPage() {
                         >
                             <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
-                        {!actionPanelCollapsed && actionPanel()}
+                        {!actionPanelCollapsed && <UserActionPanel 
+                            setRequestFormVisible={setRequestFormVisible} 
+                            setMyRequestsVisible={setMyRequestsVisible} 
+                            setMyRequestHistoryVisible={setMyRequestHistoryVisible} 
+                            setActionPanelCollapsed={setActionPanelCollapsed}
+                            setDownloadFormVisible={setDownloadFormVisible}/>}
                     </div>
                 </Row>
             </div>

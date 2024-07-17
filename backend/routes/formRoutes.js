@@ -11,10 +11,10 @@ router.post('/fetchform', formController.fetchForm);
 router.post('/deleteform', formController.deleteForm);
 
 //return an array of form titles with no signature
-router.get('/fetchunsignedformslist', formController.fetchUnsignedFormsList);
+router.get('/fetchnosignatureformslist', formController.fetchNoSignatureFormsList);
 
 //return an array of form titles with signatures
-router.get('/fetchonlysignformslist', formController.fetchOnlySignedFormsList);
+router.get('/fetchformwithsignaturelist', formController.fetchFormWithSignatureList);
 
 //return an array of all the form titles 
 router.get('/fetchformslist', formController.fetchAllFormsList);

@@ -51,9 +51,9 @@ export const saveForm = async (formData, titleInput, signatories, author, type) 
   }
 };
 
-export const fetchUnSignedFormsList = async () => {
+export const fetchNoSignatureFormsList = async () => {
   try {
-    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchunsignedformslist', {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchnosignatureformslist', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -65,9 +65,9 @@ export const fetchUnSignedFormsList = async () => {
   }
 };
 
-export const fetchSignedFormsList = async () => {
+export const fetchFormWithSignatureList = async () => {
   try {
-    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchonlysignformslist', {
+    const response = await axios.get(SERVER_BASE + ROUTE_URL + '/fetchformwithsignaturelist', {
       headers: {
         'Content-Type': 'application/json',
       },

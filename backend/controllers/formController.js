@@ -45,7 +45,7 @@ const formController = {
       }
     },
     // returns an array of strings containing the titles of all the templates in the database that don't need to be signed
-    fetchUnsignedFormsList: async (req, res) => { 
+    fetchNoSignatureFormsList: async (req, res) => { 
       try {
         const formsList = await Form.find({ signatories: { $size: 0 } });
         if (!formsList) {
@@ -58,7 +58,7 @@ const formController = {
         res.status(500).send('Internal server error');
       }
     },
-    fetchOnlySignedFormsList: async (req, res) => { 
+    fetchFormWithSignatureList: async (req, res) => { 
       try {
         const formsList = await Form.find({ signatories: { $exists: true, $ne: [] } });
         if (!formsList) {

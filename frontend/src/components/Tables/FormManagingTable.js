@@ -1,10 +1,29 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
 import { deleteForm, updateFormTitle } from '../../api/form_requests';
+import { fetchAllFormsList } from '../../api/form_requests';
 
-const FormTable = ({ forms }) => {
+const FormTable = () => {
     const { language } = useContext(LanguageContext);
+    const [ allFormsList, setAllFormsList] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const allForms = await fetchAllFormsList();
+                console.log(allForms)
+                if (allForms) {
+                    setAllFormsList(allForms.data.docs);
+                } else {
+                    console.log('Unsigned document response is not valid');
+                }
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
+            }
+        }
+        fetchData();
+    }, []);
 
     // State for managing renaming functionality
     const [renamingIndex, setRenamingIndex] = useState(-1); // Index of the row currently being renamed
@@ -37,14 +56,6 @@ const FormTable = ({ forms }) => {
             cancelButton: "إلغاء"
         }
     };
-
-    if (
-        typeof forms !== 'object' || 
-        forms === null || 
-        !Array.isArray(forms.docs)
-    ) {
-        forms = { docs: [] };
-    }
 
     const handleInputChange = (event) => {
         setNewSubject(event.target.value);
@@ -100,7 +111,7 @@ const FormTable = ({ forms }) => {
                 </tr>
             </thead>
             <tbody>
-                {forms.docs.map((doc, index) => (
+                {allFormsList.map((doc, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
