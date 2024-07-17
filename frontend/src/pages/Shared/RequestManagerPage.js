@@ -97,7 +97,7 @@ function RequestManagerPage() {
                             top: '70px',
                             bottom: '70px',
                             left: -15,
-                            width: actionPanelCollapsed ? '80px' : '300px',
+                            width: actionPanelCollapsed ? '80px' : '400px',
                             zIndex: 1000,
                             transition: 'width 0.3s',
                         }}

@@ -4,7 +4,7 @@ import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
 
-const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setFormTableVisible, setActionPanelCollapsed}) => {
+const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setFormTableVisible, setActionPanelCollapsed, setAutorizerHistoryVisible}) => {
     const { language } = useContext(LanguageContext);
 
     const toggleEditorVisibility = () => {
@@ -12,6 +12,7 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
         setAutorizerVisible(false);
         setFormTableVisible(false);
         setActionPanelCollapsed(true);
+        setAutorizerHistoryVisible(false);
     };
 
     const toggleAutorizerVisibility = () => {
@@ -19,6 +20,15 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
         setEditorVisible(false);
         setFormTableVisible(false);
         setActionPanelCollapsed(true);
+        setAutorizerHistoryVisible(false);
+    };
+
+    const toggleAutorizerHistoryVisibility = () => {
+        setAutorizerVisible(false);
+        setEditorVisible(false);
+        setFormTableVisible(false);
+        setActionPanelCollapsed(true);
+        setAutorizerHistoryVisible(true);
     };
 
     const toggleFormTableVisibility = () => {
@@ -26,6 +36,7 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
         setEditorVisible(false);
         setFormTableVisible(true);
         setActionPanelCollapsed(true);
+        setAutorizerHistoryVisible(false);
     };
 
 
@@ -36,7 +47,7 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
             openEditor: "Document Editor",
             openRequestManager: "Request Authorizer",
             openRequestHistory: "Request History",
-            openFormTable: "Form Table",
+            openFormTable: "Form Data Base",
         },
         he: {
             pageTitle: "מנהל טופס",
@@ -72,7 +83,7 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
             <Button onClick={toggleAutorizerVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openRequestManager}
             </Button>
-            <Button onClick={toggleAutorizerVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={toggleAutorizerHistoryVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openRequestHistory}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />

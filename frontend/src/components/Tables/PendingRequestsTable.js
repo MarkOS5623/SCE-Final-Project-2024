@@ -1,10 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
+import { fetchUnsignedDocumentList } from '../../api/documents_reqeusts';
+import ViewDocument from '../DocumentViewers/ViewDocument';
 
-const PendingRequestsTable = ({ documents, handleReview }) => {
+const PendingRequestsTable = () => {
     const { language } = useContext(LanguageContext);
-    console.log(documents)
+    const [ requestList, setRequestsList ] = useState({docs: [], ids: []})
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [choosenRequest, setChoosenRequest] = useState('');
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const unsignedDocumentList = await fetchUnsignedDocumentList();
+                if (unsignedDocumentList.status === 200) {
+                    setRequestsList(unsignedDocumentList.data);
+                } else {
+                    console.log('Unsigned document response is not valid');
+                }
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const toggleShowReviewForm = () => {
+        setShowReviewForm(!showReviewForm);
+    };
+
+    const handleReview = (documentId) => {
+        setChoosenRequest(documentId);
+        toggleShowReviewForm();
+    };
 
     const translations = {
         en: {
@@ -27,18 +56,9 @@ const PendingRequestsTable = ({ documents, handleReview }) => {
         }
     };
 
-    // Ensure documents has default values
-    if (
-        typeof documents !== 'object' || 
-        documents === null || 
-        !Array.isArray(documents.docs) || 
-        !Array.isArray(documents.ids)
-      ) {
-        documents = { docs: [], ids: [] };
-      }
-
     return (
-        <Table striped bordered hover variant="light">
+        <>
+        {!showReviewForm && (<Table striped bordered hover variant="light">
             <thead>
                 <tr>
                     <th>#</th>
@@ -48,18 +68,20 @@ const PendingRequestsTable = ({ documents, handleReview }) => {
                 </tr>
             </thead>
             <tbody>
-                {documents.docs.map((doc, index) => (
+                {requestList.docs.map((doc, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{documents.ids[index]}</td>
+                        <td>{requestList.ids[index]}</td>
                         <td>{doc}</td>
                         <td>
-                            <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>{translations[language].review}</Button>
+                            <Button variant="primary" onClick={() => handleReview(requestList.ids[index])}>{translations[language].review}</Button>
                         </td>
                     </tr>
                 ))}
             </tbody>
-        </Table>
+        </Table>)}
+        {showReviewForm && <ViewDocument documentId={choosenRequest} flag={true}/>}
+        </>
     );
 };
 

@@ -1,10 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { fetchSignedDocumentList } from '../../api/documents_reqeusts';
 
-const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => {
+const ApprovedRequestsTable = () => {
     const { language } = useContext(LanguageContext);
-    console.log(documents)
+    const [ processedRequestsList, setProcessedRequestsList ] = useState({docs: [], ids: [], statuses: []});
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const signedDocumentList = await fetchSignedDocumentList();
+                if (signedDocumentList.status === 200) {
+                    setProcessedRequestsList(signedDocumentList.data);
+                } else {
+                    console.log('Unsigned document response is not valid');
+                }
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
+            }
+        }
+        fetchData();
+    }, []);
+
+
     // Translations for different languages
     const translations = {
         en: {
@@ -26,7 +45,7 @@ const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => 
 
     return (
         <>
-            {documents && documentIds && documentStatuses ? (
+            {processedRequestsList ? (
                 <Table striped bordered hover variant="light">
                     <thead>
                         <tr>
@@ -37,12 +56,12 @@ const ApprovedRequestsTable = ({ documents, documentIds, documentStatuses }) => 
                         </tr>
                     </thead>
                     <tbody>
-                        {documents.map((doc, index) => (
+                        {processedRequestsList.docs.map((doc, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{doc}</td>
-                                <td>{documentIds[index]}</td>
-                                <td>{documentStatuses[index]}</td>
+                                <td>{processedRequestsList.ids[index]}</td>
+                                <td>{processedRequestsList.statuses[index]}</td>
                             </tr>
                         ))}
                     </tbody>

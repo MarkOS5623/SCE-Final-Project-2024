@@ -1,44 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import TextEditor from '../../components/DocumentViewers/TextEditor';
 import '../../assets/css/Editor.css';
-import FormManagerViewer from '../../components/FormViewers/FormManagerViewer';
-import { fetchUnsignedDocumentList, fetchSignedDocumentList } from '../../api/documents_reqeusts';
-import { fetchAllFormsList } from '../../api/form_requests';
 import FormManagingTable from '../../components/Tables/FormManagingTable';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
 import FormManagerActionPanel from '../../components/ActionPanels/FormManagerActionPanel';
+import PendingRequestsTable from '../../components/Tables/PendingRequestsTable';
+import ApprovedRequestsTable from '../../components/Tables/ApprovedRequestsTable';
+import CardContainer from '../../components/Utils/CardContainer';
+import logoImg from '../../assets/pictures/sce.jpg';
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);
     const [EditorVisible, setEditorVisible] = useState(false);
     const [AutorizerVisible, setAutorizerVisible] = useState(false);
+    const [AutorizerHistoryVisible, setAutorizerHistoryVisible] = useState(false);
     const [FormTableVisible, setFormTableVisible] = useState(false);
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
-    const [requestsList, setRequestsList] = useState({});
-    const [signedRequestsList, setSignedRequestsList] = useState({});
-    const [allFormsList, setAllFormsList] = useState([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const allForms = await fetchAllFormsList();
-                const unsignedDocumentList = await fetchUnsignedDocumentList();
-                const signedDocumentList = await fetchSignedDocumentList();
-                if (unsignedDocumentList.status) {
-                    setSignedRequestsList(signedDocumentList.data);
-                    setRequestsList(unsignedDocumentList.data);
-                    setAllFormsList(allForms.data);
-                } else {
-                    console.log('Unsigned document response is not valid');
-                }
-            } catch (error) {
-                console.error('Fetching of docs failed:', error.message);
-            }
-        }
-        fetchData();
-    }, []);
 
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);
@@ -85,7 +64,7 @@ function FormManagerPage() {
                             top: '70px',
                             bottom: '70px',
                             left: -15,
-                            width: actionPanelCollapsed ? '80px' : '300px',
+                            width: actionPanelCollapsed ? '80px' : '400px',
                             zIndex: 1000,
                             transition: 'width 0.3s',
                         }}
@@ -108,13 +87,18 @@ function FormManagerPage() {
                             setEditorVisible = {setEditorVisible} 
                             setAutorizerVisible = {setAutorizerVisible} 
                             setFormTableVisible = {setFormTableVisible} 
-                            setActionPanelCollapsed = {setActionPanelCollapsed} />}
+                            setActionPanelCollapsed = {setActionPanelCollapsed} 
+                            setAutorizerHistoryVisible = {setAutorizerHistoryVisible}/>}
                     </div>
                     <Col md={12} style={{ transition: 'width 0.3s', position: 'relative', marginTop: '35px' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>
-                            {EditorVisible && <TextEditor />}
-                            {AutorizerVisible && <FormManagerViewer requestsList={requestsList} signedRequestsNameList={signedRequestsList.docs} signedRequestsIDList={signedRequestsList.ids} signedRequestsStatusList={signedRequestsList.statuses} />}
-                            {FormTableVisible && <FormManagingTable forms={allFormsList} />}
+                            <CardContainer style={{ width: '170vh', padding: '20px' }}>
+                                <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
+                                {EditorVisible && <TextEditor />}
+                                {AutorizerVisible && <PendingRequestsTable/>}
+                                {FormTableVisible && <FormManagingTable />}
+                                {AutorizerHistoryVisible && <ApprovedRequestsTable/>}
+                            </CardContainer>
                         </div>
                     </Col>
                 </Row>
