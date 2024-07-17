@@ -7,7 +7,7 @@ import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
 import RequestTable from '../../components/Tables/RequestTable';
-import UserActionPanel from '../../components/ActionPanels/UserActionPanel';
+import UserActionPanel from '../../components/ActionPanels/RequestManagerActionPanel';
 import DownloadDocsTable from '../../components/Tables/DownloadDocsTable';
 import RequestFillingTable from '../../components/Tables/RequestFillingTable';
 

@@ -8,6 +8,7 @@ import { fetchAllFormsList } from '../../api/form_requests';
 import FormManagingTable from '../../components/Tables/FormManagingTable';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
+import FormManagerActionPanel from '../../components/ActionPanels/FormManagerActionPanel';
 
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);
@@ -18,31 +19,6 @@ function FormManagerPage() {
     const [requestsList, setRequestsList] = useState({});
     const [signedRequestsList, setSignedRequestsList] = useState({});
     const [allFormsList, setAllFormsList] = useState([]);
-
-    const toggleEditorVisibility = () => {
-        setEditorVisible(!EditorVisible);
-        setAutorizerVisible(false);
-        setFormTableVisible(false);
-        setActionPanelCollapsed(true);
-    };
-
-    const toggleAutorizerVisibility = () => {
-        setAutorizerVisible(!AutorizerVisible);
-        setEditorVisible(false);
-        setFormTableVisible(false);
-        setActionPanelCollapsed(true);
-    };
-
-    const toggleFormTableVisibility = () => {
-        setAutorizerVisible(false);
-        setEditorVisible(false);
-        setFormTableVisible(!FormTableVisible);
-        setActionPanelCollapsed(true);
-    };
-
-    const toggleActionPanelCollapse = () => {
-        setActionPanelCollapsed(!actionPanelCollapsed);
-    };
 
     useEffect(() => {
         async function fetchData() {
@@ -64,19 +40,9 @@ function FormManagerPage() {
         fetchData();
     }, []);
 
-    const actionPanel = () => (
-        <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary rounded-pill'>
-                {translations[language].openEditor}
-            </Button>
-            <Button onClick={toggleAutorizerVisibility} className='btn btn-primary rounded-pill'>
-                {translations[language].openRequestManager}
-            </Button>
-            <Button onClick={toggleFormTableVisibility} className='btn btn-primary rounded-pill'>
-                {translations[language].openFormTable}
-            </Button>
-        </div>
-    );
+    const toggleActionPanelCollapse = () => {
+        setActionPanelCollapsed(!actionPanelCollapsed);
+    };
 
     // Translations for different languages
     const translations = {
@@ -111,34 +77,38 @@ function FormManagerPage() {
                         style={{
                             background: actionPanelCollapsed
                                 ? ''
-                                : 'linear-gradient(to left, rgba(126, 156, 56, 1) 0%, rgba(126, 156, 56, 1) 100%)',
+                                : 'rgba(158, 201, 59)',
                             position: 'fixed',
-                            border: 'auto',
+                            borderRight: actionPanelCollapsed
+                            ? ''
+                            : '2px solid white',
                             top: '70px',
                             bottom: '70px',
-                            left: -11,
+                            left: -15,
                             width: actionPanelCollapsed ? '80px' : '300px',
                             zIndex: 1000,
                             transition: 'width 0.3s',
-                             borderRadius: '20px'
                         }}
                     >
                         <Button
                             onClick={toggleActionPanelCollapse}
                             className={`btn btn-secondary mb-2 ${actionPanelCollapsed ? 'w-100' : ''}`}
                             style={{
-                                background: 'rgba(126, 156, 56, 1)',
+                                background: 'rgba(158, 201, 59)',
                                 padding: '5px',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: '20px'
-                                
                             }}
                         >
                             <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
-                        {!actionPanelCollapsed && actionPanel()}
+                        {!actionPanelCollapsed && <FormManagerActionPanel 
+                            setEditorVisible = {setEditorVisible} 
+                            setAutorizerVisible = {setAutorizerVisible} 
+                            setFormTableVisible = {setFormTableVisible} 
+                            setActionPanelCollapsed = {setActionPanelCollapsed} />}
                     </div>
                     <Col md={12} style={{ transition: 'width 0.3s', position: 'relative', marginTop: '35px' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>

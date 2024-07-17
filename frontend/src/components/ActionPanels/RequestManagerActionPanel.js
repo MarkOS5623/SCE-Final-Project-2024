@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
-const ActionPanel = ({ setRequestFormVisible, setMyRequestsVisible, setMyRequestHistoryVisible, setActionPanelCollapsed, setDownloadFormVisible }) => {
+const RequestManagerActionPanel = ({ setRequestFormVisible, setMyRequestsVisible, setMyRequestHistoryVisible, setActionPanelCollapsed, setDownloadFormVisible }) => {
     const { language } = useContext(LanguageContext);
 
     const toggleEditorVisibility = () => {
@@ -92,4 +92,4 @@ const ActionPanel = ({ setRequestFormVisible, setMyRequestsVisible, setMyRequest
     );
 }
 
-export default ActionPanel;
+export default RequestManagerActionPanel;
