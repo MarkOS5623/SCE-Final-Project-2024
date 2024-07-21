@@ -101,7 +101,7 @@ const DownloadDocsTable = () => {
                 </Table>
             ) : (
                 <div style={{ marginBottom: '20px' }}>
-                    <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument} />
+                    <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument} handleCancel={toggleFillFrom}/>
                 </div>
             )}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>

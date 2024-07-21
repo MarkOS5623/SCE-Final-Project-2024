@@ -101,12 +101,12 @@ export default function RequestTable({ documents, setDocuments, flag }) {
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1">
-        {flag && (
+        {flag && !showReviewForm && (
           <Button variant="primary" onClick={handleDeleteToggle} style={{ margin: '10px' }}>
             {translations[language].clear}
           </Button>
         )}
-        {deleteMode && (
+        {deleteMode && !showReviewForm && (
           <Button variant="danger" onClick={handleDeleteDocuments} style={{ margin: '10px' }}>
             {translations[language].delete}
           </Button>

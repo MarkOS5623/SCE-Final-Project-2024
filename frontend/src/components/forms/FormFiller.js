@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 
-const FormFiller = ({ documentName, handleSubmit }) => {
-    const { language } = useContext(LanguageContext); // Accessing language context
+const FormFiller = ({ documentName, handleSubmit, handleCancel }) => {
+    const { language } = useContext(LanguageContext);
 
     const [course, setCourse] = useState('');
     const [reason, setReason] = useState('');
@@ -16,24 +16,27 @@ const FormFiller = ({ documentName, handleSubmit }) => {
     const translations = {
         en: {
             courseLabel: 'Course:',
-            coursePlaceholder: 'Insert course name',
+            coursePlaceholder: 'Course name',
             reasonLabel: 'Reason:',
-            reasonPlaceholder: 'Insert reason',
-            submitButton: 'Submit'
+            reasonPlaceholder: 'Reason',
+            submitButton: 'Submit',
+            cancelButton: 'Cancel'
         },
         he: {
             courseLabel: 'קורס:',
             coursePlaceholder: 'הכנס שם קורס',
             reasonLabel: 'סיבה:',
             reasonPlaceholder: 'הכנס סיבה',
-            submitButton: 'שלח'
+            submitButton: 'שלח',
+            cancelButton: 'ביטול'
         },
         ar: {
             courseLabel: 'الدورة التدريبية:',
             coursePlaceholder: 'أدخل اسم الدورة التدريبية',
             reasonLabel: 'السبب:',
             reasonPlaceholder: 'أدخل السبب',
-            submitButton: 'إرسال'
+            submitButton: 'إرسال',
+            cancelButton: 'إلغاء'
         }
     };
 
@@ -51,19 +54,19 @@ const FormFiller = ({ documentName, handleSubmit }) => {
                             className="form-control" 
                             value={course} 
                             onChange={(e) => setCourse(e.target.value)}
-                            style={{ marginBottom: '10px' }}
+                            style={{ marginBottom: '10px', border: '2px solid rgba(158, 201, 59)' }}
                             placeholder={translations[language].coursePlaceholder}
                         />
                     </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold', color: 'black' }}>{translations[language].reasonLabel}</label>
-                        <input 
-                            type="text" 
+                        <textarea 
                             className="form-control" 
                             value={reason} 
                             onChange={(e) => setReason(e.target.value)}
-                            style={{ marginBottom: '10px' }}
+                            style={{ marginBottom: '10px', height: '200px', resize: 'none', border: '2px solid rgba(158, 201, 59)' }}
                             placeholder={translations[language].reasonPlaceholder}
+                            rows="10"
                         />
                     </div>
                     <button 
@@ -72,6 +75,14 @@ const FormFiller = ({ documentName, handleSubmit }) => {
                         style={{ marginTop: '10px' }}
                     >
                         {translations[language].submitButton}
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={handleCancel}
+                        className="btn btn-danger"
+                        style={{ marginTop: '10px', marginLeft: '10px' }}
+                    >
+                        {translations[language].cancelButton}
                     </button>
                 </form>
             </div>
