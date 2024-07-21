@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import { fetchUnsignedDocumentList } from '../../api/documents_reqeusts';
+import { fetchUnsignedDocumentList } from '../../api/documents_requests';
 import ViewDocument from '../DocumentViewers/ViewDocument';
 
 const PendingRequestsTable = () => {

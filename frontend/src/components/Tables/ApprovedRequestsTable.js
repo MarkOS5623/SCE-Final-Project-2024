@@ -1,7 +1,7 @@
 import React, { useContext, useState,useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
-import { fetchSignedDocumentList } from '../../api/documents_reqeusts';
+import { fetchSignedDocumentList } from '../../api/documents_requests';
 
 const ApprovedRequestsTable = () => {
     const { language } = useContext(LanguageContext);

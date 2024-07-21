@@ -101,7 +101,32 @@ const documentController = {
       console.error('Error fetching document serverside:', error);
       res.status(500).send('Internal server error');
     }
-  },  
+  },    
+  deleteDocuments: async (req, res) => {
+    try {
+      const { documentIds } = req.body; 
+      if (!Array.isArray(documentIds) || documentIds.length === 0) {
+        return res.status(400).send('Invalid input');
+      }
+      const deleteResult = await Document.deleteMany({ documentId: { $in: documentIds } });
+      const documents = await Document.find({ documentId: { $in: documentIds } });
+      const statusIds = documents.flatMap(doc => doc.authorizers.map(authorizer => authorizer._id));
+      await Status.deleteMany({ _id: { $in: statusIds } });
+      await User.updateMany(
+        { documents: { $in: documents.map(doc => doc._id) } },
+        { $pull: { documents: { $in: documents.map(doc => doc._id) } } }
+      );
+
+      if (deleteResult.deletedCount === 0) {
+        return res.status(404).send('No documents found to delete');
+      }
+
+      res.status(200).send(`${deleteResult.deletedCount} documents deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting documents:', error);
+      res.status(500).send('Internal server error');
+    }
+  },
   saveDocuemnt: async (req, res) => {
     try {
       const { text, subject, signatories, author, type } = req.body;

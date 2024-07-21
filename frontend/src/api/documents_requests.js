@@ -81,6 +81,22 @@ export const fetchDocument = async (documentId) => {
   }
 };
 
+export const deleteDocuments = async (documentIds) => {
+  try {
+    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/deletedocuments', 
+      {documentIds}
+    , {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching document:', error.message);
+    throw error;
+  }
+};
+
 export const fetchDocumentAuthor = async (documentId) => {
   try {
     console.log(documentId)

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Alert, Container, Button } from 'react-bootstrap';
 import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchDocument,fetchDocumentAuthor } from '../../api/documents_reqeusts';
+import { fetchDocument,fetchDocumentAuthor } from '../../api/documents_requests';
 import { authorizeRequest, rejectRequest } from '../../api/status_requests';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary

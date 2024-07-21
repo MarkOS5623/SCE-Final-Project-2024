@@ -77,8 +77,8 @@ function RequestManagerPage() {
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
-                                {requestsVisible && (<RequestTable documents={userRequests} />)}
-                                {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} />)}
+                                {requestsVisible && (<RequestTable documents={userRequests} flag={false}/>)}
+                                {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} flag={true} setDocuments={setUserRequestHistory}/>)}
                                 {downloadFormVisible && (<DownloadDocsTable/>)}
                                 {requestFormVisible && (<RequestFillingTable/>)}
                             </CardContainer>
