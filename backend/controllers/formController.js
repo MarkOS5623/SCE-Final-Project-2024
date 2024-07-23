@@ -47,7 +47,10 @@ const formController = {
     // returns an array of strings containing the titles of all the templates in the database that don't need to be signed
     fetchNoSignatureFormsList: async (req, res) => { 
       try {
-        const formsList = await Form.find({ signatories: { $size: 0 } });
+        const formsList = await Form.find({ 
+          signatories: { $size: 0 }, 
+          type: { $ne: "Return" } 
+        });
         if (!formsList) {
           return res.status(404).send('Forms not found');
         }

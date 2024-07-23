@@ -127,40 +127,62 @@ const documentController = {
       res.status(500).send('Internal server error');
     }
   },
-  saveDocuemnt: async (req, res) => {
+  saveDocument: async (req, res) => {
     try {
-      const { text, subject, signatories, author, type } = req.body;
-      const authorizers = await User.find({ _id: {  $in: signatories } });
+      const { text, subject, signatories, author, type, documentId } = req.body;
+  
+      // Find the authorizers
+      const authorizers = await User.find({ _id: { $in: signatories } });
       const statuses = [];
-      authorizers.forEach(async (user) => {
-        const status = new Status({
+  
+      if (documentId) {
+        // Update existing document if documentId is provided
+        const document = await Document.findOneAndUpdate(
+          { documentId: documentId },
+          { text: text },
+          { new: true }
+        );
+  
+        if (!document) {
+          return res.status(404).send('Document not found');
+        }
+  
+        res.status(200).send('Document updated successfully');
+      } else {
+        // Create new document if documentId is not provided
+        authorizers.forEach((user) => {
+          const status = new Status({
             signatories: [user._id],
             status: 'unsigned'
+          });
+          statuses.push(status);
         });
-        statuses.push(status);
-      });
-      const user = await User.findOne({ _id: author });
-      const id = utils.generateDocumentId(subject);
-      const newDocument = new Document({
-        subject: subject,
-        text: text,
-        department: "test",
-        author: user,
-        authorizers: statuses,
-        documentId: id ,
-        type: type
-      });
-      await newDocument.save();
-      statuses.forEach(async (status) => {
-        status.save()
-      });
-      authorizers.forEach(async (user) => {
-        await User.updateOne(
-            { _id: user._id }, 
-            { $push: { documents: newDocument } } 
-        );
-    });
-      res.status(200).send('Document saved successfully');
+  
+        const user = await User.findOne({ _id: author });
+        const id = utils.generateDocumentId(subject);
+        const newDocument = new Document({
+          subject: subject,
+          text: text,
+          department: "test",
+          author: user,
+          authorizers: statuses,
+          documentId: id,
+          type: type
+        });
+  
+        await newDocument.save();
+  
+        // Save statuses and update authorizers' documents
+        await Promise.all(statuses.map(status => status.save()));
+        await Promise.all(authorizers.map(user => 
+          User.updateOne(
+            { _id: user._id },
+            { $push: { documents: newDocument } }
+          )
+        ));
+  
+        res.status(201).send('Document saved successfully');
+      }
     } catch (error) {
       console.error('Error saving document:', error);
       res.status(500).send('Internal server error');

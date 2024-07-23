@@ -249,6 +249,7 @@ const TextEditor = () => {
                     <Dropdown.Item onClick={() => handleTypeSelect('Student')}>Student</Dropdown.Item>
                     <Dropdown.Item onClick={() => handleTypeSelect('Staff')}>Staff</Dropdown.Item>
                     <Dropdown.Item onClick={() => handleTypeSelect('Everybody')}>Everybody</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleTypeSelect('Return')}>Return</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 <div className="d-flex justify-content-center">

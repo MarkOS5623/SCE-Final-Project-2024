@@ -3,7 +3,7 @@ const router = express.Router();
 const documentController = require('../controllers/documentController');
 
 // saves a document
-router.post('/savedocument', documentController.saveDocuemnt);
+router.post('/savedocument', documentController.saveDocument);
 
 // get the document id and returns the document
 router.post('/fetchdocument', documentController.fetchDocument);

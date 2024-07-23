@@ -120,7 +120,7 @@ function RequestManagerPage() {
                             setRequestFormVisible={setRequestFormVisible} 
                             setMyRequestsVisible={setMyRequestsVisible} 
                             setMyRequestHistoryVisible={setMyRequestHistoryVisible} 
-                            setActionPanelCollapsed={setActionPanelCollapsed}
+                            setActionPanelCollapsed={setActionPanelCollapsed}cd 
                             setDownloadFormVisible={setDownloadFormVisible}/>}
                     </div>
                 </Row>
