@@ -1,8 +1,42 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
-import { DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
+import { DocumentEditorComponent, DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument, deleteDocuments } from '../../api/documents_requests';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; 
+import { pdfConverter } from '../../api/utils';
+
+const translations = {
+  en: {
+    requestID: "Request ID",
+    request: "Request",
+    status: "Status",
+    review: "Review",
+    close: "Close",
+    clear: "Clear",
+    delete: "Delete",
+    download: "Download"
+  },
+  he: {
+    requestID: "מספר בקשה",
+    request: "בקשה",
+    status: "סטטוס",
+    review: "ביקורת",
+    close: "סגור",
+    clear: "נקה",
+    delete: "מחק",
+    download: "הורד"
+  },
+  ar: {
+    requestID: "معرف الطلب",
+    request: "طلب",
+    status: "الحالة",
+    review: "مراجعة",
+    close: "إغلاق",
+    clear: "مسح",
+    delete: "حذف",
+    download: "تحميل"
+  }
+};
 
 export default function RequestTable({ documents, setDocuments, flag }) {
   const { language } = useContext(LanguageContext);
@@ -12,6 +46,7 @@ export default function RequestTable({ documents, setDocuments, flag }) {
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const documentContainerRef = useRef(null);
+  const downloadContainerRef = useRef(null);
   const editorStyle = { width: "100%", height: "95%" };
 
   const handleReview = async (documentId) => {
@@ -61,46 +96,41 @@ export default function RequestTable({ documents, setDocuments, flag }) {
     }
   };
 
+  const handleDownload = async (documentId) => {
+    try {
+      const response = await fetchDocument(documentId);
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch document');
+      }
+      setDocumentContent(response.data.text);
+      downloadContainerRef.current.documentEditor.open(response.data.text);
+      await pdfConverter(downloadContainerRef); // Ensure pdfConverter works with the ref
+    } catch (error) {
+      console.error('Error downloading document:', error);
+    }
+  };
+
   useEffect(() => {
     if (showReviewForm && documentContainerRef.current) {
       documentContainerRef.current.open(documentContent);
     }
   }, [showReviewForm, documentContent]);
 
-  // Translations for different languages
-  const translations = {
-    en: {
-      requestID: "Request ID",
-      request: "Request",
-      status: "Status",
-      review: "Review",
-      close: "Close",
-      clear: "Clear",
-      delete: "Delete"
-    },
-    he: {
-      requestID: "מספר בקשה",
-      request: "בקשה",
-      status: "סטטוס",
-      review: "ביקורת",
-      close: "סגור",
-      clear: "נקה",
-      delete: "מחק"
-    },
-    ar: {
-      requestID: "معرف الطلب",
-      request: "طلب",
-      status: "الحالة",
-      review: "مراجعة",
-      close: "إغلاق",
-      clear: "مسح",
-      delete: "حذف"
+  useEffect(() => {
+    // Ensure the DocumentEditorComponent is rendered before accessing its ref
+    if (documentContainerRef.current && documentContent) {
+      documentContainerRef.current.open(documentContent);
     }
-  };
+  }, [documentContent]);
 
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1">
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={downloadContainerRef}>
+              <Inject services={[WordExport, SfdtExport]} />
+          </DocumentEditorContainerComponent>
+        </div>
         {flag && !showReviewForm && (
           <Button variant="primary" onClick={handleDeleteToggle} style={{ margin: '10px' }}>
             {translations[language].clear}
@@ -122,6 +152,7 @@ export default function RequestTable({ documents, setDocuments, flag }) {
                   <th>{translations[language].request}</th>
                   <th>{translations[language].status}</th>
                   <th>{translations[language].review}</th>
+                  <th>{translations[language].download}</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,6 +174,11 @@ export default function RequestTable({ documents, setDocuments, flag }) {
                     <td>
                       <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
                         {translations[language].review}
+                      </Button>
+                    </td>
+                    <td>
+                      <Button variant="primary" onClick={() => handleDownload(documents.ids[index])}>
+                        {translations[language].download}
                       </Button>
                     </td>
                   </tr>
