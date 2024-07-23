@@ -60,7 +60,7 @@ const AccountInfoPage = () => {
   if (!translations[language]) return null;
 
   return (
-    <CardContainer className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "20vh", marginTop: '30px', width: '600px'}}>
+    <CardContainer className="d-flex justify-content-center align-items-center vh-100" style={{ paddingBottom: "10vh", marginTop: '30px', width: '600px'}}>
       <Card.Title style={{ fontSize: "30px" }}>
         <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "40px", marginTop: "30px" }}/>
       </Card.Title>
