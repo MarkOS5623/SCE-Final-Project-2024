@@ -90,9 +90,9 @@ function FormManagerPage() {
                             setActionPanelCollapsed = {setActionPanelCollapsed} 
                             setAutorizerHistoryVisible = {setAutorizerHistoryVisible}/>}
                     </div>
-                    <Col md={12} style={{ transition: 'width 0.3s', position: 'relative', marginTop: '35px' }}>
+                    <Col md={12} style={{ transition: 'width 0.3s', position: 'relative'}}>
                         <div className="right-panel" style={{ width: 'auto' }}>
-                            <CardContainer style={{ width: '170vh', padding: '20px' }}>
+                            <CardContainer style={{ width: '180vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
                                 {EditorVisible && <TextEditor />}
                                 {AutorizerVisible && <PendingRequestsTable/>}
