@@ -58,6 +58,7 @@ const PendingRequestsTable = () => {
 
     return (
         <>
+        <h1>Request Manager</h1>
         {!showReviewForm && (<Table striped bordered hover variant="light">
             <thead>
                 <tr>

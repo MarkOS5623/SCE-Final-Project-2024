@@ -102,68 +102,71 @@ const FormTable = () => {
     };
 
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>{translations[language].formsHeader}</th>
-                    <th>{translations[language].actionHeader}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {allFormsList.map((doc, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>
-                            {renamingIndex === index ? (
-                                <Form.Control
-                                    type="text"
-                                    value={newSubject}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <>
-                                {doc}
-                                <Button
-                                    variant="info"
-                                    onClick={() => handleRenameStart(index, doc)}
-                                    style={{marginLeft: '10px', marginRight: '10px'}}
-                                >
-                                    {translations[language].renameButton}
-                                </Button>
-                                </>
-                            )}
-                        </td>
-                        <td>
-                            {renamingIndex === index && (
-                                <>
-                                    <Button
-                                        variant="success"
-                                        onClick={() => handleRenameSave(doc, newSubject)}
-                                    >
-                                        {translations[language].saveButton}
-                                    </Button>
-                                    {' '}
-                                    <Button
-                                        variant="secondary"
-                                        onClick={handleRenameCancel}
-                                    >
-                                        {translations[language].cancelButton}
-                                    </Button>
-                                </>
-                            )}
-                            {' '}
-                            <Button
-                                variant="primary"
-                                onClick={() => handleDelete(doc)}
-                            >
-                                {translations[language].deleteButton}
-                            </Button>
-                        </td>
+        <>
+            <h1>Form Data Base</h1>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{translations[language].formsHeader}</th>
+                        <th>{translations[language].actionHeader}</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {allFormsList.map((doc, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>
+                                {renamingIndex === index ? (
+                                    <Form.Control
+                                        type="text"
+                                        value={newSubject}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <>
+                                    {doc}
+                                    <Button
+                                        variant="info"
+                                        onClick={() => handleRenameStart(index, doc)}
+                                        style={{marginLeft: '10px', marginRight: '10px'}}
+                                    >
+                                        {translations[language].renameButton}
+                                    </Button>
+                                    </>
+                                )}
+                            </td>
+                            <td>
+                                {renamingIndex === index && (
+                                    <>
+                                        <Button
+                                            variant="success"
+                                            onClick={() => handleRenameSave(doc, newSubject)}
+                                        >
+                                            {translations[language].saveButton}
+                                        </Button>
+                                        {' '}
+                                        <Button
+                                            variant="secondary"
+                                            onClick={handleRenameCancel}
+                                        >
+                                            {translations[language].cancelButton}
+                                        </Button>
+                                    </>
+                                )}
+                                {' '}
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleDelete(doc)}
+                                >
+                                    {translations[language].deleteButton}
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </>
     );
 };
 

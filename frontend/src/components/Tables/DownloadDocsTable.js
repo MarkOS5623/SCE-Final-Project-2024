@@ -61,6 +61,7 @@ const DownloadDocsTable = () => {
 
     return (
         <>
+            <h1>Download Forms</h1>
             <Table striped bordered hover>
                 <thead>
                     <tr>

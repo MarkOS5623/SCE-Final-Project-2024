@@ -44,6 +44,7 @@ const ApprovedRequestsTable = () => {
 
     return (
         <>
+            <h1>Request Manager History</h1>
             {processedRequestsList ? (
                 <Table striped bordered hover variant="light">
                     <thead>

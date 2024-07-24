@@ -131,6 +131,8 @@ export default function RequestTable({ documents, setDocuments, flag }) {
               <Inject services={[WordExport, SfdtExport]} />
           </DocumentEditorContainerComponent>
         </div>
+        {!flag && (<h1>Pending Requests</h1>)}
+        {flag && (<h1>Request History</h1>)}
         {flag && !showReviewForm && (
           <Button variant="primary" onClick={handleDeleteToggle} style={{ margin: '10px' }}>
             {translations[language].clear}
