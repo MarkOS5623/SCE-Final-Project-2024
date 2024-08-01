@@ -9,6 +9,7 @@ import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
 import FormManagerActionPanel from '../../components/ActionPanels/FormManagerActionPanel';
+import ViewDocument from '../../components/DocumentViewers/ViewDocument';
 
 function FormManagerPage() {
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(true);
@@ -58,8 +59,10 @@ function FormManagerPage() {
                                 <Routes>
                                     <Route path="editor" element={<TextEditor />} />
                                     <Route path="requests" element={<PendingRequestsTable />} />
+                                    <Route path="requests/:documentId" element={<ViewDocument flag={true}/>} />
                                     <Route path="form" element={<FormManagingTable />} />
                                     <Route path="history" element={<ApprovedRequestsTable />} />
+                                    <Route path="history/:documentId" element={<ViewDocument flag={false}/>} />
                                 </Routes>
                             </CardContainer>
                         </div>

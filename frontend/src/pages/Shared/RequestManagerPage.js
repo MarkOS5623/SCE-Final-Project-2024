@@ -11,6 +11,7 @@ import RequestTable from '../../components/Tables/RequestTable';
 import UserActionPanel from '../../components/ActionPanels/RequestManagerActionPanel';
 import DownloadDocsTable from '../../components/Tables/DownloadDocsTable';
 import RequestFillingTable from '../../components/Tables/RequestFillingTable';
+import ViewDocument from '../../components/DocumentViewers/ViewDocument';
 
 function RequestManagerPage() {
     const [userRequests, setUserRequests] = useState({});
@@ -79,6 +80,7 @@ function RequestManagerPage() {
                                     <Route path="history" element={<RequestTable documents={userRequestHistory} flag={true} setDocuments={setUserRequestHistory} />} />
                                     <Route path="download" element={<DownloadDocsTable />} />
                                     <Route path="form" element={<RequestFillingTable />} />
+                                    <Route path="history/:documentId" element={<ViewDocument flag={false}/>} />
                                 </Routes>
                                 <Outlet />
                             </CardContainer>

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { fetchUnsignedDocumentList } from '../../api/documents_requests';
-import ViewDocument from '../DocumentViewers/ViewDocument';
 
 const translations = {
     en: {
@@ -27,9 +27,8 @@ const translations = {
 
 const PendingRequestsTable = () => {
     const { language } = useContext(LanguageContext);
-    const [ requestList, setRequestsList ] = useState({docs: [], ids: []})
-    const [showReviewForm, setShowReviewForm] = useState(false);
-    const [choosenRequest, setChoosenRequest] = useState('');
+    const [requestList, setRequestsList] = useState({ docs: [], ids: [] });
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
@@ -47,41 +46,40 @@ const PendingRequestsTable = () => {
         fetchData();
     }, []);
 
-    const toggleShowReviewForm = () => {
-        setShowReviewForm(!showReviewForm);
-    };
-
     const handleReview = (documentId) => {
-        setChoosenRequest(documentId);
-        toggleShowReviewForm();
+        navigate(`/formmanager/requests/${documentId}`); 
     };
 
     return (
         <>
-        <h1>Request Manager</h1>
-        {!showReviewForm && (<Table striped bordered hover variant="light">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>{translations[language].requestID}</th>
-                    <th>{translations[language].request}</th>
-                    <th>{translations[language].action}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {requestList.docs.map((doc, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{requestList.ids[index]}</td>
-                        <td>{doc}</td>
-                        <td>
-                            <Button variant="primary" onClick={() => handleReview(requestList.ids[index])}>{translations[language].review}</Button>
-                        </td>
+            <h1>Request Manager</h1>
+            <Table striped bordered hover variant="light">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{translations[language].requestID}</th>
+                        <th>{translations[language].request}</th>
+                        <th>{translations[language].action}</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>)}
-        {showReviewForm && <ViewDocument documentId={choosenRequest} flag={true}/>}
+                </thead>
+                <tbody>
+                    {requestList.docs.map((doc, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{requestList.ids[index]}</td>
+                            <td>{doc}</td>
+                            <td>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleReview(requestList.ids[index])}
+                                >
+                                    {translations[language].review}
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </>
     );
 };

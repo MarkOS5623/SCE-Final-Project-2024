@@ -159,7 +159,7 @@ const StudentNavbar = () => {
               >
                 <Dropdown.Item as={Link} to="/accountinfopage">{translations[language].accountInfo}</Dropdown.Item>
                 {isAdmin && (
-                  <Dropdown.Item as={Link} to="/formmanager">{translations[language].formManager}</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/formmanager/editor">{translations[language].formManager}</Dropdown.Item>
                 )}
                 {isLoggedIn && (
                   <Dropdown.Item onClick={handleSignOut}>{translations[language].signOut}</Dropdown.Item>

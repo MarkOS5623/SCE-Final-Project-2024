@@ -163,7 +163,7 @@ const TextEditor = () => {
       setSelectedNames(selectedAuthorNames)
       setTitleInput(response.title)
       if (response) {
-        formContainerRef.current.documentEditor.open(response.text); // Set the text in the editor
+        formContainerRef.current.documentEditor.open(response.text); 
         console.debug('Document fetched successfully!');
       } else {
         console.error('Failed to fetch form: status ', response.status);
