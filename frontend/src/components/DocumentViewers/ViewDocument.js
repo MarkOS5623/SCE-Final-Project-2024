@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Alert, Container, Button } from 'react-bootstrap';
 import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport, DocumentEditorComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument, fetchDocumentAuthor, saveDocument } from '../../api/documents_requests';
@@ -25,13 +26,15 @@ const translations = {
   }
 };
 
-const ViewDocument = ({ documentId, flag }) => {
+const ViewDocument = ({ flag }) => {
   const [error, setError] = useState(null);
   const [author, setAuthor] = useState("");
   const [subject, setSubject] = useState("");
   const documentContainerRef = useRef(null);
   const editorContainerRef = useRef(null);
   const { language } = useContext(LanguageContext);
+  const { documentId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDoc = async () => {
@@ -74,11 +77,11 @@ const ViewDocument = ({ documentId, flag }) => {
       if (approved) {
         await authorizeRequest(documentId, id, author, subject);
         console.debug('Successfully authorized request!');
-        window.location.reload();
+        navigate('/formmanager/requests')
       } else {
         await rejectRequest(documentId, id, author, subject);
         console.debug('Successfully rejected request!');
-        window.location.reload();
+        navigate('/formmanager/requests')
       }
     } catch (error) {
       console.error('Error processing request:', error);

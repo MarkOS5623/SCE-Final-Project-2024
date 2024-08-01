@@ -94,7 +94,7 @@ const StudentNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-secondary" style={{ height: '70px', borderBottom: '2px solid white' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager">
+        <Link className="navbar-brand" to="/requestmanager/form">
           <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,7 +161,7 @@ const StudentNavbar = () => {
               >
                 <Dropdown.Item as={Link} to="/accountinfopage">{translations[language].accountInfo}</Dropdown.Item>
                 {isAdmin && (
-                  <Dropdown.Item as={Link} to="/formmanager">{translations[language].formManager}</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/formmanager/editor">{translations[language].formManager}</Dropdown.Item>
                 )}
                 {isLoggedIn && (
                   <Dropdown.Item onClick={handleSignOut}>{translations[language].signOut}</Dropdown.Item>

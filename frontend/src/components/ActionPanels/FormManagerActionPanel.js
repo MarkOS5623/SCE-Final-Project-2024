@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
@@ -30,57 +31,31 @@ const buttonStyle = {
     border: "3px solid white"
 };
 
-const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setFormTableVisible, setActionPanelCollapsed, setAutorizerHistoryVisible}) => {
+const FormManagerActionPanel = ({ setActionPanelCollapsed }) => {
     const { language } = useContext(LanguageContext);
+    const navigate = useNavigate();
 
-    const toggleEditorVisibility = () => {
-        setEditorVisible(true);
-        setAutorizerVisible(false);
-        setFormTableVisible(false);
+    const handleNavigation = (path) => {
+        navigate(`/formmanager/${path}`);
         setActionPanelCollapsed(true);
-        setAutorizerHistoryVisible(false);
-    };
-
-    const toggleAutorizerVisibility = () => {
-        setAutorizerVisible(true);
-        setEditorVisible(false);
-        setFormTableVisible(false);
-        setActionPanelCollapsed(true);
-        setAutorizerHistoryVisible(false);
-    };
-
-    const toggleAutorizerHistoryVisibility = () => {
-        setAutorizerVisible(false);
-        setEditorVisible(false);
-        setFormTableVisible(false);
-        setActionPanelCollapsed(true);
-        setAutorizerHistoryVisible(true);
-    };
-
-    const toggleFormTableVisibility = () => {
-        setAutorizerVisible(false);
-        setEditorVisible(false);
-        setFormTableVisible(true);
-        setActionPanelCollapsed(true);
-        setAutorizerHistoryVisible(false);
     };
 
     return (
         <div className="d-flex flex-column gap-2" style={{ margin: "10px" }}>
             <div style={{ borderTop: '2px solid white', marginTop: '10px', marginBottom: '20px' }} />
-            <h4 style={{color: 'white'}}>{translations[language].pageTitle}</h4>
+            <h4 style={{ color: 'white' }}>{translations[language].pageTitle}</h4>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('editor')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openEditor}
             </Button>
-            <Button onClick={toggleFormTableVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('form')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openFormTable}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
-            <Button onClick={toggleAutorizerVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('requests')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openRequestManager}
             </Button>
-            <Button onClick={toggleAutorizerHistoryVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('history')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].openRequestHistory}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />

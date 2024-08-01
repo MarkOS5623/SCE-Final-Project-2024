@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
@@ -27,44 +28,17 @@ const translations = {
     }
 };
 
-const RequestManagerActionPanel = ({ setRequestFormVisible, setMyRequestsVisible, setMyRequestHistoryVisible, setActionPanelCollapsed, setDownloadFormVisible }) => {
+const buttonStyle = {
+    backgroundColor: "rgba(158, 201, 59)",
+    border: "3px solid white"
+};
+
+const RequestManagerActionPanel = () => {
     const { language } = useContext(LanguageContext);
+    const navigate = useNavigate();
 
-    const toggleEditorVisibility = () => {
-        setRequestFormVisible(true);
-        setMyRequestsVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(false);
-        setDownloadFormVisible(false);
-    };
-
-    const showMyRequests = () => {
-        setMyRequestsVisible(true);
-        setRequestFormVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(false);
-        setDownloadFormVisible(false);
-    };
-
-    const showMyRequestHistory = () => {
-        setMyRequestsVisible(false);
-        setRequestFormVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(true);
-        setDownloadFormVisible(false);
-    };
-
-    const showDownloadForm = () => {
-        setMyRequestsVisible(false);
-        setRequestFormVisible(false);
-        setActionPanelCollapsed(true);
-        setMyRequestHistoryVisible(false);
-        setDownloadFormVisible(true);
-    };
-
-    const buttonStyle = {
-        backgroundColor: "rgba(158, 201, 59)",
-        border: "3px solid white"
+    const handleNavigation = (path) => {
+        navigate(`/requestmanager/${path}`);
     };
 
     return (
@@ -72,17 +46,17 @@ const RequestManagerActionPanel = ({ setRequestFormVisible, setMyRequestsVisible
             <div style={{ borderTop: '2px solid white', marginTop: '10px', marginBottom: '20px' }} />
             <h4 style={{color: 'white'}}>{translations[language].pageTitle}</h4>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
-            <Button onClick={toggleEditorVisibility} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('form')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].makeNewRequest}
             </Button>
-            <Button onClick={showDownloadForm} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('download')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].downloadForm}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
-            <Button onClick={showMyRequests} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('requests')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].myRequests}
             </Button>
-            <Button onClick={showMyRequestHistory} className='btn btn-primary rounded-pill' style={buttonStyle}>
+            <Button onClick={() => handleNavigation('history')} className='btn btn-primary rounded-pill' style={buttonStyle}>
                 {translations[language].myRequestHistory}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
