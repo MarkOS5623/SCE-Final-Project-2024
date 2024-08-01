@@ -3,6 +3,30 @@ import { Button } from 'react-bootstrap';
 import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
+const translations = {
+    en: {
+        pageTitle: "Request Manager",
+        makeNewRequest: "Fill a form",
+        downloadForm: "Download a form",
+        myRequests: "Pending requests",
+        myRequestHistory: "Request History",
+    },
+    he: {
+        pageTitle: "מנהל בקשות",
+        makeNewRequest: "להגיש בקשה חדשה",
+        downloadForm: "הורד טופס",
+        myRequests: "הבקשות שלי",
+        myRequestHistory: "היסטוריית בקשות"
+    },
+    ar: {
+        pageTitle: "مدير الطلبات",
+        makeNewRequest: "تقديم طلب جديد",
+        downloadForm: "تحميل نموذج",
+        myRequests: "طلباتي",
+        myRequestHistory: "تاريخ الطلبات"
+    }
+};
+
 const RequestManagerActionPanel = ({ setRequestFormVisible, setMyRequestsVisible, setMyRequestHistoryVisible, setActionPanelCollapsed, setDownloadFormVisible }) => {
     const { language } = useContext(LanguageContext);
 
@@ -41,32 +65,6 @@ const RequestManagerActionPanel = ({ setRequestFormVisible, setMyRequestsVisible
     const buttonStyle = {
         backgroundColor: "rgba(158, 201, 59)",
         border: "3px solid white"
-    };
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            pageTitle: "Request Manager",
-            makeNewRequest: "Fill a form",
-            downloadForm: "Download a form",
-            myRequests: "Pending requests",
-            myRequestHistory: "Request History",
-
-        },
-        he: {
-            pageTitle: "מנהל בקשות",
-            makeNewRequest: "להגיש בקשה חדשה",
-            downloadForm: "הורד טופס",
-            myRequests: "הבקשות שלי",
-            myRequestHistory: "היסטוריית בקשות"
-        },
-        ar: {
-            pageTitle: "مدير الطلبات",
-            makeNewRequest: "تقديم طلب جديد",
-            downloadForm: "تحميل نموذج",
-            myRequests: "طلباتي",
-            myRequestHistory: "تاريخ الطلبات"
-        }
     };
 
     return (

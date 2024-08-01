@@ -1,4 +1,6 @@
 export const SERVER_BASE = "http://localhost:5000"
-// localhost:5000/users/auth
-// localhost:5000/documents/
-//  SERVER_BASE    ROUTE_URL
+export const FORMS_ROUTE_URL = "/api/forms"
+export const DOCUMENT_ROUTE_URL = "/api/documents"
+export const STATUS_ROUTE_URL = "/api/status"
+export const USER_ROUTE_URL = "/api/users";
+export const UTILS_ROUTE_URL = "/api/utils"

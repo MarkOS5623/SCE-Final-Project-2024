@@ -25,12 +25,12 @@ function RequestManagerPage() {
             try {
                 const token = localStorage.getItem('token');
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-                const response = await fetchRequest(decodedToken.data.user.id);
-                if (response.status === 201) {
-                    const documentStatuses = response.data.statuses;
+                const response = await fetchRequest(decodedToken.user.id);
+                if (response) {
+                    const documentStatuses = response.statuses;
                     const pendingApprovalDocs = [];
                     const requestHistoryDocs = [];
-                    response.data.docs.forEach((doc, index) => {
+                    response.docs.forEach((doc, index) => {
                         if (documentStatuses[index] === "pending approval") {
                             pendingApprovalDocs.push({
                                 subject: doc.subject,

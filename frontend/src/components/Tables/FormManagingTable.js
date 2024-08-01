@@ -1,20 +1,48 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
 import { deleteForm, updateFormTitle } from '../../api/form_requests';
 import { fetchAllFormsList } from '../../api/form_requests';
+
+const translations = {
+    en: {
+        formsHeader: "Forms",
+        actionHeader: "Action",
+        deleteButton: "Delete",
+        renameButton: "Rename",
+        saveButton: "Save",
+        cancelButton: "Cancel"
+    },
+    he: {
+        formsHeader: "טפסים",
+        actionHeader: "פעולה",
+        deleteButton: "מחק",
+        renameButton: "שנה שם",
+        saveButton: "שמור",
+        cancelButton: "בטל"
+    },
+    ar: {
+        formsHeader: "النماذج",
+        actionHeader: "العملية",
+        deleteButton: "حذف",
+        renameButton: "إعادة تسمية",
+        saveButton: "حفظ",
+        cancelButton: "إلغاء"
+    }
+};
 
 const FormTable = () => {
     const { language } = useContext(LanguageContext);
     const [ allFormsList, setAllFormsList] = useState([]);
+    const [renamingIndex, setRenamingIndex] = useState(-1);
+    const [newSubject, setNewSubject] = useState('');
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const allForms = await fetchAllFormsList();
-                console.log(allForms)
                 if (allForms) {
-                    setAllFormsList(allForms.data.docs);
+                    setAllFormsList(allForms.docs);
                 } else {
                     console.log('Unsigned document response is not valid');
                 }
@@ -24,38 +52,6 @@ const FormTable = () => {
         }
         fetchData();
     }, []);
-
-    // State for managing renaming functionality
-    const [renamingIndex, setRenamingIndex] = useState(-1); // Index of the row currently being renamed
-    const [newSubject, setNewSubject] = useState(''); // New subject input value
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            formsHeader: "Forms",
-            actionHeader: "Action",
-            deleteButton: "Delete",
-            renameButton: "Rename",
-            saveButton: "Save",
-            cancelButton: "Cancel"
-        },
-        he: {
-            formsHeader: "טפסים",
-            actionHeader: "פעולה",
-            deleteButton: "מחק",
-            renameButton: "שנה שם",
-            saveButton: "שמור",
-            cancelButton: "בטל"
-        },
-        ar: {
-            formsHeader: "النماذج",
-            actionHeader: "العملية",
-            deleteButton: "حذف",
-            renameButton: "إعادة تسمية",
-            saveButton: "حفظ",
-            cancelButton: "إلغاء"
-        }
-    };
 
     const handleInputChange = (event) => {
         setNewSubject(event.target.value);

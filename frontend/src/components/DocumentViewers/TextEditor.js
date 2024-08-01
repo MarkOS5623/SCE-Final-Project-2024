@@ -22,7 +22,7 @@ const buttonStyle = {
   margin: '10px',
   width: '150px'
 }
-// Translations for different languages
+
 const translations = {
   en: {
     selectDocument: "Select Document",
@@ -90,7 +90,6 @@ const TextEditor = () => {
   const [ authlist, setAuthsList ] = useState({});
   const [ selectedType, setSelectedType ] = useState('');
   const [ isCollapsed, setIsCollapsed ] = useState(true);
-
   const { language } = useContext(LanguageContext); 
 
   const formContainerRef = useRef(null);
@@ -99,19 +98,19 @@ const TextEditor = () => {
     async function fetchData() {
       try {
         const response = await fetchAllFormsList();
-        if (Array.isArray(response.data.docs)) {
-          setDocsList(response.data.docs);
+        if (Array.isArray(response.docs)) {
+          setDocsList(response.docs);
         } else {
-          console.error('Response data is not an array:', response.data.docs);
+          console.error('Response data is not an array:', response.docs);
         }
       } catch (error) {
         console.error('Fetching of docs failed:', error.message);
       }
       try {
         const response = await fetchAuthList();
-        const names = response.data.map(item => item.name);
+        const names = response.map(item => item.name);
         setNamesList(names);
-        setAuthsList(response.data);
+        setAuthsList(response);
       } catch (error) {
         console.error('Fetching of auths failed:', error.message);
       }
@@ -134,11 +133,11 @@ const TextEditor = () => {
     const token = localStorage.getItem('token')
     const decodedToken = await decodeValue(JSON.stringify({ token: token }));
     const formData = formContainerRef.current.documentEditor.serialize();
-    const author = decodedToken.data.user.id
+    const author = decodedToken.user.id
     try {
       const response = await saveForm(formData, titleInput, selectedAuthsIds, author, type);
-      if (response.status === 200) {
-        console.log('Document saved successfully!');
+      if (response) {
+        console.debug('Document saved successfully!');
         window.location.reload();
       } else {
         console.error('Failed to save form: status ', response.status);
@@ -157,16 +156,15 @@ const TextEditor = () => {
     setError(null);
     try {
       const response = await fetchForm(selectedForm);
-      const selectedAuthorNames = response.data.signatories.map(id => {
+      const selectedAuthorNames = response.signatories.map(id => {
         const author = authlist.find(auth => auth.id === id);
-        console.log(authlist)
         return author ? author.name : null;
       }).filter(name => name !== null);
       setSelectedNames(selectedAuthorNames)
-      setTitleInput(response.data.title)
-      if (response.status === 200) {
-        formContainerRef.current.documentEditor.open(response.data.text); // Set the text in the editor
-        console.log('Document fetched successfully!');
+      setTitleInput(response.title)
+      if (response) {
+        formContainerRef.current.documentEditor.open(response.text); // Set the text in the editor
+        console.debug('Document fetched successfully!');
       } else {
         console.error('Failed to fetch form: status ', response.status);
       }

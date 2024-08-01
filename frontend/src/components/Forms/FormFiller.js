@@ -1,43 +1,41 @@
 import React, { useState, useContext } from 'react';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
+const translations = {
+    en: {
+        courseLabel: 'Course:',
+        coursePlaceholder: 'Course name',
+        reasonLabel: 'Reason:',
+        reasonPlaceholder: 'Reason',
+        submitButton: 'Submit',
+        cancelButton: 'Cancel'
+    },
+    he: {
+        courseLabel: 'קורס:',
+        coursePlaceholder: 'הכנס שם קורס',
+        reasonLabel: 'סיבה:',
+        reasonPlaceholder: 'הכנס סיבה',
+        submitButton: 'שלח',
+        cancelButton: 'ביטול'
+    },
+    ar: {
+        courseLabel: 'الدورة التدريبية:',
+        coursePlaceholder: 'أدخل اسم الدورة التدريبية',
+        reasonLabel: 'السبب:',
+        reasonPlaceholder: 'أدخل السبب',
+        submitButton: 'إرسال',
+        cancelButton: 'إلغاء'
+    }
+};
+
 const FormFiller = ({ documentName, handleSubmit, handleCancel }) => {
     const { language } = useContext(LanguageContext);
-
-    const [course, setCourse] = useState('');
-    const [reason, setReason] = useState('');
+    const [ course, setCourse ] = useState('');
+    const [ reason, setReason ] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
         handleSubmit(course, reason);
-    };
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            courseLabel: 'Course:',
-            coursePlaceholder: 'Course name',
-            reasonLabel: 'Reason:',
-            reasonPlaceholder: 'Reason',
-            submitButton: 'Submit',
-            cancelButton: 'Cancel'
-        },
-        he: {
-            courseLabel: 'קורס:',
-            coursePlaceholder: 'הכנס שם קורס',
-            reasonLabel: 'סיבה:',
-            reasonPlaceholder: 'הכנס סיבה',
-            submitButton: 'שלח',
-            cancelButton: 'ביטול'
-        },
-        ar: {
-            courseLabel: 'الدورة التدريبية:',
-            coursePlaceholder: 'أدخل اسم الدورة التدريبية',
-            reasonLabel: 'السبب:',
-            reasonPlaceholder: 'أدخل السبب',
-            submitButton: 'إرسال',
-            cancelButton: 'إلغاء'
-        }
     };
 
     return (

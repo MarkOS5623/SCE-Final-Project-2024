@@ -1,12 +1,10 @@
 import axios from "axios"
-import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/api/status"
+import { SERVER_BASE, STATUS_ROUTE_URL } from "./config";
 
 
 export const authorizeRequest = async (docID, authorizerID, author, subject) => {
     try {
-      console.log(author)
-      const response = await axios.post(SERVER_BASE + ROUTE_URL + '/authorizerequest', 
+      const response = await axios.post(SERVER_BASE + STATUS_ROUTE_URL + '/authorizerequest', 
         { docID, authorizerID }
       , {
         headers: {
@@ -31,8 +29,7 @@ export const authorizeRequest = async (docID, authorizerID, author, subject) => 
 
 export const rejectRequest = async (docID, authorizerID, author, subject) => {
   try {
-    console.log(author)
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/rejectrequest', 
+    const response = await axios.post(SERVER_BASE + STATUS_ROUTE_URL + '/rejectrequest', 
       { docID, authorizerID }
     , {
       headers: {

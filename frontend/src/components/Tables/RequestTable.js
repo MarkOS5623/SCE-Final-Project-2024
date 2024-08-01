@@ -52,10 +52,10 @@ export default function RequestTable({ documents, setDocuments, flag }) {
   const handleReview = async (documentId) => {
     try {
       const response = await fetchDocument(documentId);
-      if (response.status !== 200) {
+      if (response) {
         throw new Error('Failed to fetch document');
       }
-      setDocumentContent(response.data.text);
+      setDocumentContent(response.text);
       setShowReviewForm(true);
     } catch (error) {
       console.error(error.message);
@@ -99,11 +99,11 @@ export default function RequestTable({ documents, setDocuments, flag }) {
   const handleDownload = async (documentId) => {
     try {
       const response = await fetchDocument(documentId);
-      if (response.status !== 200) {
+      if (response) {
         throw new Error('Failed to fetch document');
       }
-      setDocumentContent(response.data.text);
-      downloadContainerRef.current.documentEditor.open(response.data.text);
+      setDocumentContent(response.text);
+      downloadContainerRef.current.documentEditor.open(response.text);
       await pdfConverter(downloadContainerRef); // Ensure pdfConverter works with the ref
     } catch (error) {
       console.error('Error downloading document:', error);

@@ -2,23 +2,22 @@ import React, { useContext } from 'react';
 import CardContainer from '../../components/Utils/CardContainer';
 import SignUpForm from '../../components/Forms/SignupForm';
 import logoImg from '../../assets/pictures/sce.jpg';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
 
+const translations = {
+  en: {
+    pageTitle: "Sign Up",
+  },
+  he: {
+    pageTitle: "הרשמה",
+  },
+  ar: {
+    pageTitle: "سجل",
+  },
+};
+  
 const SignUpPage = () => {
   const { language } = useContext(LanguageContext);
-
-  // Translations for different languages
-  const translations = {
-    en: {
-      pageTitle: "Sign Up",
-    },
-    he: {
-      pageTitle: "הרשמה",
-    },
-    ar: {
-      pageTitle: "سجل",
-    },
-  };
 
   if (!translations[language]) return null;
 

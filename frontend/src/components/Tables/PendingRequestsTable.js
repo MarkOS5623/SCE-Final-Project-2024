@@ -4,6 +4,27 @@ import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { fetchUnsignedDocumentList } from '../../api/documents_requests';
 import ViewDocument from '../DocumentViewers/ViewDocument';
 
+const translations = {
+    en: {
+        requestID: "Request ID",
+        request: "Request",
+        action: "Action",
+        review: "Review"
+    },
+    he: {
+        requestID: "מספר בקשה",
+        request: "בקשה",
+        action: "פעולה",
+        review: "ביקורת"
+    },
+    ar: {
+        requestID: "رقم الطلب",
+        request: "الطلب",
+        action: "الإجراء",
+        review: "مراجعة"
+    }
+};
+
 const PendingRequestsTable = () => {
     const { language } = useContext(LanguageContext);
     const [ requestList, setRequestsList ] = useState({docs: [], ids: []})
@@ -14,8 +35,8 @@ const PendingRequestsTable = () => {
         async function fetchData() {
             try {
                 const unsignedDocumentList = await fetchUnsignedDocumentList();
-                if (unsignedDocumentList.status === 200) {
-                    setRequestsList(unsignedDocumentList.data);
+                if (unsignedDocumentList) {
+                    setRequestsList(unsignedDocumentList);
                 } else {
                     console.log('Unsigned document response is not valid');
                 }
@@ -33,27 +54,6 @@ const PendingRequestsTable = () => {
     const handleReview = (documentId) => {
         setChoosenRequest(documentId);
         toggleShowReviewForm();
-    };
-
-    const translations = {
-        en: {
-            requestID: "Request ID",
-            request: "Request",
-            action: "Action",
-            review: "Review"
-        },
-        he: {
-            requestID: "מספר בקשה",
-            request: "בקשה",
-            action: "פעולה",
-            review: "ביקורת"
-        },
-        ar: {
-            requestID: "رقم الطلب",
-            request: "الطلب",
-            action: "الإجراء",
-            review: "مراجعة"
-        }
     };
 
     return (

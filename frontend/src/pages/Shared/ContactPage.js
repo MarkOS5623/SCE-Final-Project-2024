@@ -5,102 +5,101 @@ import imageSrc1 from '../../assets/pictures/linkedin.png';
 import imageSrc2 from '../../assets/pictures/facebook.png';
 import imageSrc3 from '../../assets/pictures/instagram.png';
 import imageSrc4 from '../../assets/pictures/youtube.png';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+
+const translations = {
+  en: {
+    mainContactHeader: "We will be happy to assist you, and respond to any questions or comments you may have.",
+    mainContactSubHeader: "Main Contact",
+    mainContactMessage: "Please feel free to contact us, and we will get back to you as soon as possible.",
+    beerShevaCampus: {
+      title: "Be'er Sheva Campus",
+      addressLine1: "56 Bialik St.",
+      addressLine2: "Be'er Sheva 8410802",
+      tel: "Tel: 1-800-207-777",
+      fax: "Fax: 08-6475777",
+      email: "Info@sce.ac.il",
+      ceoFax: "Fax for CEO's Office: 08-6475695"
+    },
+    ashdodCampus: {
+      title: "Ashdod Campus",
+      addressLine1: "84 Jabotinsky St.",
+      addressLine2: "Ashdod 77245",
+      tel: "Tel: 1-800-207-777",
+      fax: "Fax: 08-8519192",
+      email: "Info@sce.ac.il",
+      ceoFax: "Fax for CEO's Office: 08-6475695"
+    },
+    socialMedia: {
+      linkedinAltText: "LinkedIn Icon",
+      youtubeAltText: "YouTube Icon",
+      facebookAltText: "Facebook Icon",
+      instagramAltText: "Instagram Icon"
+    }
+  },
+  he: {
+    mainContactHeader: ".נשמח לסייע לך ולענות על כל שאלה או הערה שיש לך",
+    mainContactSubHeader: "דרכי קשר",
+    mainContactMessage: "אנא צרו קשר ונחזור אליכם בהקדם האפשרי.",
+    beerShevaCampus: {
+      title: "קמפוס באר שבע",
+      addressLine1: "ביאליק 56",
+      addressLine2: "באר שבע 8410802",
+      tel: "טל: 1-800-207-777",
+      fax: "פקס: 08-6475777",
+      email: "info@sce.ac.il",
+      ceoFax: "פקס למשרד המנכ\"ל: 08-6475695"
+    },
+    ashdodCampus: {
+      title: "קמפוס אשדוד",
+      addressLine1: "יבוטינסקי 84",
+      addressLine2: "אשדוד 77245",
+      tel: "טל: 1-800-207-777",
+      fax: "פקס: 08-8519192",
+      email: "info@sce.ac.il",
+      ceoFax: "פקס למשרד המנכ\"ל: 08-6475695"
+    },
+    socialMedia: {
+      linkedinAltText: "סמל LinkedIn",
+      youtubeAltText: "סמל YouTube",
+      facebookAltText: "סמל Facebook",
+      instagramAltText: "סמל Instagram"
+    }
+  },
+  ar: {
+    mainContactHeader: "سنكون سعداء بمساعدتك والرد على أي أسئلة أو تعليقات قد تكون لديك.",
+    mainContactSubHeader: "الاتصال الرئيسي",
+    mainContactMessage: "لا تتردد في الاتصال بنا، وسنعود إليك في أقرب وقت ممكن.",
+    beerShevaCampus: {
+      title: "حرم بئر السبع",
+      addressLine1: "شارع بياليك 56",
+      addressLine2: "بئر السبع 8410802",
+      tel: "الهاتف: 1-800-207-777",
+      fax: "الفاكس: 08-6475777",
+      email: "Info@sce.ac.il",
+      ceoFax: "الفاكس لمكتب المدير التنفيذي: 08-6475695"
+    },
+    ashdodCampus: {
+      title: "حرم أشدود",
+      addressLine1: "شارع جابوتينسكي 84",
+      addressLine2: "أشدود 77245",
+      tel: "الهاتف: 1-800-207-777",
+      fax: "الفاكس: 08-8519192",
+      email: "Info@sce.ac.il",
+      ceoFax: "الفاكس لمكتب المدير التنفيذي: 08-6475695"
+    },
+    socialMedia: {
+      linkedinAltText: "أيقونة LinkedIn",
+      youtubeAltText: "أيقونة YouTube",
+      facebookAltText: "أيقونة Facebook",
+      instagramAltText: "أيقونة Instagram"
+    }
+  },
+};
 
 const ContactUs = () => {
   const { language } = useContext(LanguageContext);
 
-  const translations = {
-    en: {
-      mainContactHeader: "We will be happy to assist you, and respond to any questions or comments you may have.",
-      mainContactSubHeader: "Main Contact",
-      mainContactMessage: "Please feel free to contact us, and we will get back to you as soon as possible.",
-      beerShevaCampus: {
-        title: "Be'er Sheva Campus",
-        addressLine1: "56 Bialik St.",
-        addressLine2: "Be'er Sheva 8410802",
-        tel: "Tel: 1-800-207-777",
-        fax: "Fax: 08-6475777",
-        email: "Info@sce.ac.il",
-        ceoFax: "Fax for CEO's Office: 08-6475695"
-      },
-      ashdodCampus: {
-        title: "Ashdod Campus",
-        addressLine1: "84 Jabotinsky St.",
-        addressLine2: "Ashdod 77245",
-        tel: "Tel: 1-800-207-777",
-        fax: "Fax: 08-8519192",
-        email: "Info@sce.ac.il",
-        ceoFax: "Fax for CEO's Office: 08-6475695"
-      },
-      socialMedia: {
-        linkedinAltText: "LinkedIn Icon",
-        youtubeAltText: "YouTube Icon",
-        facebookAltText: "Facebook Icon",
-        instagramAltText: "Instagram Icon"
-      }
-    },
-    he: {
-      mainContactHeader: ".נשמח לסייע לך ולענות על כל שאלה או הערה שיש לך",
-      mainContactSubHeader: "דרכי קשר",
-      mainContactMessage: "אנא צרו קשר ונחזור אליכם בהקדם האפשרי.",
-      beerShevaCampus: {
-        title: "קמפוס באר שבע",
-        addressLine1: "ביאליק 56",
-        addressLine2: "באר שבע 8410802",
-        tel: "טל: 1-800-207-777",
-        fax: "פקס: 08-6475777",
-        email: "info@sce.ac.il",
-        ceoFax: "פקס למשרד המנכ\"ל: 08-6475695"
-      },
-      ashdodCampus: {
-        title: "קמפוס אשדוד",
-        addressLine1: "יבוטינסקי 84",
-        addressLine2: "אשדוד 77245",
-        tel: "טל: 1-800-207-777",
-        fax: "פקס: 08-8519192",
-        email: "info@sce.ac.il",
-        ceoFax: "פקס למשרד המנכ\"ל: 08-6475695"
-      },
-      socialMedia: {
-        linkedinAltText: "סמל LinkedIn",
-        youtubeAltText: "סמל YouTube",
-        facebookAltText: "סמל Facebook",
-        instagramAltText: "סמל Instagram"
-      }
-    },
-    ar: {
-      mainContactHeader: "سنكون سعداء بمساعدتك والرد على أي أسئلة أو تعليقات قد تكون لديك.",
-      mainContactSubHeader: "الاتصال الرئيسي",
-      mainContactMessage: "لا تتردد في الاتصال بنا، وسنعود إليك في أقرب وقت ممكن.",
-      beerShevaCampus: {
-        title: "حرم بئر السبع",
-        addressLine1: "شارع بياليك 56",
-        addressLine2: "بئر السبع 8410802",
-        tel: "الهاتف: 1-800-207-777",
-        fax: "الفاكس: 08-6475777",
-        email: "Info@sce.ac.il",
-        ceoFax: "الفاكس لمكتب المدير التنفيذي: 08-6475695"
-      },
-      ashdodCampus: {
-        title: "حرم أشدود",
-        addressLine1: "شارع جابوتينسكي 84",
-        addressLine2: "أشدود 77245",
-        tel: "الهاتف: 1-800-207-777",
-        fax: "الفاكس: 08-8519192",
-        email: "Info@sce.ac.il",
-        ceoFax: "الفاكس لمكتب المدير التنفيذي: 08-6475695"
-      },
-      socialMedia: {
-        linkedinAltText: "أيقونة LinkedIn",
-        youtubeAltText: "أيقونة YouTube",
-        facebookAltText: "أيقونة Facebook",
-        instagramAltText: "أيقونة Instagram"
-      }
-    },
-  };
-
-  // Ensure translations for the current language exist
   if (!translations[language]) return null;
 
   return (

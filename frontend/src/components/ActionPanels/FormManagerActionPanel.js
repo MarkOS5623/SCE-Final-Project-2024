@@ -3,6 +3,32 @@ import { Button } from 'react-bootstrap';
 import '../../assets/css/Editor.css';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 
+const translations = {
+    en: {
+        pageTitle: "Form Manager",
+        openEditor: "Document Editor",
+        openRequestManager: "Request Authorizer",
+        openRequestHistory: "Request History",
+        openFormTable: "Form Data Base",
+    },
+    he: {
+        pageTitle: "מנהל טופס",
+        openEditor: "עורך מסמך",
+        openRequestManager: "מנהל בקשות",
+        openFormTable: "טבלת טפסים",
+    },
+    ar: {
+        pageTitle: "مدير النماذج",
+        openEditor: "فتح محرر المستندات",
+        openRequestManager: "فتح مدير الطلبات",
+        openFormTable: "فتح جدول النماذج",
+    },
+};
+
+const buttonStyle = {
+    backgroundColor: "rgba(158, 201, 59)",
+    border: "3px solid white"
+};
 
 const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setFormTableVisible, setActionPanelCollapsed, setAutorizerHistoryVisible}) => {
     const { language } = useContext(LanguageContext);
@@ -37,35 +63,6 @@ const FormManagerActionPanel = ({ setEditorVisible, setAutorizerVisible, setForm
         setFormTableVisible(true);
         setActionPanelCollapsed(true);
         setAutorizerHistoryVisible(false);
-    };
-
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            pageTitle: "Form Manager",
-            openEditor: "Document Editor",
-            openRequestManager: "Request Authorizer",
-            openRequestHistory: "Request History",
-            openFormTable: "Form Data Base",
-        },
-        he: {
-            pageTitle: "מנהל טופס",
-            openEditor: "עורך מסמך",
-            openRequestManager: "מנהל בקשות",
-            openFormTable: "טבלת טפסים",
-        },
-        ar: {
-            pageTitle: "مدير النماذج",
-            openEditor: "فتح محرر المستندات",
-            openRequestManager: "فتح مدير الطلبات",
-            openFormTable: "فتح جدول النماذج",
-        },
-    };
-
-    const buttonStyle = {
-        backgroundColor: "rgba(158, 201, 59)",
-        border: "3px solid white"
     };
 
     return (

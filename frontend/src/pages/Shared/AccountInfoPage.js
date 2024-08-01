@@ -2,7 +2,35 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Card, Table } from 'react-bootstrap';
 import logoImg from '../../assets/pictures/sce.jpg';
 import CardContainer from '../../components/Utils/CardContainer';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+import { SERVER_BASE, UTILS_ROUTE_URL } from "../../api/config";
+
+const translations = {
+  en: {
+    pageTitle: "Account Details",
+    id: "ID",
+    email: "Email",
+    firstName: "First Name",
+    lastName: "Last Name",
+    role: "Role",
+  },
+  he: {
+    pageTitle: "פרטי חשבון",
+    id: "מספר זיהוי",
+    email: "אימייל",
+    firstName: "שם פרטי",
+    lastName: "שם משפחה",
+    role: "תפקיד",
+  },
+  ar: {
+    pageTitle: "تفاصيل الحساب",
+    id: "الرقم التعريفي",
+    email: "البريد الإلكتروني",
+    firstName: "الاسم الأول",
+    lastName: "الاسم الأخير",
+    role: "الدور",
+  },
+};
 
 const AccountInfoPage = () => {
   const { language } = useContext(LanguageContext);
@@ -12,7 +40,7 @@ const AccountInfoPage = () => {
     async function fetchData() {
       try {
         const token = localStorage.getItem('token');
-        const tokenData = await fetch('http://localhost:5000/api/utils/decodeValue', {
+        const tokenData = await fetch(SERVER_BASE + UTILS_ROUTE_URL + '/decodeValue', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -20,7 +48,6 @@ const AccountInfoPage = () => {
           body: JSON.stringify({ token }), 
         });
         const decodedTokenData = await tokenData.json();
-        console.log(decodedTokenData.user);
         setAccountInfo(decodedTokenData.user);
       } catch (error) {
         console.error('Decryption of value failed:', error.message);
@@ -28,34 +55,6 @@ const AccountInfoPage = () => {
     }
     fetchData();
   }, []);
-
-  // Translations for different languages
-  const translations = {
-    en: {
-      pageTitle: "Account Details",
-      id: "ID",
-      email: "Email",
-      firstName: "First Name",
-      lastName: "Last Name",
-      role: "Role",
-    },
-    he: {
-      pageTitle: "פרטי חשבון",
-      id: "מספר זיהוי",
-      email: "אימייל",
-      firstName: "שם פרטי",
-      lastName: "שם משפחה",
-      role: "תפקיד",
-    },
-    ar: {
-      pageTitle: "تفاصيل الحساب",
-      id: "الرقم التعريفي",
-      email: "البريد الإلكتروني",
-      firstName: "الاسم الأول",
-      lastName: "الاسم الأخير",
-      role: "الدور",
-    },
-  };
 
   if (!translations[language]) return null;
 

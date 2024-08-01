@@ -2,10 +2,43 @@ import React, { useState, useContext } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { signup } from '../../api/user_requests';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+
+const translations = {
+  en: {
+    emailPlaceholder: "Email",
+    passwordPlaceholder: "Password",
+    fnamePlaceholder: "First Name",
+    lnamePlaceholder: "Last Name",
+    idPlaceholder: "Personal ID",
+    rolePlaceholder: "Role",
+    loginInstead: "Login Instead",
+    signupButton: "Signup"
+  },
+  he: {
+    emailPlaceholder: "דוא\"ל",
+    passwordPlaceholder: "סיסמה",
+    fnamePlaceholder: "שם פרטי",
+    lnamePlaceholder: "שם משפחה",
+    idPlaceholder: "תעודת זהות",
+    rolePlaceholder: "תפקיד",
+    loginInstead: "התחברות במקום",
+    signupButton: "הרשם"
+  },
+  ar: {
+    emailPlaceholder: "البريد الإلكتروني",
+    passwordPlaceholder: "كلمة المرور",
+    fnamePlaceholder: "الاسم الأول",
+    lnamePlaceholder: "اسم العائلة",
+    idPlaceholder: "الهوية الشخصية",
+    rolePlaceholder: "الدور",
+    loginInstead: "تسجيل الدخول بدلاً من ذلك",
+    signupButton: "سجل"
+  }
+};
 
 function Signup() {
-  const { language } = useContext(LanguageContext); // Accessing language context
+  const { language } = useContext(LanguageContext);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -44,40 +77,6 @@ function Signup() {
       }
     } catch (error) {
       console.error('Error signing up:', error);
-    }
-  };
-
-  // Translations for different languages
-  const translations = {
-    en: {
-      emailPlaceholder: "Email",
-      passwordPlaceholder: "Password",
-      fnamePlaceholder: "First Name",
-      lnamePlaceholder: "Last Name",
-      idPlaceholder: "Personal ID",
-      rolePlaceholder: "Role",
-      loginInstead: "Login Instead",
-      signupButton: "Signup"
-    },
-    he: {
-      emailPlaceholder: "דוא\"ל",
-      passwordPlaceholder: "סיסמה",
-      fnamePlaceholder: "שם פרטי",
-      lnamePlaceholder: "שם משפחה",
-      idPlaceholder: "תעודת זהות",
-      rolePlaceholder: "תפקיד",
-      loginInstead: "התחברות במקום",
-      signupButton: "הרשם"
-    },
-    ar: {
-      emailPlaceholder: "البريد الإلكتروني",
-      passwordPlaceholder: "كلمة المرور",
-      fnamePlaceholder: "الاسم الأول",
-      lnamePlaceholder: "اسم العائلة",
-      idPlaceholder: "الهوية الشخصية",
-      rolePlaceholder: "الدور",
-      loginInstead: "تسجيل الدخول بدلاً من ذلك",
-      signupButton: "سجل"
     }
   };
 

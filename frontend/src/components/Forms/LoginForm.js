@@ -2,14 +2,31 @@ import React, { useState, useContext } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { login } from '../../api/user_requests';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+
+const translations = {
+  en: {
+    emailPlaceholder: "Enter email",
+    passwordPlaceholder: "Password",
+    loginButton: "Login"
+  },
+  he: {
+    emailPlaceholder: "הזן דוא\"ל",
+    passwordPlaceholder: "סיסמה",
+    loginButton: "התחברות"
+  },
+  ar: {
+    emailPlaceholder: "أدخل البريد الإلكتروني",
+    passwordPlaceholder: "كلمة المرور",
+    loginButton: "تسجيل الدخول"
+  }
+};
 
 const LoginForm = () => {
-  const { language } = useContext(LanguageContext); // Accessing language context
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { language } = useContext(LanguageContext);
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ error, setError ] = useState('');
   const navigate = useNavigate(); 
 
   const handleLogin = async () => {
@@ -25,26 +42,7 @@ const LoginForm = () => {
       console.error('Login failed:', error);
     }
   };
-
-  // Translations for different languages
-  const translations = {
-    en: {
-      emailPlaceholder: "Enter email",
-      passwordPlaceholder: "Password",
-      loginButton: "Login"
-    },
-    he: {
-      emailPlaceholder: "הזן דוא\"ל",
-      passwordPlaceholder: "סיסמה",
-      loginButton: "התחברות"
-    },
-    ar: {
-      emailPlaceholder: "أدخل البريد الإلكتروني",
-      passwordPlaceholder: "كلمة المرور",
-      loginButton: "تسجيل الدخول"
-    }
-  };
-
+  
   return (
     <Container className="d-flex justify-content-center align-items-center">
       <Form className="mt-3">

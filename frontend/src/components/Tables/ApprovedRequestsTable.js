@@ -1,7 +1,25 @@
 import React, { useContext, useState,useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { fetchSignedDocumentList } from '../../api/documents_requests';
+
+const translations = {
+    en: {
+        requestsSubject: "Requests Subject",
+        requestsId: "Requests ID",
+        requestsStatus: "Requests Status"
+    },
+    he: {
+        requestsSubject: "נושא הבקשות",
+        requestsId: "מזהה הבקשות",
+        requestsStatus: "סטטוס הבקשות"
+    },
+    ar: {
+        requestsSubject: "موضوع الطلبات",
+        requestsId: "معرف الطلبات",
+        requestsStatus: "حالة الطلبات"
+    }
+};
 
 const ApprovedRequestsTable = () => {
     const { language } = useContext(LanguageContext);
@@ -11,8 +29,8 @@ const ApprovedRequestsTable = () => {
         async function fetchData() {
             try {
                 const signedDocumentList = await fetchSignedDocumentList();
-                if (signedDocumentList.status === 200) {
-                    setProcessedRequestsList(signedDocumentList.data);
+                if (signedDocumentList) {
+                    setProcessedRequestsList(signedDocumentList);
                 } else {
                     console.log('Unsigned document response is not valid');
                 }
@@ -22,25 +40,6 @@ const ApprovedRequestsTable = () => {
         }
         fetchData();
     }, []);
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            requestsSubject: "Requests Subject",
-            requestsId: "Requests ID",
-            requestsStatus: "Requests Status"
-        },
-        he: {
-            requestsSubject: "נושא הבקשות",
-            requestsId: "מזהה הבקשות",
-            requestsStatus: "סטטוס הבקשות"
-        },
-        ar: {
-            requestsSubject: "موضوع الطلبات",
-            requestsId: "معرف الطلبات",
-            requestsStatus: "حالة الطلبات"
-        }
-    };
 
     return (
         <>

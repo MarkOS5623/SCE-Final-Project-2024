@@ -11,6 +11,27 @@ import ApprovedRequestsTable from '../../components/Tables/ApprovedRequestsTable
 import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
 
+const translations = {
+    en: {
+        pageTitle: "Form Manager",
+        openEditor: "Document Editor",
+        openRequestManager: "Request Authorizer",
+        openFormTable: "Form Table",
+    },
+    he: {
+        pageTitle: "מנהל טופס",
+        openEditor: "עורך מסמך",
+        openRequestManager: "מנהל בקשות",
+        openFormTable: "טבלת טפסים",
+    },
+    ar: {
+        pageTitle: "مدير النماذج",
+        openEditor: "فتح محرر المستندات",
+        openRequestManager: "فتح مدير الطلبات",
+        openFormTable: "فتح جدول النماذج",
+    },
+};
+
 function FormManagerPage() {
     const { language } = useContext(LanguageContext);
     const [ EditorVisible, setEditorVisible ] = useState(true);
@@ -21,28 +42,6 @@ function FormManagerPage() {
 
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);
-    };
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            pageTitle: "Form Manager",
-            openEditor: "Document Editor",
-            openRequestManager: "Request Authorizer",
-            openFormTable: "Form Table",
-        },
-        he: {
-            pageTitle: "מנהל טופס",
-            openEditor: "עורך מסמך",
-            openRequestManager: "מנהל בקשות",
-            openFormTable: "טבלת טפסים",
-        },
-        ar: {
-            pageTitle: "مدير النماذج",
-            openEditor: "فتح محرر المستندات",
-            openRequestManager: "فتح مدير الطلبات",
-            openFormTable: "فتح جدول النماذج",
-        },
     };
 
     if (!translations[language]) return null;

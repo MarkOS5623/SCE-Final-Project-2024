@@ -34,7 +34,7 @@ const translations = {
   }
 };
 
-function AboutUS() {
+function AboutUsPage() {
   const { language } = useContext(LanguageContext);
   const t = translations[language];
 
@@ -67,4 +67,4 @@ function AboutUS() {
   );
 }
 
-export default AboutUS;
+export default AboutUsPage;

@@ -1,10 +1,28 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { decodeValue } from '../../api/utils';
 import { fetchNoSignatureFormsList, fetchForm } from '../../api/form_requests';
 import { pdfConverter } from '../../api/utils';
 import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
+
+const translations = {
+    en: {
+        documentsHeader: "Documents",
+        actionHeader: "Action",
+        downloadButton: "Download"
+    },
+    he: {
+        documentsHeader: "מסמכים",
+        actionHeader: "פעולה",
+        downloadButton: "הורדה"
+    },
+    ar: {
+        documentsHeader: "المستندات",
+        actionHeader: "العملية",
+        downloadButton: "تحميل"
+    }
+};
 
 const DownloadDocsTable = () => {
     const { language } = useContext(LanguageContext);
@@ -13,16 +31,14 @@ const DownloadDocsTable = () => {
 
     const handleDownload = async (documentName) => {
         const response = await fetchForm(documentName);
-        const data = response.data;
-        documentContainerRef.current.documentEditor.open(data.text);
+        documentContainerRef.current.documentEditor.open(response.text);
         const token = localStorage.getItem('token');
         const tokenData = await decodeValue(JSON.stringify({ token: token }));
-        const decodedTokenData = tokenData.data;
         const currentDate = new Date();
         const options = { year: 'numeric', month: 'long', day: '2-digit' };
-        let NameField = { fieldName: 'Name', value: decodedTokenData.user.fname + ' ' + decodedTokenData.user.lname };
+        let NameField = { fieldName: 'Name', value: tokenData.user.fname + ' ' + tokenData.user.lname };
         let DateField = { fieldName: 'Date', value: currentDate.toLocaleDateString('en-US', options) };
-        let IDField = { fieldName: 'ID', value: String(decodedTokenData.user.id) };
+        let IDField = { fieldName: 'ID', value: String(tokenData.user.id) };
         documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField]);
         pdfConverter(documentContainerRef);
     };
@@ -31,33 +47,13 @@ const DownloadDocsTable = () => {
         async function fetchData() {
             try {
                 const noSignDocs = await fetchNoSignatureFormsList();
-                console.log(noSignDocs.data.docs)
-                setNoSignDocsList(noSignDocs.data.docs);
+                setNoSignDocsList(noSignDocs.docs);
             } catch (error) {
                 console.error('Fetching of docs failed:', error.message);
             }
         }
         fetchData();
     }, []);
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            documentsHeader: "Documents",
-            actionHeader: "Action",
-            downloadButton: "Download"
-        },
-        he: {
-            documentsHeader: "מסמכים",
-            actionHeader: "פעולה",
-            downloadButton: "הורדה"
-        },
-        ar: {
-            documentsHeader: "المستندات",
-            actionHeader: "العملية",
-            downloadButton: "تحميل"
-        }
-    };
 
     return (
         <>

@@ -13,11 +13,10 @@ import SignUpPage from './pages/Shared/SignUpPage';
 import LoginPage from './pages/Shared/LoginPage'
 import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';
 import ContactPage from './pages/Shared/ContactPage';
-import AboutPage from './pages/Shared/AboutusPage'; // Renamed AboutusPage to AboutPage
+import AboutUsPage from './pages/Shared/AboutusPage';
 
 function App() {
   return (
-    
       <div className="App">
         <Router>
         <LanguageContextProvider>
@@ -31,7 +30,7 @@ function App() {
             <Route path="/formmanager" element={<FormManagerPage />} />
             <Route path="/privacy" element={<PrivacyInformationPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
           </Routes>
           <Footer />
           </LanguageContextProvider>

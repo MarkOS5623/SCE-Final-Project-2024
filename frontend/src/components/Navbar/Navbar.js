@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import logoImg from '../../assets/pictures/sce.jpg';
-import messagesIcon from '../../assets/pictures/icons8-messages-100.png'; // Default messages icon
-import messagesWithMessagesIcon from '../../assets/pictures/icons8-messages-1001.png'; // Messages icon when there are messages
+import messagesIcon from '../../assets/pictures/icons8-messages-100.png'; 
+import messagesWithMessagesIcon from '../../assets/pictures/icons8-messages-1001.png'; 
 import accountIcon from '../../assets/pictures/icons8-profile-96.png';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import '../../assets/css/Navbar.css'; // Make sure to adjust the path if needed
+import '../../assets/css/Navbar.css'; 
 
 const translations = {
   en: {
@@ -34,9 +34,9 @@ const translations = {
 };
 
 const StudentNavbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [userMessages, setUserMessages] = useState([]);
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const [ isAdmin, setIsAdmin ] = useState(false);
+  const [ userMessages, setUserMessages ] = useState([]);
   const { language, changeLanguage } = useContext(LanguageContext);
   const navigate = useNavigate();
 
@@ -49,11 +49,9 @@ const StudentNavbar = () => {
         } else {
           setIsLoggedIn(true);
           const response = await decodeValue(JSON.stringify({ token: token }));
-          const user = response.data.user;
-          if (user.role === 'admin') setIsAdmin(true);
-
+          if (response.user.role === 'admin') setIsAdmin(true);
           const messages = JSON.parse(localStorage.getItem('messages')) || [];
-          const userMessages = messages.filter(message => message.author === user._id || message.author.includes(user._id));
+          const userMessages = messages.filter(message => message.author === response.user._id || message.author.includes(response.user._id));
           setUserMessages(userMessages);
         }
       } catch (error) {
@@ -79,8 +77,9 @@ const StudentNavbar = () => {
   const handleDeleteAllMessages = async () => {
     const token = localStorage.getItem('token');
     const response = await decodeValue(JSON.stringify({ token: token }));
-    const user = response.data.user;
+    const user = response.user;
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
+    console.log(messages)
     const remainingMessages = messages.filter(message => message.author !== user._id);
     localStorage.setItem('messages', JSON.stringify(remainingMessages));
     setUserMessages([]);
