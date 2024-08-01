@@ -1,0 +1,34 @@
+.help-page-container {
+    margin-top: 5px;
+}
+
+/* Default text direction for LTR languages */
+.help-page-title,
+.help-page-introduction,
+.help-page-conclusion {
+    direction: ltr;
+}
+
+/* Text direction for RTL languages */
+.help-page-container[dir="rtl"] .help-page-title,
+.help-page-container[dir="rtl"] .help-page-introduction,
+.help-page-container[dir="rtl"] .help-page-conclusion {
+    direction: rtl;
+}
+
+/* Style for sections */
+.help-page-sections {
+    list-style-position: inside;
+    padding: 0;
+    margin: 0;
+}
+
+/* Align bullets to the right for RTL languages */
+.help-page-container[dir="rtl"] .help-page-sections {
+    text-align: right;
+}
+
+/* Align bullets to the left for LTR languages */
+.help-page-container[dir="ltr"] .help-page-sections {
+    text-align: left;
+}

@@ -14,6 +14,7 @@ import LoginPage from './pages/Shared/LoginPage'
 import PrivacyInformationPage from './pages/Shared/PrivacyInformationPage';
 import ContactPage from './pages/Shared/ContactPage';
 import AboutUsPage from './pages/Shared/AboutusPage';
+import HelpPage from './pages/Shared/HelpPage.js';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/privacy" element={<PrivacyInformationPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/help" element={<HelpPage />} />
           </Routes>
           <Footer />
           </LanguageContextProvider>

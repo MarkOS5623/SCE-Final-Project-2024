@@ -11,32 +11,35 @@ import '../../assets/css/Navbar.css';
 
 const translations = {
   en: {
-    admin: "Logged user is an admin",
+    admin: "admin",
     account: "Account",
     accountInfo: "Account Info",
     formManager: "Form Manager",
     signOut: "Sign Out",
+    help: "Help",
   },
   he: {
-    admin: "משתמש מחובר הוא מנהל",
+    admin: "אדמין",
     account: "חשבון",
     accountInfo: "פרטי חשבון",
     formManager: "מנהל טפסים",
     signOut: "התנתק",
+    help: "עזרה",
   },
   ar: {
-    admin: "المستخدم المسجل هو مسؤول",
+    admin: "مسؤل",
     account: "الحساب",
     accountInfo: "معلومات الحساب",
     formManager: "مدير النماذج",
     signOut: "تسجيل خروج",
+    help: "مساعدة",
   },
 };
 
 const StudentNavbar = () => {
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  const [ isAdmin, setIsAdmin ] = useState(false);
-  const [ userMessages, setUserMessages ] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userMessages, setUserMessages] = useState([]);
   const { language, changeLanguage } = useContext(LanguageContext);
   const navigate = useNavigate();
 
@@ -79,7 +82,6 @@ const StudentNavbar = () => {
     const response = await decodeValue(JSON.stringify({ token: token }));
     const user = response.user;
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
-    console.log(messages)
     const remainingMessages = messages.filter(message => message.author !== user._id);
     localStorage.setItem('messages', JSON.stringify(remainingMessages));
     setUserMessages([]);
@@ -165,6 +167,11 @@ const StudentNavbar = () => {
                   <Dropdown.Item onClick={handleSignOut}>{translations[language].signOut}</Dropdown.Item>
                 )}
               </DropdownButton>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/help" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>
+                {translations[language].help}
+              </Link>
             </li>
           </ul>
         </div>
