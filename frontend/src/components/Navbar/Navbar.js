@@ -92,7 +92,7 @@ const StudentNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-secondary" style={{ height: '70px', borderBottom: '2px solid white' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager">
+        <Link className="navbar-brand" to="/requestmanager/form">
           <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
