@@ -92,11 +92,26 @@ const StudentNavbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-secondary" style={{ height: '70px', borderBottom: '2px solid white' }}>
+    <nav className="navbar navbar-expand-lg bg-secondary">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager/form">
-          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
-        </Link>
+        <div className="navbar-left">
+          <Link className="navbar-brand" to="/requestmanager/form">
+            <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
+          </Link>
+          <Dropdown onSelect={handleLanguageChange} className="language-dropdown">
+            <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill">
+              {language.toUpperCase()}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dropdown-menu rounded">
+              <Dropdown.Item eventKey="he">HE</Dropdown.Item>
+              <Dropdown.Item eventKey="en">EN</Dropdown.Item>
+              <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Link className="nav-link help-button" to="/help">
+            {translations[language].help}
+          </Link>
+        </div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -109,18 +124,6 @@ const StudentNavbar = () => {
                 </span>
               )}
             </li>
-            <div className="navbar-left">
-              <Dropdown onSelect={handleLanguageChange}>
-                <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill language-dropdown">
-                  {language.toUpperCase()}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu rounded">
-                  <Dropdown.Item eventKey="he">HE</Dropdown.Item>
-                  <Dropdown.Item eventKey="en">EN</Dropdown.Item>
-                  <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
             {isLoggedIn && (
               <li className="nav-item dropdown">
                 <DropdownButton
@@ -167,11 +170,6 @@ const StudentNavbar = () => {
                   <Dropdown.Item onClick={handleSignOut}>{translations[language].signOut}</Dropdown.Item>
                 )}
               </DropdownButton>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/help" style={{ fontSize: "15px", fontWeight: "bold", color: "white" }}>
-                {translations[language].help}
-              </Link>
             </li>
           </ul>
         </div>
