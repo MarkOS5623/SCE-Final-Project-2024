@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
+import { Table, Button, Form, FormControl } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider'; 
-import { deleteForm, updateFormTitle } from '../../api/form_requests';
-import { fetchAllFormsList } from '../../api/form_requests';
+import { deleteForm, updateFormTitle, fetchAllFormsList } from '../../api/form_requests';
 
 const translations = {
     en: {
@@ -11,7 +10,8 @@ const translations = {
         deleteButton: "Delete",
         renameButton: "Rename",
         saveButton: "Save",
-        cancelButton: "Cancel"
+        cancelButton: "Cancel",
+        searchPlaceholder: "Search forms..."
     },
     he: {
         formsHeader: "טפסים",
@@ -19,7 +19,8 @@ const translations = {
         deleteButton: "מחק",
         renameButton: "שנה שם",
         saveButton: "שמור",
-        cancelButton: "בטל"
+        cancelButton: "בטל",
+        searchPlaceholder: "חפש טפסים..."
     },
     ar: {
         formsHeader: "النماذج",
@@ -27,15 +28,17 @@ const translations = {
         deleteButton: "حذف",
         renameButton: "إعادة تسمية",
         saveButton: "حفظ",
-        cancelButton: "إلغاء"
+        cancelButton: "إلغاء",
+        searchPlaceholder: "ابحث عن النماذج..."
     }
 };
 
 const FormTable = () => {
     const { language } = useContext(LanguageContext);
-    const [ allFormsList, setAllFormsList] = useState([]);
+    const [allFormsList, setAllFormsList] = useState([]);
     const [renamingIndex, setRenamingIndex] = useState(-1);
     const [newSubject, setNewSubject] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         async function fetchData() {
@@ -97,9 +100,24 @@ const FormTable = () => {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredForms = allFormsList.filter(doc =>
+        doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <>
             <h1>Form Data Base</h1>
+            <FormControl
+                type="text"
+                placeholder={translations[language].searchPlaceholder}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="mb-3"
+            />
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -109,7 +127,7 @@ const FormTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {allFormsList.map((doc, index) => (
+                    {filteredForms.map((doc, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>

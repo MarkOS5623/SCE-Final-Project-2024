@@ -14,7 +14,8 @@ const translations = {
     review: "Review",
     clear: "Clear",
     delete: "Delete",
-    download: "Download"
+    download: "Download",
+    searchPlaceholder: "Search requests..."
   },
   he: {
     requestID: "מספר בקשה",
@@ -23,7 +24,8 @@ const translations = {
     review: "ביקורת",
     clear: "נקה",
     delete: "מחק",
-    download: "הורד"
+    download: "הורד",
+    searchPlaceholder: "חפש בקשות..."
   },
   ar: {
     requestID: "معرف الطلب",
@@ -32,16 +34,18 @@ const translations = {
     review: "مراجعة",
     clear: "مسح",
     delete: "حذف",
-    download: "تحميل"
+    download: "تحميل",
+    searchPlaceholder: "ابحث عن الطلبات..."
   }
 };
 
 export default function RequestTable({ documents, setDocuments, flag }) {
   const { language } = useContext(LanguageContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const downloadContainerRef = useRef(null);
 
   const handleDeleteToggle = () => {
@@ -95,6 +99,14 @@ export default function RequestTable({ documents, setDocuments, flag }) {
     navigate(`/requestmanager/history/${documentId}`); 
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredDocs = documents.docs.filter(doc =>
+    doc.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1">
@@ -115,6 +127,13 @@ export default function RequestTable({ documents, setDocuments, flag }) {
             {translations[language].delete}
           </Button>
         )}
+        <Form.Control
+          type="text"
+          placeholder={translations[language].searchPlaceholder}
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="mb-3"
+        />
         <Table striped bordered hover style={{ width: '100%', minWidth: '300px' }}>
           <thead>
             <tr>
@@ -128,33 +147,39 @@ export default function RequestTable({ documents, setDocuments, flag }) {
             </tr>
           </thead>
           <tbody>
-            {documents.docs && documents.docs.map((doc, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                {deleteMode && (
-                  <td>
-                    <Form.Check
-                      type="checkbox"
-                      checked={selectedDocuments.includes(documents.ids[index])}
-                      onChange={() => handleSelectDocument(documents.ids[index])}
-                    />
-                  </td>
-                )}
-                <td>{documents.ids[index]}</td>
-                <td>{doc}</td>
-                <td>{documents.statuses[index]}</td>
-                <td>
-                  <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
-                    {translations[language].review}
-                  </Button>
-                </td>
-                <td>
-                  <Button variant="primary" onClick={() => handleDownload(documents.ids[index])}>
-                    {translations[language].download}
-                  </Button>
-                </td>
+            {filteredDocs.length === 0 ? (
+              <tr>
+                <td colSpan="7">No matching requests found</td>
               </tr>
-            ))}
+            ) : (
+              filteredDocs.map((doc, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  {deleteMode && (
+                    <td>
+                      <Form.Check
+                        type="checkbox"
+                        checked={selectedDocuments.includes(documents.ids[index])}
+                        onChange={() => handleSelectDocument(documents.ids[index])}
+                      />
+                    </td>
+                  )}
+                  <td>{documents.ids[index]}</td>
+                  <td>{doc}</td>
+                  <td>{documents.statuses[index]}</td>
+                  <td>
+                    <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
+                      {translations[language].review}
+                    </Button>
+                  </td>
+                  <td>
+                    <Button variant="primary" onClick={() => handleDownload(documents.ids[index])}>
+                      {translations[language].download}
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { fetchUnsignedDocumentList } from '../../api/documents_requests';
@@ -9,42 +9,57 @@ const translations = {
         requestID: "Request ID",
         request: "Request",
         action: "Action",
-        review: "Review"
+        review: "Review",
+        searchPlaceholder: "Search requests..."
     },
     he: {
         requestID: "מספר בקשה",
         request: "בקשה",
         action: "פעולה",
-        review: "ביקורת"
+        review: "ביקורת",
+        searchPlaceholder: "חפש בקשות..."
     },
     ar: {
         requestID: "رقم الطلب",
         request: "الطلب",
         action: "الإجراء",
-        review: "مراجعة"
+        review: "مراجعة",
+        searchPlaceholder: "ابحث عن الطلبات..."
     }
 };
 
 const PendingRequestsTable = () => {
     const { language } = useContext(LanguageContext);
     const [requestList, setRequestsList] = useState({ docs: [], ids: [] });
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const unsignedDocumentList = await fetchUnsignedDocumentList();
-                if (unsignedDocumentList && Array.isArray(unsignedDocumentList.docs) && Array.isArray(unsignedDocumentList.ids)) {
-                    setRequestsList(unsignedDocumentList);
-                } else {
-                    console.log('Unsigned document response is not valid');
-                }
-            } catch (error) {
-                console.error('Fetching of docs failed:', error.message);
+useEffect(() => {
+    async function fetchData() {
+        try {
+            const unsignedDocumentList = await fetchUnsignedDocumentList();
+            console.log('Fetched Data:', unsignedDocumentList); // Add this line
+            if (unsignedDocumentList && Array.isArray(unsignedDocumentList.docs) && Array.isArray(unsignedDocumentList.ids)) {
+                setRequestsList(unsignedDocumentList);
+            } else {
+                console.log('Unsigned document response is not valid');
             }
+        } catch (error) {
+            console.error('Fetching of docs failed:', error.message);
         }
-        fetchData();
-    }, []);
+    }
+    fetchData();
+}, []);
+
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredRequests = requestList.docs.filter((doc, index) =>
+        doc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        requestList.ids[index].toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const handleReview = (documentId) => {
         navigate(`/formmanager/requests/${documentId}`); 
@@ -53,6 +68,13 @@ const PendingRequestsTable = () => {
     return (
         <>
             <h1>Request Manager</h1>
+            <FormControl
+                type="text"
+                placeholder={translations[language].searchPlaceholder}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="mb-3"
+            />
             <Table striped bordered hover variant="light">
                 <thead>
                     <tr>
@@ -63,12 +85,12 @@ const PendingRequestsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {requestList.docs.length === 0 ? (
+                    {filteredRequests.length === 0 ? (
                         <tr>
-                            <td colSpan="4">No pending requests</td>
+                            <td colSpan="4">No matching requests found</td>
                         </tr>
                     ) : (
-                        requestList.docs.map((doc, index) => (
+                        filteredRequests.map((doc, index) => (
                             <tr key={requestList.ids[index] || index}>
                                 <td>{index + 1}</td>
                                 <td>{requestList.ids[index]}</td>

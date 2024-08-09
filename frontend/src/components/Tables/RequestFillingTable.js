@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, FormControl } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { decodeValue } from '../../api/utils';
 import { fetchFormWithSignatureList, fetchForm } from '../../api/form_requests';
@@ -11,17 +11,20 @@ const translations = {
     en: {
         documentsHeader: "Documents",
         actionHeader: "Action",
-        downloadButton: "File"
+        downloadButton: "File",
+        searchPlaceholder: "Search documents..."
     },
     he: {
         documentsHeader: "מסמכים",
         actionHeader: "פעולה",
-        downloadButton: "מלא"
+        downloadButton: "מלא",
+        searchPlaceholder: "חפש מסמכים..."
     },
     ar: {
         documentsHeader: "المستندات",
         actionHeader: "العملية",
-        downloadButton: "تحميل"
+        downloadButton: "تحميل",
+        searchPlaceholder: "ابحث في المستندات..."
     }
 };
 
@@ -30,12 +33,14 @@ const DownloadDocsTable = () => {
     const [noSignDocsList, setNoSignDocsList] = useState([]);
     const [showFillForm, setShowFillForm] = useState(false);
     const [choosenDocument, setChoosenDocument] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const documentContainerRef = useRef(null);
 
     const toggleFillFrom = (doc) => {
         setChoosenDocument(doc);
         setShowFillForm(!showFillForm);
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -47,6 +52,14 @@ const DownloadDocsTable = () => {
         };
         fetchData();
     }, []);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredDocs = noSignDocsList.filter(doc =>
+        doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const handleSubmit = async (course, reason) => {
         try {
@@ -64,8 +77,8 @@ const DownloadDocsTable = () => {
                 let reasonField = { fieldName: 'Reason', value: reason };
                 documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
                 const documentData = documentContainerRef.current.documentEditor.serialize();
-                await saveDocument(documentData, response.title, response.signatories, tokenData.user._id, response.type)
-                window.location.reload()
+                await saveDocument(documentData, response.title, response.signatories, tokenData.user._id, response.type);
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error fetching document:', error);
@@ -74,33 +87,48 @@ const DownloadDocsTable = () => {
 
     return (
         <>
-            <h1>Reqeust Maker</h1>
+            <h1>Request Maker</h1>
             {!showFillForm ? (
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>{translations[language].documentsHeader}</th>
-                            <th>{translations[language].actionHeader}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {noSignDocsList.map((doc, index) => (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{doc}</td>
-                                <td>
-                                    <Button variant="primary" onClick={() => toggleFillFrom(doc)}>
-                                        {translations[language].downloadButton}
-                                    </Button>
-                                </td>
+                <>
+                    <FormControl
+                        type="text"
+                        placeholder={translations[language].searchPlaceholder}
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="mb-3"
+                    />
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{translations[language].documentsHeader}</th>
+                                <th>{translations[language].actionHeader}</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {filteredDocs.length === 0 ? (
+                                <tr>
+                                    <td colSpan="3">No matching documents found</td>
+                                </tr>
+                            ) : (
+                                filteredDocs.map((doc, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{doc}</td>
+                                        <td>
+                                            <Button variant="primary" onClick={() => toggleFillFrom(doc)}>
+                                                {translations[language].downloadButton}
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </Table>
+                </>
             ) : (
                 <div style={{ marginBottom: '20px' }}>
-                    <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument} handleCancel={toggleFillFrom}/>
+                    <FormFiller handleSubmit={handleSubmit} documentName={choosenDocument} handleCancel={toggleFillFrom} />
                 </div>
             )}
             <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
