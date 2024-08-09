@@ -55,3 +55,15 @@ export const decodeValue = async (token) => {
     throw error;
   }
 };
+
+// Utility function for logging and handling errors
+export const handleApiError = (error) => {
+  if (error.response) {
+    console.error(`Error ${error.response.status}: ${error.response.data}`);
+  } else if (error.request) {
+    console.error('Error: No response received:', error.request);
+  } else {
+    console.error('Error:', error.message);
+  }
+  throw error;
+};

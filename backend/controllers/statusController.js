@@ -1,24 +1,21 @@
-const utils = require('../utils');
-const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
 const transporter = require('../config/nodemailer.config'); 
 const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
+const { handleServerError } = require('../utils'); 
 
 const statusController = {
     authorizeRequest: async (req, res) => { 
         try {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
-    
+            console.log(document)
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id.toString());
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                const statusSignatoriesIds = statuses.map(status => status.signatories.toString());
+                const statusSignatoriesIds = statuses.map(status => status.signatory.toString());
                 const authorizer = await User.findOne({ id: authorizerID });
-    
-                console.log('statusSignatoriesIds: ', statusSignatoriesIds);
-    
                 if (statusSignatoriesIds.includes(authorizer._id.toString())) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
@@ -37,10 +34,10 @@ const statusController = {
             }
             return res.status(401).json('Failed approving request');
         } catch (error) {
-            console.error('Error approving request:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            handleServerError(res, error, 'Error approving request');
         }
     },
+
     rejectRequest: async (req, res) => {
         try {
             const { docID, authorizerID } = req.body;
@@ -49,7 +46,8 @@ const statusController = {
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id.toString());
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                const statusSignatoriesIds = statuses.map(status => status.signatories.toString());
+                console.log(statuses)
+                const statusSignatoriesIds = statuses.map(status => status.signatory.toString());
                 const authorizer = await User.findOne({ id: authorizerID });
     
                 if (statusSignatoriesIds.includes(authorizer._id.toString())) {
@@ -60,7 +58,7 @@ const statusController = {
                                 from: 'your-email@example.com',
                                 to: authorizer.email,
                                 subject: 'Request Rejected',
-                                text: `Your request ${document.subject} has been approved.`,
+                                text: `Your request ${document.subject} has been rejected.`,
                             };
                             await transporter.sendMail(mailOptions);
                             return res.status(201).json('Successfully rejected request and sent email');
@@ -70,10 +68,9 @@ const statusController = {
             }
             return res.status(401).json('Failed rejecting request');
         } catch (error) {
-            console.error('Error rejecting request:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            handleServerError(res, error, 'Error rejecting request');
         }
     },
 };
-  
+
 module.exports = statusController;

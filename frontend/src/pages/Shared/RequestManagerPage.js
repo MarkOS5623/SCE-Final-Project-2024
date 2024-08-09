@@ -23,7 +23,9 @@ function RequestManagerPage() {
             try {
                 const token = localStorage.getItem('token');
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-                const response = await fetchRequest(decodedToken.user.id);
+                console.log(decodedToken)
+                const response = await fetchRequest(decodedToken.user._id);
+                console.log(response)
                 if (response) {
                     const documentStatuses = response.statuses;
                     const pendingApprovalDocs = [];
