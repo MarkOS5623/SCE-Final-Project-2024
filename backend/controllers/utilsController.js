@@ -1,4 +1,5 @@
 const utils = require('../utils');
+const { handleServerError } = require('../utils'); 
 
 const utilsController = { // request for decoding values for server side requests
     decodeValue: async (req, res) => {
@@ -7,7 +8,7 @@ const utilsController = { // request for decoding values for server side request
       let decrpytedValue = await utils.decode(token);
       res.status(201).json(decrpytedValue);
     } catch (error) {
-      console.error('Error occurred during decryption:', error);
+      handleServerError(res, error, 'Error decoding value');
       res.status(500).json({ message: 'Internal server error' });
     }
   }

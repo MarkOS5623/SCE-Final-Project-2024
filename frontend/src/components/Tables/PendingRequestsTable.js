@@ -34,7 +34,7 @@ const PendingRequestsTable = () => {
         async function fetchData() {
             try {
                 const unsignedDocumentList = await fetchUnsignedDocumentList();
-                if (unsignedDocumentList) {
+                if (unsignedDocumentList && Array.isArray(unsignedDocumentList.docs) && Array.isArray(unsignedDocumentList.ids)) {
                     setRequestsList(unsignedDocumentList);
                 } else {
                     console.log('Unsigned document response is not valid');
@@ -63,21 +63,27 @@ const PendingRequestsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {requestList.docs.map((doc, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{requestList.ids[index]}</td>
-                            <td>{doc}</td>
-                            <td>
-                                <Button
-                                    variant="primary"
-                                    onClick={() => handleReview(requestList.ids[index])}
-                                >
-                                    {translations[language].review}
-                                </Button>
-                            </td>
+                    {requestList.docs.length === 0 ? (
+                        <tr>
+                            <td colSpan="4">No pending requests</td>
                         </tr>
-                    ))}
+                    ) : (
+                        requestList.docs.map((doc, index) => (
+                            <tr key={requestList.ids[index] || index}>
+                                <td>{index + 1}</td>
+                                <td>{requestList.ids[index]}</td>
+                                <td>{doc}</td>
+                                <td>
+                                    <Button
+                                        variant="primary"
+                                        onClick={() => handleReview(requestList.ids[index])}
+                                    >
+                                        {translations[language].review}
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </Table>
         </>
