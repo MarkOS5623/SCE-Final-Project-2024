@@ -11,32 +11,35 @@ import '../../assets/css/Navbar.css';
 
 const translations = {
   en: {
-    admin: "Logged user is an admin",
+    admin: "admin",
     account: "Account",
     accountInfo: "Account Info",
     formManager: "Form Manager",
     signOut: "Sign Out",
+    help: "Help",
   },
   he: {
-    admin: "משתמש מחובר הוא מנהל",
+    admin: "אדמין",
     account: "חשבון",
     accountInfo: "פרטי חשבון",
     formManager: "מנהל טפסים",
     signOut: "התנתק",
+    help: "עזרה",
   },
   ar: {
-    admin: "المستخدم المسجل هو مسؤول",
+    admin: "مسؤل",
     account: "الحساب",
     accountInfo: "معلومات الحساب",
     formManager: "مدير النماذج",
     signOut: "تسجيل خروج",
+    help: "مساعدة",
   },
 };
 
 const StudentNavbar = () => {
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  const [ isAdmin, setIsAdmin ] = useState(false);
-  const [ userMessages, setUserMessages ] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userMessages, setUserMessages] = useState([]);
   const { language, changeLanguage } = useContext(LanguageContext);
   const navigate = useNavigate();
 
@@ -79,7 +82,6 @@ const StudentNavbar = () => {
     const response = await decodeValue(JSON.stringify({ token: token }));
     const user = response.user;
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
-    console.log(messages)
     const remainingMessages = messages.filter(message => message.author !== user._id);
     localStorage.setItem('messages', JSON.stringify(remainingMessages));
     setUserMessages([]);
@@ -90,11 +92,26 @@ const StudentNavbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-secondary" style={{ height: '70px', borderBottom: '2px solid white' }}>
+    <nav className="navbar navbar-expand-lg bg-secondary">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager/form">
-          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
-        </Link>
+        <div className="navbar-left">
+          <Link className="navbar-brand" to="/requestmanager/form">
+            <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
+          </Link>
+          <Dropdown onSelect={handleLanguageChange} className="language-dropdown">
+            <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill">
+              {language.toUpperCase()}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dropdown-menu rounded">
+              <Dropdown.Item eventKey="he">HE</Dropdown.Item>
+              <Dropdown.Item eventKey="en">EN</Dropdown.Item>
+              <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Link className="nav-link help-button" to="/help">
+            {translations[language].help}
+          </Link>
+        </div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -107,18 +124,6 @@ const StudentNavbar = () => {
                 </span>
               )}
             </li>
-            <div className="navbar-left">
-              <Dropdown onSelect={handleLanguageChange}>
-                <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill language-dropdown">
-                  {language.toUpperCase()}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu rounded">
-                  <Dropdown.Item eventKey="he">HE</Dropdown.Item>
-                  <Dropdown.Item eventKey="en">EN</Dropdown.Item>
-                  <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
             {isLoggedIn && (
               <li className="nav-item dropdown">
                 <DropdownButton
