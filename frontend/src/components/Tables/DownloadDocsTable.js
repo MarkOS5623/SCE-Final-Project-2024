@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, FormControl } from 'react-bootstrap';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
 import { decodeValue } from '../../api/utils';
 import { fetchNoSignatureFormsList, fetchForm } from '../../api/form_requests';
@@ -10,23 +10,27 @@ const translations = {
     en: {
         documentsHeader: "Documents",
         actionHeader: "Action",
-        downloadButton: "Download"
+        downloadButton: "Download",
+        searchPlaceholder: "Search documents..."
     },
     he: {
         documentsHeader: "מסמכים",
         actionHeader: "פעולה",
-        downloadButton: "הורדה"
+        downloadButton: "הורדה",
+        searchPlaceholder: "חפש מסמכים..."
     },
     ar: {
         documentsHeader: "المستندات",
         actionHeader: "العملية",
-        downloadButton: "تحميل"
+        downloadButton: "تحميل",
+        searchPlaceholder: "ابحث عن المستندات..."
     }
 };
 
 const DownloadDocsTable = () => {
     const { language } = useContext(LanguageContext);
-    const [ noSignDocsList, setNoSignDocsList] = useState([]);
+    const [noSignDocsList, setNoSignDocsList] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const documentContainerRef = useRef(null);
 
     const handleDownload = async (documentName) => {
@@ -55,9 +59,24 @@ const DownloadDocsTable = () => {
         fetchData();
     }, []);
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredDocs = noSignDocsList.filter(doc =>
+        doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <>
             <h1>Download Forms</h1>
+            <FormControl
+                type="text"
+                placeholder={translations[language].searchPlaceholder}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="mb-3"
+            />
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -67,7 +86,7 @@ const DownloadDocsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {noSignDocsList.map((doc, index) => (
+                    {filteredDocs.map((doc, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{doc}</td>
