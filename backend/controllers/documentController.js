@@ -131,7 +131,7 @@ const documentController = {
       );
 
       if (!deleteResult) {
-        return res.status(404).send('No documents found to delete');
+        return res.status(400).send('No documents found to delete');
       }
 
       res.status(200).send(`Documents deleted successfully`);
@@ -144,9 +144,8 @@ const documentController = {
     try {
       const { text, subject, signatories, author, type, documentId } = req.body;
       const authorizers = await User.find({ _id: { $in: signatories } });
-      console.log(signatories)
-      console.log(authorizers)
       const statuses = [];
+      let authorizersList = [];
       if (documentId) {
         // Update existing document if documentId is provided
         const document = await Document.findOneAndUpdate(
@@ -161,12 +160,15 @@ const documentController = {
         res.status(200).send('Document updated successfully');
       } else {
         // Create new document if documentId is not provided
-        for (const user of authorizers) {
-          const status = new Status({
-            signatory: user._id, 
-            status: 'unsigned'  
-          });
-          statuses.push(status);
+        if(authorizers){
+          for (const user of authorizers) {
+            const status = new Status({
+              signatory: user._id, 
+              status: 'unsigned'  
+            });
+            statuses.push(status);
+          }
+          authorizersList = statuses.map(status => status._id);
         }
         const user = await User.findOne({ _id: author });
         const id = utils.generateDocumentId(subject);
@@ -175,7 +177,7 @@ const documentController = {
           text,
           department: "test",
           author: user,
-          authorizers: statuses.map(status => status._id), // Store status IDs
+          authorizers: authorizersList,
           documentId: id,
           type
         });

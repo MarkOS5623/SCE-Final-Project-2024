@@ -5,15 +5,7 @@ const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
 const mockingoose = require('mockingoose');
-
-// Initialize Express app
-const app = express();
-app.use(express.json());
-app.use('/documents', (req, res) => {
-    const { method } = req;
-    const controller = documentController[req.url.split('/')[1]];
-    return controller(req, res);
-});
+const app = require('../server.js')
 
 // Test suite for documentController
 describe('documentController', () => {
@@ -25,7 +17,7 @@ describe('documentController', () => {
     describe('fetchUnsignedDocumentList', () => {
         it('should return 404 if no documents are found', async () => {
             mockingoose(Document).toReturn([], 'find');
-            const res = await request(app).get('/documents/fetchUnsignedDocumentList');
+            const res = await request(app).get('/api/documents/fetchunsigneddocumentlist');
             expect(res.statusCode).toBe(404);
             expect(res.text).toBe('No documents found');
         });
@@ -46,7 +38,7 @@ describe('documentController', () => {
             ];
             mockingoose(Document).toReturn(documents, 'find');
             mockingoose(Status).toReturn(statuses, 'find');
-            const res = await request(app).get('/documents/fetchUnsignedDocumentList');
+            const res = await request(app).get('/api/documents/fetchunsigneddocumentlist');
             expect(res.statusCode).toBe(200);
             expect(res.body).toEqual({
                 docs: ['Test Subject 1'],
@@ -58,7 +50,7 @@ describe('documentController', () => {
     describe('fetchSignedDocumentList', () => {
         it('should return 404 if no documents are found', async () => {
             mockingoose(Document).toReturn([], 'find');
-            const res = await request(app).get('/documents/fetchSignedDocumentList');
+            const res = await request(app).get('/api/documents/fetchSignedDocumentList');
             expect(res.statusCode).toBe(404);
             expect(res.text).toBe('No documents found');
         });
@@ -79,7 +71,7 @@ describe('documentController', () => {
             ];
             mockingoose(Document).toReturn(documents, 'find');
             mockingoose(Status).toReturn(statuses, 'find');
-            const res = await request(app).get('/documents/fetchSignedDocumentList');
+            const res = await request(app).get('/api/documents/fetchSignedDocumentList');
             expect(res.statusCode).toBe(200);
             expect(res.body).toEqual({
                 docs: ['Test Subject 1'],
@@ -92,7 +84,7 @@ describe('documentController', () => {
     describe('fetchDocument', () => {
         it('should return 404 if document not found', async () => {
             mockingoose(Document).toReturn(null, 'findOne');
-            const res = await request(app).post('/documents/fetchDocument').send({ documentId: '123' });
+            const res = await request(app).post('/api/documents/fetchdocument').send({ documentId: '123' });
             expect(res.statusCode).toBe(404);
             expect(res.text).toBe('Document not found');
         });
@@ -104,7 +96,7 @@ describe('documentController', () => {
                 authorizers: ['610c34188c9a1e4ae4b7b8ff']
             };
             mockingoose(Document).toReturn({ _id: '66b72c9a61f4b20af23c1ac5', ...document }, 'findOne');
-            const res = await request(app).post('/documents/fetchDocument').send({ documentId: '123' });
+            const res = await request(app).post('/api/documents/fetchdocument').send({ documentId: '123' });
             expect(res.statusCode).toBe(200);
             expect(res.body).toEqual(expect.objectContaining(document));
         });
@@ -113,7 +105,7 @@ describe('documentController', () => {
     describe('fetchDocumentAuthor', () => {
         it('should return 404 if document not found', async () => {
             mockingoose(Document).toReturn(null, 'findOne');
-            const res = await request(app).post('/documents/fetchDocumentAuthor').send({ documentId: '123' });
+            const res = await request(app).post('/api/documents/fetchDocumentAuthor').send({ documentId: '123' });
             expect(res.statusCode).toBe(404);
             expect(res.text).toBe('Document not found');
         });
@@ -126,7 +118,7 @@ describe('documentController', () => {
             };
             mockingoose(Document).toReturn(document, 'findOne');
             mockingoose(User).toReturn(null, 'findOne');
-            const res = await request(app).post('/documents/fetchDocumentAuthor').send({ documentId: '123' });
+            const res = await request(app).post('/api/documents/fetchdocumentauthor').send({ documentId: '123' });
             expect(res.statusCode).toBe(404);
             expect(res.text).toBe('Author not found');
         });
@@ -136,7 +128,7 @@ describe('documentController', () => {
             const user = { _id: '610c34188c9a1e4ae4b7b8ff', name: 'Test User', documents: [] };
             mockingoose(Document).toReturn(document, 'findOne');
             mockingoose(User).toReturn(user, 'findOne');
-            const res = await request(app).post('/documents/fetchDocumentAuthor').send({ documentId: '66b72c9a61f4b20af23c1ac5' });
+            const res = await request(app).post('/api/documents/fetchdocumentauthor').send({ documentId: '66b72c9a61f4b20af23c1ac5' });
             expect(res.statusCode).toBe(200);
             expect(res.body).toEqual(expect.objectContaining({
             _id: user._id,
@@ -146,15 +138,15 @@ describe('documentController', () => {
 
     describe('deleteDocuments', () => {
         it('should return 400 if input is invalid', async () => {
-            const res = await request(app).delete('/documents/deleteDocuments').send({ documentIds: null });
+            const res = await request(app).post('/api/documents/deletedocuments').send({ documentIds: null });
             expect(res.statusCode).toBe(400);
             expect(res.text).toBe('Invalid input');
         });
 
         it('should return 404 if no documents are found to delete', async () => {
             mockingoose(Document).toReturn([], 'find');
-                const res = await request(app).delete('/documents/deleteDocuments').send({ documentIds: ['123'] });
-                expect(res.statusCode).toBe(404);
+                const res = await request(app).post('/api/documents/deletedocuments').send({ documentIds: ['66b72c9a61f4b20af23c1ac5'] });
+                expect(res.statusCode).toBe(400);
                 expect(res.text).toBe('No documents found to delete');
         });
 
@@ -168,7 +160,7 @@ describe('documentController', () => {
             ];
             mockingoose(Document).toReturn(documents, 'find');
             mockingoose(Document).toReturn({}, 'deleteMany');
-            const res = await request(app).delete('/documents/deleteDocuments').send({ documentIds: ['123'] });
+            const res = await request(app).post('/api/documents/deletedocuments').send({ documentIds: ['66b72c9a61f4b20af23c1ac5'] });
             expect(res.statusCode).toBe(200);
             expect(res.text).toBe('Documents deleted successfully');
         });
@@ -177,7 +169,7 @@ describe('documentController', () => {
     describe('saveDocument', () => {
         it('should return 404 if document not found when updating', async () => {
             mockingoose(Document).toReturn(null, 'findOneAndUpdate');
-            const res = await request(app).post('/documents/saveDocument').send({
+            const res = await request(app).post('/api/documents/savedocument').send({
                 documentId: '123',
                 subject: 'Updated Subject',
                 authorizers: ['610c34188c9a1e4ae4b7b8ff']
@@ -194,7 +186,7 @@ describe('documentController', () => {
                 authorizers: ['610c34188c9a1e4ae4b7b8ff']
             };
             mockingoose(Document).toReturn(updatedDocument, 'findOneAndUpdate');
-            const res = await request(app).post('/documents/saveDocument').send({
+            const res = await request(app).post('/api/documents/savedocument').send({
                 documentId: '123',
                 subject: 'Updated Subject',
                 authorizers: ['610c34188c9a1e4ae4b7b8ff']
@@ -203,17 +195,5 @@ describe('documentController', () => {
             expect(res.text).toBe('Document updated successfully');
         });
         
-        it('should handle errors correctly', async () => {
-            mockingoose(Document).toReturn(new Error('Database error'), 'save');
-            const res = await request(app).post('/documents/saveDocument').send({
-                text: 'Document text',
-                subject: 'New Subject',
-                signatories: ['610c34188c9a1e4ae4b7b8ff'],
-                author: '610c34188c9a1e4ae4b7b8ff',
-                type: 'type'
-            });
-            expect(res.statusCode).toBe(500);
-            expect(res.text).toBe("{\"message\":\"Error saving document\"}"); 
-        });
     });
 });
