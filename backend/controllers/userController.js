@@ -60,14 +60,11 @@ const userController = {
     try {
       const { userId } = req.body;
       const user = await User.findById(userId);
-
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(400).json({ message: 'User not found' });
       }
-
       const userRequests = await Document.find({ _id: { $in: user.documents } });
       const signedDocumentsStatus = [];
-
       for (const document of userRequests) {
         // Convert authorizer IDs to ObjectId
         const authorizerIds = document.authorizers.map(id => new mongoose.Types.ObjectId(id));
