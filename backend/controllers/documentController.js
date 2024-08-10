@@ -107,7 +107,7 @@ const documentController = {
       }
       const user = await User.findOne({ documents: document._id });
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send('Author not found');
       }
       res.status(200).json(user);
     } catch (error) {
@@ -130,11 +130,11 @@ const documentController = {
         { $pull: { documents: { $in: documents.map(doc => doc._id) } } }
       );
 
-      if (deleteResult.deletedCount === 0) {
+      if (!deleteResult) {
         return res.status(404).send('No documents found to delete');
       }
 
-      res.status(200).send(`${deleteResult.deletedCount} documents deleted successfully`);
+      res.status(200).send(`Documents deleted successfully`);
     } catch (error) {
       utils.handleServerError(res, error, 'Error deleting documents');
     }
@@ -143,12 +143,10 @@ const documentController = {
   saveDocument: async (req, res) => {
     try {
       const { text, subject, signatories, author, type, documentId } = req.body;
-      console.log(signatories);
-      
-      // Find the authorizers
       const authorizers = await User.find({ _id: { $in: signatories } });
+      console.log(signatories)
+      console.log(authorizers)
       const statuses = [];
-
       if (documentId) {
         // Update existing document if documentId is provided
         const document = await Document.findOneAndUpdate(
@@ -165,12 +163,11 @@ const documentController = {
         // Create new document if documentId is not provided
         for (const user of authorizers) {
           const status = new Status({
-            signatory: user._id, // Ensure `signatory` field is set correctly
-            status: 'unsigned'  // Ensure `status` is set as a String
+            signatory: user._id, 
+            status: 'unsigned'  
           });
           statuses.push(status);
         }
-
         const user = await User.findOne({ _id: author });
         const id = utils.generateDocumentId(subject);
         const newDocument = new Document({
@@ -182,9 +179,7 @@ const documentController = {
           documentId: id,
           type
         });
-
         await newDocument.save();
-
         // Save statuses and update authorizers' documents
         await Promise.all(statuses.map(status => status.save()));
         await Promise.all(authorizers.map(user =>
