@@ -10,7 +10,6 @@ const formController = {
             const signatories = await User.find({ _id: { $in: Signatories } });
             const user = await User.findOne({ id: Author });
             const existingForm = await Form.findOne({ title });
-
             if (existingForm) {
                 await existingForm.updateOne({ text: Data, signatories });
                 res.status(200).send('Form updated successfully');
@@ -38,7 +37,7 @@ const formController = {
             const form = await Form.findOne({ title });
 
             if (!form) {
-                return res.status(404).send('Form not found');
+                return res.status(400).send('Form not found');
             }
 
             res.status(200).json(form);
@@ -54,12 +53,11 @@ const formController = {
                 signatories: { $size: 0 },
                 type: { $ne: "Return" }
             });
-
-            if (!formsList.length) {
-                return res.status(404).send('Forms not found');
+            let formTitles = [];
+            if (!formsList || formsList.length === 0) {
+                return res.status(400).send('Forms not found');
             }
-
-            const formTitles = formsList.map(form => form.title);
+            else formTitles = formsList.map(form => form.title);
             res.status(201).json({ docs: formTitles });
         } catch (error) {
             handleServerError(res, error, 'Error fetching forms');
@@ -88,7 +86,7 @@ const formController = {
             const formsList = await Form.find({});
 
             if (!formsList.length) {
-                return res.status(404).send('Forms not found');
+                return res.status(400).send('Forms not found');
             }
 
             const formTitles = formsList.map(form => form.title);
@@ -116,7 +114,7 @@ const formController = {
             const form = await Form.findOne({ title: oldTitle });
 
             if (!form) {
-                return res.status(404).send('Form not found');
+                return res.status(400).send('Form not found');
             }
 
             await form.updateOne({ title: newTitle });

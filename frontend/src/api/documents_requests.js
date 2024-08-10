@@ -4,7 +4,6 @@ import { handleApiError } from "./utils";
 
 export const saveDocument = async (text, subject, signatories, author, type, documentId) => {
   try {
-    console.log(signatories);
     const response = await axios.post(
       `${SERVER_BASE}${DOCUMENT_ROUTE_URL}/savedocument`,
       { text, subject, signatories, author, type, documentId },

@@ -10,11 +10,10 @@ const statusController = {
         try {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
-            console.log(document)
             if (document) {
-                const authorizerIds = document.authorizers.map(_id => _id.toString());
+                const authorizerIds = document.authorizers.map(_id => _id);
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                const statusSignatoriesIds = statuses.map(status => status.signatory.toString());
+                const statusSignatoriesIds = statuses.map(status => status.signatory);
                 const authorizer = await User.findOne({ id: authorizerID });
                 if (statusSignatoriesIds.includes(authorizer._id.toString())) {
                     for (const status of statuses) {
@@ -42,15 +41,12 @@ const statusController = {
         try {
             const { docID, authorizerID } = req.body;
             const document = await Document.findOne({ documentId: docID });
-    
             if (document) {
-                const authorizerIds = document.authorizers.map(_id => _id.toString());
+                const authorizerIds = document.authorizers.map(_id => _id);
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                console.log(statuses)
-                const statusSignatoriesIds = statuses.map(status => status.signatory.toString());
+                const statusSignatoriesIds = statuses.map(status => status.signatory);
                 const authorizer = await User.findOne({ id: authorizerID });
-    
-                if (statusSignatoriesIds.includes(authorizer._id.toString())) {
+                if (statusSignatoriesIds.includes(authorizer._id)) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
                             await status.updateOne({ status: "rejected" });
