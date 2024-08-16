@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-
 /*
-    This model represents an unfilled document created by staff.
-    It is similar to the document template except it has an array of tiers 
-    with signatories instead of a flat array of signatories.
+    this model repesent unfilled document created by staff
+    it is simillar to the document template expect it has an array of Users instead of Status's
+    the signatories is used to create the array of Status for the document model
 */
 const formSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -11,12 +10,7 @@ const formSchema = new mongoose.Schema({
   department: { type: String, required: true },
   type: { type: String, required: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  signatoryTiers: [
-    {
-      tierNumber: { type: Number, required: true }, 
-      signatories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] 
-    }
-  ]
+  signatories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }],
 });
 
 const Form = mongoose.model('Form', formSchema);
