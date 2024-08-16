@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const statusSchema = new mongoose.Schema({
   signatory: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
   status: { type: String, required: true }, 
+  tier: { type: Number, required: true },
   comments: { type: String, required: false },
   updatedAt: { type: Date, default: Date.now }
 });

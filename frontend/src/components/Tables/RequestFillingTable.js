@@ -77,7 +77,7 @@ const DownloadDocsTable = () => {
                 let reasonField = { fieldName: 'Reason', value: reason };
                 documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
                 const documentData = documentContainerRef.current.documentEditor.serialize();
-                await saveDocument(documentData, response.title, response.signatories, tokenData.user._id, response.type);
+                await saveDocument(documentData, response.title, response.signatoryTiers, tokenData.user._id, response.type);
                 window.location.reload();
             }
         } catch (error) {

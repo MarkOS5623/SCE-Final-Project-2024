@@ -160,13 +160,25 @@ const documentController = {
         res.status(200).send('Document updated successfully');
       } else {
         // Create new document if documentId is not provided
-        if(authorizers){
-          for (const user of authorizers) {
-            const status = new Status({
-              signatory: user._id, 
-              status: 'unsigned'  
-            });
-            statuses.push(status);
+        if(signatories){
+          for (let i = 0; i < signatories.length; i++) {
+            if(signatories[i].signatories.length <= 1){
+              const status = new Status({
+                signatory: signatories[i].signatories, 
+                status: 'unsigned',
+                tier: i + 1
+              });
+              statuses.push(status);
+            } else {
+              for (let j = 0; j < signatories[i].signatories.length; j++) {
+                const status = new Status({
+                  signatory: signatories[i].signatories[j], 
+                  status: 'unsigned',
+                  tier: i + 1
+                });
+                statuses.push(status);
+              }
+            }
           }
           authorizersList = statuses.map(status => status._id);
         }

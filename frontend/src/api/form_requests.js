@@ -28,11 +28,12 @@ export const deleteForm = async (subject) => {
   }
 };
 
-export const saveForm = async (formData, titleInput, signatories, author, type) => {
+export const saveForm = async (formData, titleInput, signatoryTiers, author, type) => {
   try {
+    console.log(signatoryTiers)
     const response = await axios.post(
       `${SERVER_BASE}${FORMS_ROUTE_URL}/saveform`,
-      { Data: formData, title: titleInput, Signatories: signatories, Author: author, Type: type },
+      { Data: formData, title: titleInput, signatoryTiers: signatoryTiers, Author: author, Type: type },
       { headers: { 'Content-Type': 'application/json' } }
     );
     return response.data;

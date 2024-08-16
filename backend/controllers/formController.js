@@ -3,24 +3,35 @@ const User = require('../models/user');
 const { handleServerError } = require('../utils'); 
 
 const formController = {
-    // Save template to the database. If a template with the same name already exists, it will override it.
+    // Save form to the database. If a template with the same name already exists, it will override it.
     saveForm: async (req, res) => {
         try {
-            const { Data, title, Signatories, Author, Type } = req.body;
-            const signatories = await User.find({ _id: { $in: Signatories } });
-            const user = await User.findOne({ id: Author });
+            const { formData, title, signatoryTiers, author, type } = req.body;
+            const tiers = signatoryTiers.map(tier => ({
+                tierNumber: tier.tierNumber,
+                signatories: tier.selectedAuthIds 
+            }));
+    
+            const user = await User.findOne({ _id: author });
             const existingForm = await Form.findOne({ title });
+    
             if (existingForm) {
-                await existingForm.updateOne({ text: Data, signatories });
+                await existingForm.updateOne({
+                    text: formData,
+                    department: "test",
+                    type: type,
+                    author: user,
+                    signatoryTiers: tiers
+                });
                 res.status(200).send('Form updated successfully');
             } else {
                 const newForm = new Form({
                     title,
-                    text: Data,
+                    text: formData,
                     department: "test",
-                    type: Type,
+                    type: type,
                     author: user,
-                    signatories
+                    signatoryTiers: tiers
                 });
                 await newForm.save();
                 res.status(200).send('Form saved successfully');
@@ -29,8 +40,9 @@ const formController = {
             handleServerError(res, error, 'Error saving form');
         }
     },
+    
 
-    // Fetch a template from the database and return it as a JSON object.
+    // Fetch a form from the database and return it as a JSON object.
     fetchForm: async (req, res) => {
         try {
             const { title } = req.body;
@@ -46,7 +58,7 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all the templates in the database that don't need to be signed.
+    // Returns an array of strings containing the titles of all the forms in the database that don't need to be signed.
     fetchNoSignatureFormsList: async (req, res) => {
         try {
             const formsList = await Form.find({
@@ -64,7 +76,7 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all templates in the database that require signatures.
+    // Returns an array of strings containing the titles of all forms in the database that require signatures.
     fetchFormWithSignatureList: async (req, res) => {
         try {
             const formsList = await Form.find({ signatories: { $exists: true, $ne: [] } });
@@ -80,7 +92,7 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all templates in the database.
+    // Returns an array of strings containing the titles of all forms in the database.
     fetchAllFormsList: async (req, res) => {
         try {
             const formsList = await Form.find({});
