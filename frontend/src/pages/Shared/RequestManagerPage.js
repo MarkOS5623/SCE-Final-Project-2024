@@ -16,6 +16,7 @@ import ViewDocument from '../../components/DocumentViewers/ViewDocument';
 function RequestManagerPage() {
     const [userRequests, setUserRequests] = useState({});
     const [userRequestHistory, setUserRequestHistory] = useState({});
+    const [userRole, setUserRole] = useState('');
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
 
     useEffect(() => {
@@ -23,9 +24,8 @@ function RequestManagerPage() {
             try {
                 const token = localStorage.getItem('token');
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-                console.log(decodedToken)
+                setUserRole(decodedToken.user.role)
                 const response = await fetchRequest(decodedToken.user._id);
-                console.log(response)
                 if (response) {
                     const documentStatuses = response.statuses;
                     const pendingApprovalDocs = [];
@@ -120,7 +120,7 @@ function RequestManagerPage() {
                         >
                             <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
-                        {!actionPanelCollapsed && <UserActionPanel />}
+                        {!actionPanelCollapsed && <UserActionPanel userRole={userRole}/>}
                     </div>
                 </Row>
             </div>

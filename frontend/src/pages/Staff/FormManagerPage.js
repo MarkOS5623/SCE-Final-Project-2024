@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import TextEditor from '../../components/DocumentViewers/TextEditor';
@@ -10,13 +10,28 @@ import logoImg from '../../assets/pictures/sce.jpg';
 import expandSidebarIcon from '../../assets/pictures/actionpanelicon.png';
 import FormManagerActionPanel from '../../components/ActionPanels/FormManagerActionPanel';
 import ViewDocument from '../../components/DocumentViewers/ViewDocument';
+import { decodeValue } from '../../api/utils';
 
 function FormManagerPage() {
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(true);
+    const [userRole, setUserRole] = useState('');
 
     const toggleActionPanelCollapse = () => {
         setActionPanelCollapsed(!actionPanelCollapsed);
     };
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const token = localStorage.getItem('token');
+                const decodedToken = await decodeValue(JSON.stringify({ token: token }));
+                setUserRole(decodedToken.user.role);
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -50,7 +65,7 @@ function FormManagerPage() {
                         >
                             <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
-                        {!actionPanelCollapsed && <FormManagerActionPanel setActionPanelCollapsed={setActionPanelCollapsed} />}
+                        {!actionPanelCollapsed && <FormManagerActionPanel setActionPanelCollapsed={setActionPanelCollapsed} userRole={userRole}/>}
                     </div>
                     <Col md={12} style={{ transition: 'width 0.3s', position: 'relative' }}>
                         <div className="right-panel" style={{ width: 'auto' }}>

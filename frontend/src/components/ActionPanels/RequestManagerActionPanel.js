@@ -11,6 +11,7 @@ const translations = {
         downloadForm: "Download a form",
         myRequests: "Pending requests",
         myRequestHistory: "Request History",
+        formManager: "Form Manager"
     },
     he: {
         pageTitle: "מנהל בקשות",
@@ -33,7 +34,7 @@ const buttonStyle = {
     border: "3px solid white"
 };
 
-const RequestManagerActionPanel = () => {
+const RequestManagerActionPanel = ({userRole}) => {
     const { language } = useContext(LanguageContext);
     const navigate = useNavigate();
 
@@ -60,6 +61,10 @@ const RequestManagerActionPanel = () => {
                 {translations[language].myRequestHistory}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
+            {userRole === 'admin' &&
+                <Button onClick={() => navigate(`/formmanager/editor`)} className='btn btn-primary rounded-pill' style={buttonStyle}>
+                    {translations[language].formManager}
+                </Button>}
         </div>
     );
 }

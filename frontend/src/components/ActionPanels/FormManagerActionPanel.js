@@ -11,6 +11,7 @@ const translations = {
         openRequestManager: "Request Authorizer",
         openRequestHistory: "Request History",
         openFormTable: "Form Data Base",
+        requestManager: "Request Manager"
     },
     he: {
         pageTitle: "מנהל טופס",
@@ -31,7 +32,7 @@ const buttonStyle = {
     border: "3px solid white"
 };
 
-const FormManagerActionPanel = ({ setActionPanelCollapsed }) => {
+const FormManagerActionPanel = ({ setActionPanelCollapsed, userRole }) => {
     const { language } = useContext(LanguageContext);
     const navigate = useNavigate();
 
@@ -59,6 +60,10 @@ const FormManagerActionPanel = ({ setActionPanelCollapsed }) => {
                 {translations[language].openRequestHistory}
             </Button>
             <div style={{ borderTop: '2px solid white', marginTop: '10px' }} />
+            {userRole === 'admin' &&
+                <Button onClick={() => navigate(`/requestmanager/form`)} className='btn btn-primary rounded-pill' style={buttonStyle}>
+                    {translations[language].requestManager}
+                </Button>}
         </div>
     );
 }
