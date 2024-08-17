@@ -75,11 +75,11 @@ const ViewDocument = ({ flag }) => {
       const documentData = editorContainerRef.current.documentEditor.serialize();
       await saveDocument(documentData, docResponse.subject, docResponse.authorizers, _id, docResponse.type, documentId);
       if (approved) {
-        await authorizeRequest(documentId, id, author, subject);
+        await authorizeRequest(documentId, _id, author, subject);
         console.debug('Successfully authorized request!');
         navigate('/formmanager/requests')
       } else {
-        await rejectRequest(documentId, id, author, subject);
+        await rejectRequest(documentId, _id, author, subject);
         console.debug('Successfully rejected request!');
         navigate('/formmanager/requests')
       }

@@ -61,7 +61,7 @@ const DownloadDocsTable = () => {
         doc.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleSubmit = async (course, reason) => {
+    const handleSubmit = async (course, reason, subject, department) => {
         try {
             const response = await fetchForm(choosenDocument);
             if (response) {
@@ -75,7 +75,9 @@ const DownloadDocsTable = () => {
                 let IDField = { fieldName: 'ID', value: String(tokenData.user.id) };
                 let couresField = { fieldName: 'Course', value: course };
                 let reasonField = { fieldName: 'Reason', value: reason };
-                documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField]);
+                let subjectField = { fieldName: 'Subject', value: subject };
+                let departmentField = { fieldName: 'Department', value: department };
+                documentContainerRef.current.documentEditor.importFormData([NameField, DateField, IDField, couresField, reasonField, subjectField, departmentField]);
                 const documentData = documentContainerRef.current.documentEditor.serialize();
                 await saveDocument(documentData, response.title, response.signatories, tokenData.user._id, response.type);
                 window.location.reload();

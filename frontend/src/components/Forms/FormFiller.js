@@ -7,6 +7,10 @@ const translations = {
         coursePlaceholder: 'Course name',
         reasonLabel: 'Reason:',
         reasonPlaceholder: 'Reason',
+        subjectLabel: 'Subject:',
+        subjectPlaceholder: 'Subject',
+        departmentLabel: 'Department:',
+        departmentPlaceholder: 'Department',
         submitButton: 'Submit',
         cancelButton: 'Cancel'
     },
@@ -30,12 +34,14 @@ const translations = {
 
 const FormFiller = ({ documentName, handleSubmit, handleCancel }) => {
     const { language } = useContext(LanguageContext);
-    const [ course, setCourse ] = useState('');
     const [ reason, setReason ] = useState('');
+    const [ course, setCourse ] = useState('');
+    const [ subject, setSubject ] = useState('');
+    const [ department, setDepartment ] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
-        handleSubmit(course, reason);
+        handleSubmit(course, reason, subject, department);
     };
 
     return (
@@ -45,6 +51,32 @@ const FormFiller = ({ documentName, handleSubmit, handleCancel }) => {
             </div>
             <div className="card-body">
                 <form onSubmit={onSubmit}>
+                    {documentName === 'General Request' && (
+                        <>
+                            <div className="form-group">
+                                <label style={{ fontWeight: 'bold', color: 'black' }}>{translations[language].subjectLabel}</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={subject} 
+                                    onChange={(e) => setSubject(e.target.value)}
+                                    style={{ marginBottom: '10px', border: '2px solid rgba(158, 201, 59)' }}
+                                    placeholder={translations[language].subjectPlaceholder}
+                                />
+                            </div>
+                        </>
+                    )}
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold', color: 'black' }}>{translations[language].departmentLabel}</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={department} 
+                            onChange={(e) => setDepartment(e.target.value)}
+                            style={{ marginBottom: '10px', border: '2px solid rgba(158, 201, 59)' }}
+                            placeholder={translations[language].departmentPlaceholder}
+                        />
+                    </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold', color: 'black' }}>{translations[language].courseLabel}</label>
                         <input 

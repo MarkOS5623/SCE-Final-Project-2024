@@ -9,13 +9,14 @@ const statusController = {
     authorizeRequest: async (req, res) => { 
         try {
             const { docID, authorizerID } = req.body;
+            console.log(docID)
             const document = await Document.findOne({ documentId: docID });
+            console.log(authorizerID)
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id);
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                const statusSignatoriesIds = statuses.map(status => status.signatory);
-                const authorizer = await User.findOne({ id: authorizerID });
-                if (statusSignatoriesIds.includes(authorizer._id.toString())) {
+                const authorizer = await User.findOne({ _id: authorizerID });
+                if (statuses) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
                             await status.updateOne({ status: "approved" });
@@ -44,9 +45,8 @@ const statusController = {
             if (document) {
                 const authorizerIds = document.authorizers.map(_id => _id);
                 const statuses = await Status.find({ _id: { $in: authorizerIds } });
-                const statusSignatoriesIds = statuses.map(status => status.signatory);
-                const authorizer = await User.findOne({ id: authorizerID });
-                if (statusSignatoriesIds.includes(authorizer._id)) {
+                const authorizer = await User.findOne({ _id: authorizerID });
+                if (statuses) {
                     for (const status of statuses) {
                         if (status.status === "unsigned") {
                             await status.updateOne({ status: "rejected" });

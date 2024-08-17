@@ -34,22 +34,22 @@ const PendingRequestsTable = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
-useEffect(() => {
-    async function fetchData() {
-        try {
-            const unsignedDocumentList = await fetchUnsignedDocumentList();
-            console.log('Fetched Data:', unsignedDocumentList); // Add this line
-            if (unsignedDocumentList && Array.isArray(unsignedDocumentList.docs) && Array.isArray(unsignedDocumentList.ids)) {
-                setRequestsList(unsignedDocumentList);
-            } else {
-                console.log('Unsigned document response is not valid');
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const unsignedDocumentList = await fetchUnsignedDocumentList();
+                console.log('Fetched Data:', unsignedDocumentList); 
+                if (unsignedDocumentList && Array.isArray(unsignedDocumentList.docs) && Array.isArray(unsignedDocumentList.ids)) {
+                    setRequestsList(unsignedDocumentList);
+                } else {
+                    console.log('Unsigned document response is not valid');
+                }
+            } catch (error) {
+                console.error('Fetching of docs failed:', error.message);
             }
-        } catch (error) {
-            console.error('Fetching of docs failed:', error.message);
         }
-    }
-    fetchData();
-}, []);
+        fetchData();
+    }, []);
 
 
     const handleSearchChange = (e) => {
