@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
-import { fetchForm, saveForm, fetchAllFormsList } from "../../api/form_requests";
+import { fetchForm, saveForm, fetchAllFormsList, fetchAllTemplatesList } from "../../api/form_requests";
 import CardContainer from "../Utils/CardContainer";
 import { fetchAuthList } from "../../api/user_requests";
 import { decodeValue } from "../../api/utils";
@@ -40,7 +40,8 @@ const translations = {
     failedToFetchForm: "Failed to fetch form: status ",
     pleaseSelectFormToFetch: "Please select a form to fetch first",
     collapse: "Collapse",
-    expand: "Mangement Panel"
+    expand: "Mangement Panel",
+    selectTemplate: 'Select Template'
   },
   he: {
     selectDocument: "בחר מסמך",
@@ -81,8 +82,10 @@ const translations = {
 };
 
 const TextEditor = () => {
-  const [ DocsList, setDocsList ] = useState([]);
+  const [ docsList, setDocsList ] = useState([]);
+  const [ templatesList, setTemplatesList ] = useState([]);
   const [ selectedForm, setSelectedForm ] = useState('');
+  const [ selectedTemplate, setSelectedTemplate ] = useState('');
   const [ titleInput, setTitleInput ] = useState('');
   const [ error, setError ] = useState('');
   const [ selectedNames, setSelectedNames ] = useState([]);
@@ -97,9 +100,15 @@ const TextEditor = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetchAllFormsList();
+        let response = await fetchAllFormsList();
         if (Array.isArray(response.docs)) {
           setDocsList(response.docs);
+        } else {
+          console.error('Response data is not an array:', response.docs);
+        }
+        response = await fetchAllTemplatesList();
+        if (Array.isArray(response.docs)) {
+          setTemplatesList(response.docs);
         } else {
           console.error('Response data is not an array:', response.docs);
         }
@@ -173,6 +182,26 @@ const TextEditor = () => {
     }
   };
 
+  const loadTemplate = async () => {
+    if (!selectedTemplate) {
+      console.error('Please select a form to fetch first')
+      setError('Please select a form to fetch first')
+      return;
+    }
+    setError(null);
+    try {
+      const response = await fetchForm(selectedTemplate);
+      if (response) {
+        formContainerRef.current.documentEditor.open(response.text); 
+        console.debug('Template fetched successfully!');
+      } else {
+        console.error('Failed to fetch template: status ', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching template:', error);
+    }
+  };
+
   const handleTitleChange = (event) => {
     setTitleInput(event.target.value);
   };
@@ -214,7 +243,7 @@ const TextEditor = () => {
                     {selectedForm ? selectedForm : translations[language].selectDocument}
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
-                    {DocsList.map((docTitle, index) => (
+                    {docsList.map((docTitle, index) => (
                     <Dropdown.Item key={index} onClick={() => setSelectedForm(docTitle)} eventKey={docTitle}>
                       <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
                     </Dropdown.Item >
@@ -223,6 +252,23 @@ const TextEditor = () => {
                 </Dropdown>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   <Button onClick={fetchFormData} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>{translations[language].load}</Button>
+                </div>
+              </div>
+              <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
+                <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold'}}>
+                  <Dropdown.Toggle variant="outline-success" id="formDropdown">
+                    {selectedTemplate ? selectedTemplate : translations[language].selectTemplate}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
+                    {templatesList.map((docTitle, index) => (
+                    <Dropdown.Item key={index} onClick={() => setSelectedTemplate(docTitle)} eventKey={docTitle}>
+                      <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
+                    </Dropdown.Item >
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <Button onClick={loadTemplate} style={{...buttonStyle, width: '160px', height: '50px',fontSize: '20px',fontWeight: 'bold',borderRadius: '20px'}}>{translations[language].load}</Button>
                 </div>
               </div>
             </Row>
@@ -258,6 +304,7 @@ const TextEditor = () => {
                       <Dropdown.Item onClick={() => handleTypeSelect('Student')}>Student</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleTypeSelect('Staff')}>Staff</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleTypeSelect('Everybody')}>Everybody</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleTypeSelect('Template')}>Template</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleTypeSelect('Return')}>Return</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>

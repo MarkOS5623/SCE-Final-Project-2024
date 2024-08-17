@@ -77,6 +77,19 @@ export const fetchAllFormsList = async () => {
   }
 };
 
+export const fetchAllTemplatesList = async () => {
+  try {
+    const response = await axios.get(
+      `${SERVER_BASE}${FORMS_ROUTE_URL}/fetchtemplateslist`,
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+
 export const updateFormTitle = async (oldTitle, newTitle) => {
   try {
     const response = await axios.post(

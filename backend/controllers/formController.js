@@ -3,7 +3,7 @@ const User = require('../models/user');
 const { handleServerError } = require('../utils'); 
 
 const formController = {
-    // Save template to the database. If a template with the same name already exists, it will override it.
+    // Save form to the database. If a form with the same name already exists, it will override it.
     saveForm: async (req, res) => {
         try {
             const { Data, title, Signatories, Author, Type } = req.body;
@@ -30,7 +30,7 @@ const formController = {
         }
     },
 
-    // Fetch a template from the database and return it as a JSON object.
+    // Fetch a form from the database and return it as a JSON object.
     fetchForm: async (req, res) => {
         try {
             const { title } = req.body;
@@ -46,7 +46,7 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all the templates in the database that don't need to be signed.
+    // Returns an array of strings containing the titles of all the forms in the database that don't need to be signed.
     fetchNoSignatureFormsList: async (req, res) => {
         try {
             const formsList = await Form.find({
@@ -64,7 +64,7 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all templates in the database that require signatures.
+    // Returns an array of strings containing the titles of all forms in the database that require signatures.
     fetchFormWithSignatureList: async (req, res) => {
         try {
             const formsList = await Form.find({ signatories: { $exists: true, $ne: [] } });
@@ -80,22 +80,37 @@ const formController = {
         }
     },
 
-    // Returns an array of strings containing the titles of all templates in the database.
+    // Returns an array of strings containing the titles of all forms in the database.
     fetchAllFormsList: async (req, res) => {
         try {
-            const formsList = await Form.find({});
-
+            const formsList = await Form.find({ type: { $ne: 'Template' } });
+    
             if (!formsList.length) {
                 return res.status(400).send('Forms not found');
             }
-
+    
             const formTitles = formsList.map(form => form.title);
-            res.status(201).json({ docs: formTitles });
+            res.status(200).json({ docs: formTitles });
         } catch (error) {
             handleServerError(res, error, 'Error fetching forms');
         }
     },
 
+    // Returns an array of strings containing the titles of all templates in the database.
+    fetchAllTemplatesList: async (req, res) => {
+        try {
+            const templatesList = await Form.find({type: 'Template'});
+
+            if (!templatesList.length) {
+                return res.status(400).send('Forms not found');
+            }
+
+            const formTitles = templatesList.map(form => form.title);
+            res.status(201).json({ docs: formTitles });
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching forms');
+        }
+    },
     // Delete a form by its title.
     deleteForm: async (req, res) => {
         try {
