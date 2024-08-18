@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import '../../assets/css/Editor.css';
-import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
@@ -14,8 +13,6 @@ import RequestFillingTable from '../../components/Tables/RequestFillingTable';
 import ViewDocument from '../../components/DocumentViewers/ViewDocument';
 
 function RequestManagerPage() {
-    const [userRequests, setUserRequests] = useState({});
-    const [userRequestHistory, setUserRequestHistory] = useState({});
     const [userRole, setUserRole] = useState('');
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
 
@@ -25,39 +22,6 @@ function RequestManagerPage() {
                 const token = localStorage.getItem('token');
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
                 setUserRole(decodedToken.user.role)
-                const response = await fetchRequest(decodedToken.user._id);
-                if (response) {
-                    const documentStatuses = response.statuses;
-                    const pendingApprovalDocs = [];
-                    const requestHistoryDocs = [];
-                    response.docs.forEach((doc, index) => {
-                        if (documentStatuses[index] === "pending approval") {
-                            pendingApprovalDocs.push({
-                                subject: doc.subject,
-                                documentId: doc.documentId,
-                                status: documentStatuses[index],
-                            });
-                        } else {
-                            requestHistoryDocs.push({
-                                subject: doc.subject,
-                                documentId: doc.documentId,
-                                status: documentStatuses[index],
-                            });
-                        }
-                    });
-                    setUserRequests({
-                        docs: pendingApprovalDocs.map(doc => doc.subject),
-                        ids: pendingApprovalDocs.map(doc => doc.documentId),
-                        statuses: pendingApprovalDocs.map(doc => doc.status),
-                    });
-                    setUserRequestHistory({
-                        docs: requestHistoryDocs.map(doc => doc.subject),
-                        ids: requestHistoryDocs.map(doc => doc.documentId),
-                        statuses: requestHistoryDocs.map(doc => doc.status),
-                    });
-                } else {
-                    console.log('Response data is empty');
-                }
             } catch (error) {
                 console.error('Fetching of docs failed:', error.message);
             }
@@ -78,8 +42,8 @@ function RequestManagerPage() {
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
                                 <Routes>
-                                    <Route path="requests" element={<RequestTable documents={userRequests} flag={false} />} />
-                                    <Route path="history" element={<RequestTable documents={userRequestHistory} flag={true} setDocuments={setUserRequestHistory} />} />
+                                    <Route path="requests" element={<RequestTable flag={false} />} />
+                                    <Route path="history" element={<RequestTable flag={true}  />} />
                                     <Route path="download" element={<DownloadDocsTable />} />
                                     <Route path="form" element={<RequestFillingTable />} />
                                     <Route path="history/:documentId" element={<ViewDocument flag={false}/>} />

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useContext } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
+import React, { useState, useRef, useContext, useEffect, useMemo } from 'react';
+import { Table, Button, Form, Spinner } from 'react-bootstrap';
 import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument, deleteDocuments } from '../../api/documents_requests';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import { pdfConverter } from '../../api/utils';
+import { pdfConverter, handleApiError, decodeValue } from '../../api/utils';
 import { useNavigate } from 'react-router-dom';
+import { fetchRequest } from '../../api/user_requests';
 
 const translations = {
   en: {
@@ -39,13 +40,15 @@ const translations = {
   }
 };
 
-export default function RequestTable({ documents, setDocuments, flag }) {
+export default function RequestTable({ flag }) {
   const { language } = useContext(LanguageContext);
   const navigate = useNavigate();
 
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [documents, setDocuments] = useState({ docs: [], ids: [], statuses: [] });
+  const [isLoading, setIsLoading] = useState(true);
   const downloadContainerRef = useRef(null);
 
   const handleDeleteToggle = () => {
@@ -53,14 +56,47 @@ export default function RequestTable({ documents, setDocuments, flag }) {
     setSelectedDocuments([]);
   };
 
-  const handleSelectDocument = (documentId) => {
-    setSelectedDocuments((prevSelected) => {
-      if (prevSelected.includes(documentId)) {
-        return prevSelected.filter(id => id !== documentId);
-      } else {
-        return [...prevSelected, documentId];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = localStorage.getItem('token');
+        const decodedToken = await decodeValue(JSON.stringify({ token }));
+        const response = await fetchRequest(decodedToken.user._id);
+        if (response) {
+          const documentStatuses = response.statuses;
+          const docsArray = response.docs.map((doc, index) => ({
+            subject: doc.subject,
+            documentId: doc.documentId,
+            status: documentStatuses[index],
+          }));
+          const filteredDocs = flag
+          ? docsArray.filter(doc => doc.status !== 'pending approval')
+          : docsArray.filter(doc => doc.status === 'pending approval');
+
+
+          setDocuments({
+            docs: filteredDocs.map(doc => doc.subject),
+            ids: filteredDocs.map(doc => doc.documentId),
+            statuses: filteredDocs.map(doc => doc.status),
+          });
+        } else {
+          console.log('Response data is empty');
+        }
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setIsLoading(false);
       }
-    });
+    }
+    fetchData();
+  }, [flag]);
+
+  const handleSelectDocument = (documentId) => {
+    setSelectedDocuments((prevSelected) =>
+      prevSelected.includes(documentId)
+        ? prevSelected.filter(id => id !== documentId)
+        : [...prevSelected, documentId]
+    );
   };
 
   const handleDeleteDocuments = async () => {
@@ -78,7 +114,7 @@ export default function RequestTable({ documents, setDocuments, flag }) {
         setSelectedDocuments([]);
       }
     } catch (error) {
-      console.error('Error deleting documents:', error);
+      handleApiError(error);
     }
   };
 
@@ -89,23 +125,29 @@ export default function RequestTable({ documents, setDocuments, flag }) {
         throw new Error('Failed to fetch document');
       }
       downloadContainerRef.current.documentEditor.open(response.text);
-      await pdfConverter(downloadContainerRef); 
+      await pdfConverter(downloadContainerRef);
     } catch (error) {
-      console.error('Error downloading document:', error);
+      handleApiError(error);
     }
   };
 
   const handleReview = (documentId) => {
-    navigate(`/requestmanager/history/${documentId}`); 
+    navigate(`/requestmanager/history/${documentId}`);
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredDocs = documents.docs.filter(doc =>
-    doc.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredDocs = useMemo(() => {
+    return documents.docs.filter(doc =>
+      doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [documents.docs, searchQuery]);
+
+  if (isLoading) {
+    return <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>;
+  }
 
   return (
     <div className="d-flex flex-row">
@@ -115,8 +157,7 @@ export default function RequestTable({ documents, setDocuments, flag }) {
             <Inject services={[WordExport, SfdtExport]} />
           </DocumentEditorContainerComponent>
         </div>
-        {!flag && (<h1>Pending Requests</h1>)}
-        {flag && (<h1>Request History</h1>)}
+        {!flag ? <h1>Pending Requests</h1> : <h1>Request History</h1>}
         {flag && !deleteMode && (
           <Button variant="primary" onClick={handleDeleteToggle} style={{ margin: '10px' }}>
             {translations[language].clear}
