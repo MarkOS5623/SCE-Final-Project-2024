@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import { Button, Dropdown, Badge, Alert, Row, Col } from "react-bootstrap";
+import { Button, Dropdown, Badge, Alert, Row, Col, FormControl } from "react-bootstrap";
 import { Toolbar, Inject, WordExport, DocumentEditorContainerComponent } from '@syncfusion/ej2-react-documenteditor';
 import { fetchForm, saveForm, fetchAllFormsList, fetchAllTemplatesList } from "../../api/form_requests";
 import CardContainer from "../Utils/CardContainer";
@@ -11,17 +11,17 @@ const mainContainerStyle = {
   all: "unset",
   width: "auto",
   height: "auto",
-}
+};
 
 const editorStyle = {
   width: "100%",
-  height: "100vh"
-}
+  height: "100vh",
+};
 
 const buttonStyle = {
   margin: '10px',
-  width: '150px'
-}
+  width: '150px',
+};
 
 const translations = {
   en: {
@@ -40,7 +40,7 @@ const translations = {
     failedToFetchForm: "Failed to fetch form: status ",
     pleaseSelectFormToFetch: "Please select a form to fetch first",
     collapse: "Collapse",
-    expand: "Mangement Panel",
+    expand: "Management Panel",
     selectTemplate: 'Select Template'
   },
   he: {
@@ -82,19 +82,20 @@ const translations = {
 };
 
 const TextEditor = () => {
-  const [ docsList, setDocsList ] = useState([]);
-  const [ templatesList, setTemplatesList ] = useState([]);
-  const [ selectedForm, setSelectedForm ] = useState('');
-  const [ selectedTemplate, setSelectedTemplate ] = useState('');
-  const [ titleInput, setTitleInput ] = useState('');
-  const [ error, setError ] = useState('');
-  const [ selectedNames, setSelectedNames ] = useState([]);
-  const [ namesList, setNamesList ] = useState([]);
-  const [ authlist, setAuthsList ] = useState({});
-  const [ selectedType, setSelectedType ] = useState('');
-  const [ isCollapsed, setIsCollapsed ] = useState(true);
+  const [docsList, setDocsList] = useState([]);
+  const [templatesList, setTemplatesList] = useState([]);
+  const [selectedForm, setSelectedForm] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [titleInput, setTitleInput] = useState('');
+  const [error, setError] = useState('');
+  const [selectedNames, setSelectedNames] = useState([]);
+  const [namesList, setNamesList] = useState([]);
+  const [authlist, setAuthsList] = useState({});
+  const [selectedType, setSelectedType] = useState('');
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [filterInput, setFilterInput] = useState(''); // State for filter input
+  const [filterInputTemplate, setFilterInputTemplate] = useState(''); // New state for template filter input
   const { language } = useContext(LanguageContext); 
-
   const formContainerRef = useRef(null);
 
   useEffect(() => {
@@ -184,8 +185,8 @@ const TextEditor = () => {
 
   const loadTemplate = async () => {
     if (!selectedTemplate) {
-      console.error('Please select a form to fetch first')
-      setError('Please select a form to fetch first')
+      console.error('Please select a template to fetch first')
+      setError('Please select a template to fetch first')
       return;
     }
     setError(null);
@@ -225,8 +226,11 @@ const TextEditor = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  const filteredDocsList = docsList.filter(doc => doc.toLowerCase().includes(filterInput.toLowerCase()));
+  const filteredTemplatesList = templatesList.filter(template => template.toLowerCase().includes(filterInputTemplate.toLowerCase()));
+
   return ( 
-    <CardContainer style={{ ...mainContainerStyle}}>
+    <CardContainer style={{ ...mainContainerStyle }}>
       <Row style={{ width: '100%' }}> 
         {error && <Alert variant="danger" style={{ width: '100%', marginTop: '10px' }}>{translations[language].errorSavingForm}{error}</Alert>}
         <Col xs={8} style={{ width: isCollapsed ? '100%' : '75%', paddingRight: '10px' }}>
@@ -238,15 +242,22 @@ const TextEditor = () => {
           <Col xs={4} style={{ width: '20%', paddingTop: '20px', height: '20%'}} className="d-flex flex-column justify-content-center">
             <Row style={{ width: '100%', marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '50px' }}> 
               <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
-                <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold'}}>
+                <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold' }}>
                   <Dropdown.Toggle variant="outline-success" id="formDropdown">
                     {selectedForm ? selectedForm : translations[language].selectDocument}
                   </Dropdown.Toggle>
-                  <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
-                    {docsList.map((docTitle, index) => (
-                    <Dropdown.Item key={index} onClick={() => setSelectedForm(docTitle)} eventKey={docTitle}>
-                      <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
-                    </Dropdown.Item >
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px' }}>
+                    <FormControl
+                      type="text"
+                      placeholder="Search..."
+                      value={filterInput}
+                      onChange={(e) => setFilterInput(e.target.value)}
+                      style={{ width: '100%', margin: '10px 0' }} // Make the input fill the width of the dropdown
+                    />
+                    {filteredDocsList.map((docTitle, index) => (
+                      <Dropdown.Item key={index} onClick={() => setSelectedForm(docTitle)} eventKey={docTitle}>
+                        <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
+                      </Dropdown.Item>
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
@@ -255,15 +266,22 @@ const TextEditor = () => {
                 </div>
               </div>
               <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', backgroundColor: 'white' }}>
-                <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold'}}>
-                  <Dropdown.Toggle variant="outline-success" id="formDropdown">
+                <Dropdown style={{ width: 'auto', fontSize: '15px', fontWeight: 'bold' }}>
+                  <Dropdown.Toggle variant="outline-success" id="templateDropdown">
                     {selectedTemplate ? selectedTemplate : translations[language].selectTemplate}
                   </Dropdown.Toggle>
-                  <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px'}}>
-                    {templatesList.map((docTitle, index) => (
-                    <Dropdown.Item key={index} onClick={() => setSelectedTemplate(docTitle)} eventKey={docTitle}>
-                      <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{docTitle}</Button>
-                    </Dropdown.Item >
+                  <Dropdown.Menu style={{ width: '220px', fontSize: '15px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px' }}>
+                    <FormControl
+                      type="text"
+                      placeholder="Search..."
+                      value={filterInputTemplate}
+                      onChange={(e) => setFilterInputTemplate(e.target.value)}
+                      style={{ width: '100%', margin: '10px 0' }} // Make the input fill the width of the dropdown
+                    />
+                    {filteredTemplatesList.map((templateTitle, index) => (
+                      <Dropdown.Item key={index} onClick={() => setSelectedTemplate(templateTitle)} eventKey={templateTitle}>
+                        <Button variant="outline-success" style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial' }}>{templateTitle}</Button>
+                      </Dropdown.Item>
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
@@ -272,15 +290,15 @@ const TextEditor = () => {
                 </div>
               </div>
             </Row>
-            <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}> 
+            <Row style={{ width: '100%', height: '40vh', marginTop: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}> 
               <div style={{ width: '70%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ marginTop: '15px', padding: '20px', borderRadius: '20px', boxShadow: '0px 0px 10px rgba(0,0,0,0.3)', backgroundColor: 'white', marginLeft: '130px' }}>
-                  <input type="text" placeholder={translations[language].titlePlaceholder} value={titleInput} onChange={handleTitleChange} className="mb-2" style={{width: '220px', height: '40px', marginBottom: '20px'}}/>
-                  <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold' }}>
+                  <input type="text" placeholder={translations[language].titlePlaceholder} value={titleInput} onChange={handleTitleChange} className="mb-2" style={{width: '100%', height: '40px', marginBottom: '20px'}}/>
+                  <Dropdown style={{ width: '100%', fontSize: '20px', fontWeight: 'bold' }}>
                     <Dropdown.Toggle variant="outline-success" id="nameDropdown" style={{ width: '100%' }}>
                       {translations[language].addAuthorizers}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px' }}>
+                    <Dropdown.Menu style={{ width: '100%', fontSize: '20px', fontWeight: 'bold', overflowY: 'scroll', maxHeight: '200px' }}>
                       {namesList.map((name, index) => (
                         <Dropdown.Item key={index} onClick={() => handleNameSelect(name)} style={{ width: '100%' }}>
                           <Button variant="outline-success"  style={{width: '100%', whiteSpace: 'normal', textOverflow: 'initial', overflow: 'initial'}}>{name}</Button>
@@ -296,11 +314,11 @@ const TextEditor = () => {
                       </Badge>
                     ))}
                   </div>
-                  <Dropdown style={{ width: '220px', fontSize: '20px', fontWeight: 'bold', marginTop: '20px' }}>
+                  <Dropdown style={{ width: '100%', fontSize: '20px', fontWeight: 'bold', marginTop: '20px' }}>
                     <Dropdown.Toggle variant="outline-success" id="optionDropdown" style={{ width: '100%' }}>
                       {selectedType || translations[language].selectFormType}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ width: '220px', fontSize: '20px', fontWeight: 'bold' }}>
+                    <Dropdown.Menu style={{ width: '100%', fontSize: '20px', fontWeight: 'bold' }}>
                       <Dropdown.Item onClick={() => handleTypeSelect('Student')}>Student</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleTypeSelect('Staff')}>Staff</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleTypeSelect('Everybody')}>Everybody</Dropdown.Item>
