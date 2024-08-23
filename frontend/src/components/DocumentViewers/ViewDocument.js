@@ -117,6 +117,7 @@ const ViewDocument = ({ flag }) => {
             style={{ marginTop: '10px', marginLeft: '10px' }}
             variant='success'
             onClick={() => processRequest(true)}
+            data-testid={'Approve'}
           >
             {translations[language].approveButton}
           </Button>
@@ -124,6 +125,7 @@ const ViewDocument = ({ flag }) => {
             style={{ marginTop: '10px', marginLeft: '10px' }}
             variant='danger'
             onClick={() => processRequest(false)}
+            data-testid={'Deny'}
           >
             {translations[language].denyButton}
           </Button>

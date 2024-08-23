@@ -22,3 +22,4 @@ root.render(
         <App />
 );
 
+export default root;
