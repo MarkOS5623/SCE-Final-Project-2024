@@ -1,4 +1,4 @@
-export const SERVER_BASE = process.env.SERVER_BASE
+export const SERVER_BASE = process.env.REACT_APP_SERVER_BASE;
 export const FORMS_ROUTE_URL = "/api/forms"
 export const DOCUMENT_ROUTE_URL = "/api/documents"
 export const STATUS_ROUTE_URL = "/api/status"
