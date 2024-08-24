@@ -1,6 +1,4 @@
-
-
-export const SERVER_BASE = "https://sce-final-project-2024.onrender.com"
+export const SERVER_BASE = process.env.SERVER_BASE
 export const FORMS_ROUTE_URL = "/api/forms"
 export const DOCUMENT_ROUTE_URL = "/api/documents"
 export const STATUS_ROUTE_URL = "/api/status"
