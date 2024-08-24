@@ -5,8 +5,6 @@
   "dependencies": {
     "@syncfusion/ej2-base": "^24.2.8",
     "@syncfusion/ej2-react-documenteditor": "^24.2.9",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
@@ -20,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test":  "jest --runInBand",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,6 +40,14 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.24.7"
+    "@babel/plugin-transform-private-property-in-object": "^7.24.7",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-react": "^7.24.7",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
+    "axios-mock-adapter": "^2.0.0",
+    "babel-jest": "^29.7.0",
+    "crypto-browserify": "^3.12.0",
+    "jest": "^27.5.1"
   }
 }

@@ -1,11 +1,9 @@
 const request = require('supertest');
-const express = require('express');
-const documentController = require('../controllers/documentController');
 const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
 const mockingoose = require('mockingoose');
-const app = require('../server.js')
+const app = require('../config/testServer');
 
 // Test suite for documentController
 describe('documentController', () => {
