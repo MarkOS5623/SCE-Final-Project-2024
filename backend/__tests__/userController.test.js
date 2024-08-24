@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server.js'); 
+const app = require('../config/testServer');
 const User = require('../models/user');
 const Document = require('../models/document');
 const Status = require('../models/status');

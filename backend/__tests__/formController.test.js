@@ -1,6 +1,6 @@
 const request = require('supertest');
 const mockingoose = require('mockingoose');
-const app = require('../server');
+const app = require('../config/testServer');
 
 const Form = require('../models/form');
 const User = require('../models/user');
@@ -93,7 +93,7 @@ describe('formController', () => {
 
             const res = await request(app).get('/api/forms/fetchformslist');
 
-            expect(res.statusCode).toBe(201);
+            expect(res.statusCode).toBe(200);
             expect(res.body.docs).toHaveLength(3);
             expect(res.body.docs).toEqual(['Form 1', 'Form 2', 'Form 3']);
         });
