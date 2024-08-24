@@ -9,7 +9,9 @@ const utilsRoutes = require('./routes/utilsRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const statusRoutes = require('./routes/statusRoutes');
 
-mongoose.connect('mongodb+srv://Admin:iCEye8tLh4ehBUgY@sce-project.zywbimp.mongodb.net/', {
+const MONGO_URI = 'mongodb+srv://Admin:iCEye8tLh4ehBUgY@sce-project.zywbimp.mongodb.net/'
+
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
