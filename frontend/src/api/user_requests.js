@@ -4,6 +4,7 @@ import { handleApiError } from "./utils";
 
 export const login = async (email, password) => {
   try {
+    console.log(process.env.SERVER_BASE)
     const response = await axios.post(`${SERVER_BASE}${USER_ROUTE_URL}/login`, {
       email,
       password
