@@ -1,7 +1,6 @@
 import axios from "axios"
 import { PdfPageSettings, PdfDocument, PdfPageOrientation, PdfBitmap, SizeF } from '@syncfusion/ej2-pdf-export';
-import { SERVER_BASE } from "./config";
-const ROUTE_URL = "/api/utils"
+import { SERVER_BASE, UTILS_ROUTE_URL } from "./config";
 
 // converts a document(document container object into a pdf file)
 export const pdfConverter = async (objRef) => {
@@ -43,16 +42,28 @@ export const pdfConverter = async (objRef) => {
 
 export const decodeValue = async (token) => {
   try {
-    const response = await axios.post(SERVER_BASE + ROUTE_URL + '/decodevalue', 
+    const response = await axios.post(SERVER_BASE + UTILS_ROUTE_URL + '/decodevalue', 
       token
       , {
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    return response
+    return response.data;
   } catch (error) {
     console.error('Error decoding value:', error.message);
     throw error;
   }
+};
+
+// Utility function for logging and handling errors
+export const handleApiError = (error) => {
+  if (error.response) {
+    console.error(`Error ${error.response.status}: ${error.response.data}`);
+  } else if (error.request) {
+    console.error('Error: No response received:', error.request);
+  } else {
+    console.error('Error:', error.message);
+  }
+  throw error;
 };

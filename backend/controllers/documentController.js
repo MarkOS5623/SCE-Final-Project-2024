@@ -3,108 +3,121 @@ const Document = require('../models/document');
 const User = require('../models/user');
 const Status = require('../models/status');
 
-// signed requests page is opposite of what it should be?
 const documentController = {
-  fetchUnsignedDocumentList: async (req, res) => { 
+  fetchUnsignedDocumentList: async (req, res) => {
     try {
       const documents = await Document.find({});
       if (!documents || documents.length === 0) {
-          return res.status(404).send('No documents found');
+        return res.status(404).send('No documents found');
       }
+
       const unsignedDocuments = [];
       const unsignedDocumentsIDs = [];
+
       for (const document of documents) {
-          const authorizerIds = document.authorizers.map(_id => _id.toString());
-          const statuses = await Status.find({ _id: { $in: authorizerIds } });
-          let hasUnsigned = false;
-          for (const status of statuses) {
-              if (status.status === "unsigned") {
-                  hasUnsigned = true;
-                  break;
-              }
+        const authorizerIds = document.authorizers.map(_id => _id.toString());
+        const statuses = await Status.find({ _id: { $in: authorizerIds } });
+        let hasUnsigned = false;
+
+        for (const status of statuses) {
+          // Check if any status is still unsigned
+          if (status.status === "unsigned") {
+            hasUnsigned = true;
+            break;
           }
-          if (hasUnsigned) {
-              unsignedDocuments.push(document.subject);
-              unsignedDocumentsIDs.push(document.documentId);
-          }
+        }
+
+        if (hasUnsigned) {
+          unsignedDocuments.push(document.subject);
+          unsignedDocumentsIDs.push(document.documentId);
+        }
       }
+
       if (unsignedDocuments.length === 0) {
-          return res.status(201).send('No documents with all authorizers unsigned found');
+        return res.status(201).send('No documents with unsigned authorizers found');
       }
+
       res.status(200).json({ docs: unsignedDocuments, ids: unsignedDocumentsIDs });
     } catch (error) {
-      console.error('Error fetching documents:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error fetching unsigned documents');
     }
-  },  
-  fetchSignedDocumentList: async (req, res) => { 
+  },
+
+  fetchSignedDocumentList: async (req, res) => {
     try {
       const documents = await Document.find({});
       if (!documents || documents.length === 0) {
-          return res.status(404).send('No documents found');
+        return res.status(404).send('No documents found');
       }
+
       const signedDocuments = [];
       const signedDocumentsIDs = [];
       const signedDocumentsStatus = [];
+
       for (const document of documents) {
-          const authorizerIds = document.authorizers.map(_id => _id.toString());
-          const statuses = await Status.find({ _id: { $in: authorizerIds } });
-          let allSigned = true;
-          console.log(statuses)
-          for (const status of statuses) {
-              if (status.status != "approved" && status.status != "rejected") {
-                  allSigned = false;
-                  break;
-              } else signedDocumentsStatus.push(status.status);
+        const authorizerIds = document.authorizers.map(_id => _id.toString());
+        const statuses = await Status.find({ _id: { $in: authorizerIds } });
+        let allSigned = true;
+
+        for (const status of statuses) {
+          // Check if all statuses are either approved or rejected
+          if (status.status !== "approved" && status.status !== "rejected") {
+            allSigned = false;
+            break;
+          } else {
+            signedDocumentsStatus.push(status.status);
           }
-          if (allSigned) {
-              signedDocuments.push(document.subject);
-              signedDocumentsIDs.push(document.documentId);
-          }
+        }
+
+        if (allSigned) {
+          signedDocuments.push(document.subject);
+          signedDocumentsIDs.push(document.documentId);
+        }
       }
+
       if (signedDocuments.length === 0) {
-          return res.status(201).send('No documents with all authorizers signed found');
+        return res.status(201).send('No documents with all authorizers signed found');
       }
+
       res.status(200).json({ docs: signedDocuments, ids: signedDocumentsIDs, statuses: signedDocumentsStatus });
     } catch (error) {
-      console.error('Error fetching documents:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error fetching signed documents');
     }
   },
+
   fetchDocument: async (req, res) => {
     try {
-      const { documentId } = req.body; 
-      console.log(req.body);
-      const document = await Document.findOne({ documentId: documentId }); 
+      const { documentId } = req.body;
+      const document = await Document.findOne({ documentId });
       if (!document) {
         return res.status(404).send('Document not found');
       }
       res.status(200).json(document);
     } catch (error) {
-      console.error('Error fetching document serverside:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error fetching document');
     }
   },
+
   fetchDocumentAuthor: async (req, res) => {
     try {
-      const { documentId } = req.body; 
-      const document = await Document.findOne({ documentId: documentId }); 
+      const { documentId } = req.body;
+      const document = await Document.findOne({ documentId });
       if (!document) {
         return res.status(404).send('Document not found');
       }
       const user = await User.findOne({ documents: document._id });
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send('Author not found');
       }
       res.status(200).json(user);
     } catch (error) {
-      console.error('Error fetching document serverside:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error fetching document author');
     }
-  },    
+  },
+
   deleteDocuments: async (req, res) => {
     try {
-      const { documentIds } = req.body; 
+      const { documentIds } = req.body;
       if (!Array.isArray(documentIds) || documentIds.length === 0) {
         return res.status(400).send('Invalid input');
       }
@@ -117,77 +130,73 @@ const documentController = {
         { $pull: { documents: { $in: documents.map(doc => doc._id) } } }
       );
 
-      if (deleteResult.deletedCount === 0) {
-        return res.status(404).send('No documents found to delete');
+      if (!deleteResult) {
+        return res.status(400).send('No documents found to delete');
       }
 
-      res.status(200).send(`${deleteResult.deletedCount} documents deleted successfully`);
+      res.status(200).send(`Documents deleted successfully`);
     } catch (error) {
-      console.error('Error deleting documents:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error deleting documents');
     }
   },
+
   saveDocument: async (req, res) => {
     try {
       const { text, subject, signatories, author, type, documentId } = req.body;
-  
-      // Find the authorizers
       const authorizers = await User.find({ _id: { $in: signatories } });
       const statuses = [];
-  
+      let authorizersList = [];
       if (documentId) {
         // Update existing document if documentId is provided
         const document = await Document.findOneAndUpdate(
-          { documentId: documentId },
-          { text: text },
+          { documentId },
+          { text },
           { new: true }
         );
-  
+
         if (!document) {
           return res.status(404).send('Document not found');
         }
-  
         res.status(200).send('Document updated successfully');
       } else {
         // Create new document if documentId is not provided
-        authorizers.forEach((user) => {
-          const status = new Status({
-            signatories: [user._id],
-            status: 'unsigned'
-          });
-          statuses.push(status);
-        });
-  
+        if(authorizers){
+          for (const user of authorizers) {
+            const status = new Status({
+              signatory: user._id, 
+              status: 'unsigned'  
+            });
+            statuses.push(status);
+          }
+          authorizersList = statuses.map(status => status._id);
+        }
         const user = await User.findOne({ _id: author });
         const id = utils.generateDocumentId(subject);
         const newDocument = new Document({
-          subject: subject,
-          text: text,
+          subject,
+          text,
           department: "test",
           author: user,
-          authorizers: statuses,
+          authorizers: authorizersList,
           documentId: id,
-          type: type
+          type
         });
-  
         await newDocument.save();
-  
         // Save statuses and update authorizers' documents
         await Promise.all(statuses.map(status => status.save()));
-        await Promise.all(authorizers.map(user => 
+        await Promise.all(authorizers.map(user =>
           User.updateOne(
             { _id: user._id },
-            { $push: { documents: newDocument } }
+            { $push: { documents: newDocument._id } }
           )
         ));
-  
+
         res.status(201).send('Document saved successfully');
       }
     } catch (error) {
-      console.error('Error saving document:', error);
-      res.status(500).send('Internal server error');
+      utils.handleServerError(res, error, 'Error saving document');
     }
   }
 };
-  
+
 module.exports = documentController;

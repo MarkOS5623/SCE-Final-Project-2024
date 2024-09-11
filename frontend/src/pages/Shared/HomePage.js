@@ -1,9 +1,30 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
+import { LanguageContext } from '../../Context/LanguageContextProvider';
 import logoImg from '../../assets/pictures/sce.jpg';
 import CardContainer from '../../components/Utils/CardContainer';
+
+const translations = {
+  en: {
+    title: 'SCE Document Manager',
+    subtitle: 'Please sign in or sign up to continue.',
+    loginBtn: 'Login',
+    signupBtn: 'Sign Up'
+  },
+  he: {
+    title: 'מנהל מסמכים SCE',
+    subtitle: 'אנא התחבר או הירשם כדי להמשיך.',
+    loginBtn: 'כניסה',
+    signupBtn: 'הרשמה'
+  },
+  ar: {
+    title: 'مدير مستندات SCE',
+    subtitle: 'الرجاء تسجيل الدخول أو التسجيل للمتابعة.',
+    loginBtn: 'تسجيل الدخول',
+    signupBtn: 'التسجيل'
+  }
+};
 
 function HomePage() {
   const navigate = useNavigate();
@@ -24,27 +45,6 @@ function HomePage() {
     };
     checkLoggedIn();
   }, [navigate]);
-
-  const translations = {
-    en: {
-      title: 'SCE Document Manager',
-      subtitle: 'Please sign in or sign up to continue.',
-      loginBtn: 'Login',
-      signupBtn: 'Sign Up'
-    },
-    he: {
-      title: 'מנהל מסמכים SCE',
-      subtitle: 'אנא התחבר או הירשם כדי להמשיך.',
-      loginBtn: 'כניסה',
-      signupBtn: 'הרשמה'
-    },
-    ar: {
-      title: 'مدير مستندات SCE',
-      subtitle: 'الرجاء تسجيل الدخول أو التسجيل للمتابعة.',
-      loginBtn: 'تسجيل الدخول',
-      signupBtn: 'التسجيل'
-    }
-  };
 
   return (
     <div>

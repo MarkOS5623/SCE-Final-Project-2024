@@ -1,117 +1,143 @@
 const Form = require('../models/form');
 const User = require('../models/user');
+const { handleServerError } = require('../utils'); 
 
 const formController = {
-    // save template to the database if a template with the same name already exists it will overide it
+    // Save form to the database. If a form with the same name already exists, it will override it.
     saveForm: async (req, res) => {
-      try {
-        const { Data, title, Signatories, Author, Type } = req.body;
-        const signatories = await User.find({ _id: {  $in: Signatories } });
-        const user = await User.findOne({ id: Author });
-        const Tem = await Form.findOne({title: title});
-        if(Tem){
-          await Tem.updateOne({ text: Data });
-          await Tem.updateOne({ signatories: signatories });
-          res.status(200).send('Form updated successfully');
-        } else {
-          const newForm = new Form({
-            title: title,
-            text: Data,
-            department: "test",
-            type: Type,
-            author: user,
-            signatories: signatories
-          });
-          await newForm.save();
-          res.status(200).send('Form saved successfully');
+        try {
+            const { Data, title, Signatories, Author, Type } = req.body;
+            const signatories = await User.find({ _id: { $in: Signatories } });
+            const user = await User.findOne({ id: Author });
+            const existingForm = await Form.findOne({ title });
+            if (existingForm) {
+                await existingForm.updateOne({ text: Data, signatories });
+                res.status(200).send('Form updated successfully');
+            } else {
+                const newForm = new Form({
+                    title,
+                    text: Data,
+                    department: "test",
+                    type: Type,
+                    author: user,
+                    signatories
+                });
+                await newForm.save();
+                res.status(200).send('Form saved successfully');
+            }
+        } catch (error) {
+            handleServerError(res, error, 'Error saving form');
         }
-      } catch (error) {
-        console.error('Error saving form:', error);
-        res.status(500).send('Internal server error');
-      }
     },
-    // fetches a template from the database and returns it as json object
+
+    // Fetch a form from the database and return it as a JSON object.
     fetchForm: async (req, res) => {
-      try {
-        const { title } = req.body; 
-        const form = await Form.findOne({ title: title }); 
-        if (!form) {
-          return res.status(404).send('Form not found');
+        try {
+            const { title } = req.body;
+            const form = await Form.findOne({ title });
+
+            if (!form) {
+                return res.status(400).send('Form not found');
+            }
+
+            res.status(200).json(form);
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching form');
         }
-        res.status(200).json(form);
-      } catch (error) {
-        console.error('Error fetching form from serverside:', error);
-        res.status(500).send('Internal server error');
-      }
     },
-    // returns an array of strings containing the titles of all the templates in the database that don't need to be signed
-    fetchNoSignatureFormsList: async (req, res) => { 
-      try {
-        const formsList = await Form.find({ 
-          signatories: { $size: 0 }, 
-          type: { $ne: "Return" } 
-        });
-        if (!formsList) {
-          return res.status(404).send('Forms not found');
+
+    // Returns an array of strings containing the titles of all the forms in the database that don't need to be signed.
+    fetchNoSignatureFormsList: async (req, res) => {
+        try {
+            const formsList = await Form.find({
+                signatories: { $size: 0 },
+                type: { $ne: "Return" }
+            });
+            let formTitles = [];
+            if (!formsList || formsList.length === 0) {
+                return res.status(400).send('Forms not found');
+            }
+            else formTitles = formsList.map(form => form.title);
+            res.status(201).json({ docs: formTitles });
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching forms');
         }
-        const formTitles = formsList.map(Tem => Tem.title);
-        res.status(201).json({docs: formTitles});
-      } catch (error) {
-        console.error('Error fetching forms:', error);
-        res.status(500).send('Internal server error');
-      }
     },
-    fetchFormWithSignatureList: async (req, res) => { 
-      try {
-        const formsList = await Form.find({ signatories: { $exists: true, $ne: [] } });
-        if (!formsList) {
-          return res.status(404).send('Forms not found');
+
+    // Returns an array of strings containing the titles of all forms in the database that require signatures.
+    fetchFormWithSignatureList: async (req, res) => {
+        try {
+            const formsList = await Form.find({ signatories: { $exists: true, $ne: [] } });
+
+            if (!formsList.length) {
+                return res.status(404).send('Forms not found');
+            }
+
+            const formTitles = formsList.map(form => form.title);
+            res.status(201).json({ docs: formTitles });
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching forms');
         }
-        const formTitles = formsList.map(Tem => Tem.title);
-        res.status(201).json({docs: formTitles});
-      } catch (error) {
-        console.error('Error fetching forms:', error);
-        res.status(500).send('Internal server error');
-      }
     },
-    fetchAllFormsList: async (req, res) => { 
-      try {
-        const formsList = await Form.find({});
-        if (!formsList) {
-          return res.status(404).send('Forms not found');
+
+    // Returns an array of strings containing the titles of all forms in the database.
+    fetchAllFormsList: async (req, res) => {
+        try {
+            const formsList = await Form.find({ type: { $ne: 'Template' } });
+    
+            if (!formsList.length) {
+                return res.status(400).send('Forms not found');
+            }
+    
+            const formTitles = formsList.map(form => form.title);
+            res.status(200).json({ docs: formTitles });
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching forms');
         }
-        const formTitles = formsList.map(Tem => Tem.title);
-        res.status(201).json({docs: formTitles});
-      } catch (error) {
-        console.error('Error fetching form:', error);
-        res.status(500).send('Internal server error');
-      }
     },
+
+    // Returns an array of strings containing the titles of all templates in the database.
+    fetchAllTemplatesList: async (req, res) => {
+        try {
+            const templatesList = await Form.find({type: 'Template'});
+
+            if (!templatesList.length) {
+                return res.status(400).send('Forms not found');
+            }
+
+            const formTitles = templatesList.map(form => form.title);
+            res.status(201).json({ docs: formTitles });
+        } catch (error) {
+            handleServerError(res, error, 'Error fetching forms');
+        }
+    },
+    // Delete a form by its title.
     deleteForm: async (req, res) => {
-      try {
-        const { title } = req.body; 
-        const form = await Form.deleteOne({ title: title }); 
-        res.status(200).json('deleted successfully');
-      } catch (error) {
-        console.error('Error fetching form serverside:', error);
-        res.status(500).send('Internal server error');
-      }
-    },  
-    updateFormTitle: async (req, res) => {
-      try {
-        const { oldTitle, newTitle } = req.body;
-        const form = await Form.findOne({ title: oldTitle });
-        if (!form) {
-          return res.status(404).send('Form not found');
+        try {
+            const { title } = req.body;
+            await Form.deleteOne({ title });
+            res.status(200).json('Form deleted successfully');
+        } catch (error) {
+            handleServerError(res, error, 'Error deleting form');
         }
-        await form.updateOne({ title: newTitle });
-        await form.save();
-        res.status(200).send('Form title updated successfully');
-      } catch (error) {
-        console.error('Error updating form title:', error);
-        res.status(500).send('Internal server error');
-      }
     },
-  };
-  
-  module.exports = formController;
+
+    // Update the title of a form.
+    updateFormTitle: async (req, res) => {
+        try {
+            const { oldTitle, newTitle } = req.body;
+            const form = await Form.findOne({ title: oldTitle });
+
+            if (!form) {
+                return res.status(400).send('Form not found');
+            }
+
+            await form.updateOne({ title: newTitle });
+            res.status(200).send('Form title updated successfully');
+        } catch (error) {
+            handleServerError(res, error, 'Error updating form title');
+        }
+    },
+};
+
+module.exports = formController;

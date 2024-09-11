@@ -2,34 +2,37 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import logoImg from '../../assets/pictures/sce.jpg';
-import messagesIcon from '../../assets/pictures/icons8-messages-100.png'; // Default messages icon
-import messagesWithMessagesIcon from '../../assets/pictures/icons8-messages-1001.png'; // Messages icon when there are messages
+import messagesIcon from '../../assets/pictures/icons8-messages-100.png'; 
+import messagesWithMessagesIcon from '../../assets/pictures/icons8-messages-1001.png'; 
 import accountIcon from '../../assets/pictures/icons8-profile-96.png';
 import { decodeValue } from '../../api/utils';
 import { LanguageContext } from '../../Context/LanguageContextProvider';
-import '../../assets/css/Navbar.css'; // Make sure to adjust the path if needed
+import '../../assets/css/Navbar.css'; 
 
 const translations = {
   en: {
-    admin: "Logged user is an admin",
+    admin: "admin",
     account: "Account",
     accountInfo: "Account Info",
     formManager: "Form Manager",
     signOut: "Sign Out",
+    help: "Help",
   },
   he: {
-    admin: "משתמש מחובר הוא מנהל",
+    admin: "אדמין",
     account: "חשבון",
     accountInfo: "פרטי חשבון",
     formManager: "מנהל טפסים",
     signOut: "התנתק",
+    help: "עזרה",
   },
   ar: {
-    admin: "المستخدم المسجل هو مسؤول",
+    admin: "مسؤل",
     account: "الحساب",
     accountInfo: "معلومات الحساب",
     formManager: "مدير النماذج",
     signOut: "تسجيل خروج",
+    help: "مساعدة",
   },
 };
 
@@ -49,11 +52,9 @@ const StudentNavbar = () => {
         } else {
           setIsLoggedIn(true);
           const response = await decodeValue(JSON.stringify({ token: token }));
-          const user = response.data.user;
-          if (user.role === 'admin') setIsAdmin(true);
-
+          if (response.user.role === 'admin') setIsAdmin(true);
           const messages = JSON.parse(localStorage.getItem('messages')) || [];
-          const userMessages = messages.filter(message => message.author === user._id || message.author.includes(user._id));
+          const userMessages = messages.filter(message => message.author === response.user._id || message.author.includes(response.user._id));
           setUserMessages(userMessages);
         }
       } catch (error) {
@@ -79,7 +80,7 @@ const StudentNavbar = () => {
   const handleDeleteAllMessages = async () => {
     const token = localStorage.getItem('token');
     const response = await decodeValue(JSON.stringify({ token: token }));
-    const user = response.data.user;
+    const user = response.user;
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
     const remainingMessages = messages.filter(message => message.author !== user._id);
     localStorage.setItem('messages', JSON.stringify(remainingMessages));
@@ -91,11 +92,26 @@ const StudentNavbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-secondary" style={{ height: '70px', borderBottom: '2px solid white' }}>
+    <nav className="navbar navbar-expand-lg bg-secondary">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/requestmanager">
-          <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
-        </Link>
+        <div className="navbar-left">
+          <Link className="navbar-brand" to="/requestmanager/form">
+            <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '40px' }} />
+          </Link>
+          <Dropdown onSelect={handleLanguageChange} className="language-dropdown">
+            <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill">
+              {language.toUpperCase()}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dropdown-menu rounded">
+              <Dropdown.Item eventKey="he">HE</Dropdown.Item>
+              <Dropdown.Item eventKey="en">EN</Dropdown.Item>
+              <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Link className="nav-link help-button" to="/help">
+            {translations[language].help}
+          </Link>
+        </div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -108,18 +124,6 @@ const StudentNavbar = () => {
                 </span>
               )}
             </li>
-            <div className="navbar-left">
-              <Dropdown onSelect={handleLanguageChange}>
-                <Dropdown.Toggle variant="secondary" id="language-dropdown" className="rounded-pill language-dropdown">
-                  {language.toUpperCase()}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu rounded">
-                  <Dropdown.Item eventKey="he">HE</Dropdown.Item>
-                  <Dropdown.Item eventKey="en">EN</Dropdown.Item>
-                  <Dropdown.Item eventKey="ar">AR</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
             {isLoggedIn && (
               <li className="nav-item dropdown">
                 <DropdownButton
@@ -160,7 +164,7 @@ const StudentNavbar = () => {
               >
                 <Dropdown.Item as={Link} to="/accountinfopage">{translations[language].accountInfo}</Dropdown.Item>
                 {isAdmin && (
-                  <Dropdown.Item as={Link} to="/formmanager">{translations[language].formManager}</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/formmanager/editor">{translations[language].formManager}</Dropdown.Item>
                 )}
                 {isLoggedIn && (
                   <Dropdown.Item onClick={handleSignOut}>{translations[language].signOut}</Dropdown.Item>

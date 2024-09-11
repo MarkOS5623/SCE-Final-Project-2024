@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import '../../assets/css/Editor.css';
-import { fetchRequest } from '../../api/user_requests';
 import { decodeValue } from '../../api/utils';
 import CardContainer from '../../components/Utils/CardContainer';
 import logoImg from '../../assets/pictures/sce.jpg';
@@ -10,14 +10,10 @@ import RequestTable from '../../components/Tables/RequestTable';
 import UserActionPanel from '../../components/ActionPanels/RequestManagerActionPanel';
 import DownloadDocsTable from '../../components/Tables/DownloadDocsTable';
 import RequestFillingTable from '../../components/Tables/RequestFillingTable';
+import ViewDocument from '../../components/DocumentViewers/ViewDocument';
 
 function RequestManagerPage() {
-    const [userRequests, setUserRequests] = useState({});
-    const [userRequestHistory, setUserRequestHistory] = useState({});
-    const [requestFormVisible, setRequestFormVisible] = useState(true);
-    const [downloadFormVisible, setDownloadFormVisible] = useState(false);
-    const [requestsVisible, setMyRequestsVisible] = useState(false);
-    const [myRequestHistoryVisible, setMyRequestHistoryVisible] = useState(false);
+    const [userRole, setUserRole] = useState('');
     const [actionPanelCollapsed, setActionPanelCollapsed] = useState(false);
 
     useEffect(() => {
@@ -25,39 +21,7 @@ function RequestManagerPage() {
             try {
                 const token = localStorage.getItem('token');
                 const decodedToken = await decodeValue(JSON.stringify({ token: token }));
-                const response = await fetchRequest(decodedToken.data.user.id);
-                if (response.status === 201) {
-                    const documentStatuses = response.data.statuses;
-                    const pendingApprovalDocs = [];
-                    const requestHistoryDocs = [];
-                    response.data.docs.forEach((doc, index) => {
-                        if (documentStatuses[index] === "pending approval") {
-                            pendingApprovalDocs.push({
-                                subject: doc.subject,
-                                documentId: doc.documentId,
-                                status: documentStatuses[index],
-                            });
-                        } else {
-                            requestHistoryDocs.push({
-                                subject: doc.subject,
-                                documentId: doc.documentId,
-                                status: documentStatuses[index],
-                            });
-                        }
-                    });
-                    setUserRequests({
-                        docs: pendingApprovalDocs.map(doc => doc.subject),
-                        ids: pendingApprovalDocs.map(doc => doc.documentId),
-                        statuses: pendingApprovalDocs.map(doc => doc.status),
-                    });
-                    setUserRequestHistory({
-                        docs: requestHistoryDocs.map(doc => doc.subject),
-                        ids: requestHistoryDocs.map(doc => doc.documentId),
-                        statuses: requestHistoryDocs.map(doc => doc.status),
-                    });
-                } else {
-                    console.log('Response data is empty');
-                }
+                setUserRole(decodedToken.user.role)
             } catch (error) {
                 console.error('Fetching of docs failed:', error.message);
             }
@@ -77,10 +41,14 @@ function RequestManagerPage() {
                         <div className="right-panel" style={{ width: 'auto' }}>
                             <CardContainer style={{ width: '170vh', padding: '20px' }}>
                                 <img src={logoImg} alt="My App Logo" style={{ width: 'auto', height: '100px', marginBottom: "10px", marginTop: "10px" }} />
-                                {requestsVisible && (<RequestTable documents={userRequests} flag={false}/>)}
-                                {myRequestHistoryVisible && (<RequestTable documents={userRequestHistory} flag={true} setDocuments={setUserRequestHistory}/>)}
-                                {downloadFormVisible && (<DownloadDocsTable/>)}
-                                {requestFormVisible && (<RequestFillingTable/>)}
+                                <Routes>
+                                    <Route path="requests" element={<RequestTable flag={false} />} />
+                                    <Route path="history" element={<RequestTable flag={true}  />} />
+                                    <Route path="download" element={<DownloadDocsTable />} />
+                                    <Route path="form" element={<RequestFillingTable />} />
+                                    <Route path="history/:documentId" element={<ViewDocument flag={false}/>} />
+                                </Routes>
+                                <Outlet />
                             </CardContainer>
                         </div>
                     </Col>
@@ -92,8 +60,8 @@ function RequestManagerPage() {
                                 : 'rgba(158, 201, 59)',
                             position: 'fixed',
                             borderRight: actionPanelCollapsed
-                            ? ''
-                            : '2px solid white',
+                                ? ''
+                                : '2px solid white',
                             top: '70px',
                             bottom: '70px',
                             left: -15,
@@ -116,15 +84,11 @@ function RequestManagerPage() {
                         >
                             <img src={expandSidebarIcon} alt="Expand sidebar" style={{ width: '30px', height: '30px', transition: 'width 0.3s, height 0.3s' }} />
                         </Button>
-                        {!actionPanelCollapsed && <UserActionPanel 
-                            setRequestFormVisible={setRequestFormVisible} 
-                            setMyRequestsVisible={setMyRequestsVisible} 
-                            setMyRequestHistoryVisible={setMyRequestHistoryVisible} 
-                            setActionPanelCollapsed={setActionPanelCollapsed}cd 
-                            setDownloadFormVisible={setDownloadFormVisible}/>}
+                        {!actionPanelCollapsed && <UserActionPanel userRole={userRole}/>}
                     </div>
                 </Row>
             </div>
+            <Outlet />
         </div>
     );
 }

@@ -1,20 +1,51 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; // Adjust path if necessary
-import { deleteForm, updateFormTitle } from '../../api/form_requests';
-import { fetchAllFormsList } from '../../api/form_requests';
+import { Table, Button, Form, FormControl } from 'react-bootstrap';
+import { LanguageContext } from '../../Context/LanguageContextProvider'; 
+import { deleteForm, updateFormTitle, fetchAllFormsList } from '../../api/form_requests';
+
+const translations = {
+    en: {
+        formsHeader: "Forms",
+        actionHeader: "Action",
+        deleteButton: "Delete",
+        renameButton: "Rename",
+        saveButton: "Save",
+        cancelButton: "Cancel",
+        searchPlaceholder: "Search forms..."
+    },
+    he: {
+        formsHeader: "טפסים",
+        actionHeader: "פעולה",
+        deleteButton: "מחק",
+        renameButton: "שנה שם",
+        saveButton: "שמור",
+        cancelButton: "בטל",
+        searchPlaceholder: "חפש טפסים..."
+    },
+    ar: {
+        formsHeader: "النماذج",
+        actionHeader: "العملية",
+        deleteButton: "حذف",
+        renameButton: "إعادة تسمية",
+        saveButton: "حفظ",
+        cancelButton: "إلغاء",
+        searchPlaceholder: "ابحث عن النماذج..."
+    }
+};
 
 const FormTable = () => {
     const { language } = useContext(LanguageContext);
-    const [ allFormsList, setAllFormsList] = useState([]);
+    const [allFormsList, setAllFormsList] = useState([]);
+    const [renamingIndex, setRenamingIndex] = useState(-1);
+    const [newSubject, setNewSubject] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const allForms = await fetchAllFormsList();
-                console.log(allForms)
                 if (allForms) {
-                    setAllFormsList(allForms.data.docs);
+                    setAllFormsList(allForms.docs);
                 } else {
                     console.log('Unsigned document response is not valid');
                 }
@@ -24,38 +55,6 @@ const FormTable = () => {
         }
         fetchData();
     }, []);
-
-    // State for managing renaming functionality
-    const [renamingIndex, setRenamingIndex] = useState(-1); // Index of the row currently being renamed
-    const [newSubject, setNewSubject] = useState(''); // New subject input value
-
-    // Translations for different languages
-    const translations = {
-        en: {
-            formsHeader: "Forms",
-            actionHeader: "Action",
-            deleteButton: "Delete",
-            renameButton: "Rename",
-            saveButton: "Save",
-            cancelButton: "Cancel"
-        },
-        he: {
-            formsHeader: "טפסים",
-            actionHeader: "פעולה",
-            deleteButton: "מחק",
-            renameButton: "שנה שם",
-            saveButton: "שמור",
-            cancelButton: "בטל"
-        },
-        ar: {
-            formsHeader: "النماذج",
-            actionHeader: "العملية",
-            deleteButton: "حذف",
-            renameButton: "إعادة تسمية",
-            saveButton: "حفظ",
-            cancelButton: "إلغاء"
-        }
-    };
 
     const handleInputChange = (event) => {
         setNewSubject(event.target.value);
@@ -101,69 +100,87 @@ const FormTable = () => {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredForms = allFormsList.filter(doc =>
+        doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>{translations[language].formsHeader}</th>
-                    <th>{translations[language].actionHeader}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {allFormsList.map((doc, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>
-                            {renamingIndex === index ? (
-                                <Form.Control
-                                    type="text"
-                                    value={newSubject}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <>
-                                {doc}
-                                <Button
-                                    variant="info"
-                                    onClick={() => handleRenameStart(index, doc)}
-                                    style={{marginLeft: '10px', marginRight: '10px'}}
-                                >
-                                    {translations[language].renameButton}
-                                </Button>
-                                </>
-                            )}
-                        </td>
-                        <td>
-                            {renamingIndex === index && (
-                                <>
-                                    <Button
-                                        variant="success"
-                                        onClick={() => handleRenameSave(doc, newSubject)}
-                                    >
-                                        {translations[language].saveButton}
-                                    </Button>
-                                    {' '}
-                                    <Button
-                                        variant="secondary"
-                                        onClick={handleRenameCancel}
-                                    >
-                                        {translations[language].cancelButton}
-                                    </Button>
-                                </>
-                            )}
-                            {' '}
-                            <Button
-                                variant="primary"
-                                onClick={() => handleDelete(doc)}
-                            >
-                                {translations[language].deleteButton}
-                            </Button>
-                        </td>
+        <>
+            <h1>Form Data Base</h1>
+            <FormControl
+                type="text"
+                placeholder={translations[language].searchPlaceholder}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="mb-3"
+            />
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{translations[language].formsHeader}</th>
+                        <th>{translations[language].actionHeader}</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {filteredForms.map((doc, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>
+                                {renamingIndex === index ? (
+                                    <Form.Control
+                                        type="text"
+                                        value={newSubject}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <>
+                                    {doc}
+                                    <Button
+                                        variant="info"
+                                        onClick={() => handleRenameStart(index, doc)}
+                                        style={{marginLeft: '10px', marginRight: '10px'}}
+                                    >
+                                        {translations[language].renameButton}
+                                    </Button>
+                                    </>
+                                )}
+                            </td>
+                            <td>
+                                {renamingIndex === index && (
+                                    <>
+                                        <Button
+                                            variant="success"
+                                            onClick={() => handleRenameSave(doc, newSubject)}
+                                        >
+                                            {translations[language].saveButton}
+                                        </Button>
+                                        {' '}
+                                        <Button
+                                            variant="secondary"
+                                            onClick={handleRenameCancel}
+                                        >
+                                            {translations[language].cancelButton}
+                                        </Button>
+                                    </>
+                                )}
+                                {' '}
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleDelete(doc)}
+                                >
+                                    {translations[language].deleteButton}
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </>
     );
 };
 

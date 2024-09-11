@@ -45,10 +45,16 @@ const generateDocumentId = (subject) => {
     return id;
  };
 
+ const handleServerError = (res, error, customMessage = 'Internal Server Error') => {
+    console.error(`${customMessage}:`, error);
+    res.status(500).json({ message: customMessage });
+  };
+  
 module.exports = {
     encode,
     encrpytValue,
     decode,
     decrpytValue,
-    generateDocumentId
+    generateDocumentId,
+    handleServerError
 }

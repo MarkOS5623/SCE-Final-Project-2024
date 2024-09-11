@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const documentSchema = new mongoose.Schema({
+const documentSchema = new Schema({
   subject: { type: String, required: true },
-  text: { type: String, required: true },
-  department: { type: String, required: true },
-  type: { type: String, required: true },
-  authorizers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Status', required: true }],
-  submissionDate: { type: Date, default: Date.now }, 
-  documentId: { type: String, unique: true, required: true } 
+  text: { type: String },
+  department: { type: String },
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  authorizers: [{ type: Schema.Types.ObjectId, ref: 'Status' }], 
+  documentId: { type: String, unique: true, required: true },
+  type: { type: String }
 });
 
 const Document = mongoose.model('Document', documentSchema);
-
 module.exports = Document;

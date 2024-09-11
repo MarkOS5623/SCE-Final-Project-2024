@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
-import { DocumentEditorComponent, DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
+import React, { useState, useRef, useContext, useEffect, useMemo } from 'react';
+import { Table, Button, Form, Spinner } from 'react-bootstrap';
+import { DocumentEditorContainerComponent, Inject, WordExport, SfdtExport } from '@syncfusion/ej2-react-documenteditor';
 import { fetchDocument, deleteDocuments } from '../../api/documents_requests';
-import { LanguageContext } from '../../Context/LanguageContextProvider'; 
-import { pdfConverter } from '../../api/utils';
+import { LanguageContext } from '../../Context/LanguageContextProvider';
+import { pdfConverter, handleApiError, decodeValue } from '../../api/utils';
+import { useNavigate } from 'react-router-dom';
+import { fetchRequest } from '../../api/user_requests';
 
 const translations = {
   en: {
@@ -11,70 +13,90 @@ const translations = {
     request: "Request",
     status: "Status",
     review: "Review",
-    close: "Close",
     clear: "Clear",
     delete: "Delete",
-    download: "Download"
+    download: "Download",
+    searchPlaceholder: "Search requests..."
   },
   he: {
     requestID: "מספר בקשה",
     request: "בקשה",
     status: "סטטוס",
     review: "ביקורת",
-    close: "סגור",
     clear: "נקה",
     delete: "מחק",
-    download: "הורד"
+    download: "הורד",
+    searchPlaceholder: "חפש בקשות..."
   },
   ar: {
     requestID: "معرف الطلب",
     request: "طلب",
     status: "الحالة",
     review: "مراجعة",
-    close: "إغلاق",
     clear: "مسح",
     delete: "حذف",
-    download: "تحميل"
+    download: "تحميل",
+    searchPlaceholder: "ابحث عن الطلبات..."
   }
 };
 
-export default function RequestTable({ documents, setDocuments, flag }) {
+export default function RequestTable({ flag }) {
   const { language } = useContext(LanguageContext);
+  const navigate = useNavigate();
 
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [documentContent, setDocumentContent] = useState('');
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
-  const documentContainerRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [documents, setDocuments] = useState({ docs: [], ids: [], statuses: [] });
+  const [isLoading, setIsLoading] = useState(true);
   const downloadContainerRef = useRef(null);
-  const editorStyle = { width: "100%", height: "95%" };
-
-  const handleReview = async (documentId) => {
-    try {
-      const response = await fetchDocument(documentId);
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch document');
-      }
-      setDocumentContent(response.data.text);
-      setShowReviewForm(true);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
 
   const handleDeleteToggle = () => {
     setDeleteMode(!deleteMode);
     setSelectedDocuments([]);
   };
 
-  const handleSelectDocument = (documentId) => {
-    setSelectedDocuments((prevSelected) => {
-      if (prevSelected.includes(documentId)) {
-        return prevSelected.filter(id => id !== documentId);
-      } else {
-        return [...prevSelected, documentId];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = localStorage.getItem('token');
+        const decodedToken = await decodeValue(JSON.stringify({ token }));
+        const response = await fetchRequest(decodedToken.user._id);
+        if (response) {
+          const documentStatuses = response.statuses;
+          const docsArray = response.docs.map((doc, index) => ({
+            subject: doc.subject,
+            documentId: doc.documentId,
+            status: documentStatuses[index],
+          }));
+          const filteredDocs = flag
+          ? docsArray.filter(doc => doc.status !== 'pending approval')
+          : docsArray.filter(doc => doc.status === 'pending approval');
+
+
+          setDocuments({
+            docs: filteredDocs.map(doc => doc.subject),
+            ids: filteredDocs.map(doc => doc.documentId),
+            statuses: filteredDocs.map(doc => doc.status),
+          });
+        } else {
+          console.log('Response data is empty');
+        }
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setIsLoading(false);
       }
-    });
+    }
+    fetchData();
+  }, [flag]);
+
+  const handleSelectDocument = (documentId) => {
+    setSelectedDocuments((prevSelected) =>
+      prevSelected.includes(documentId)
+        ? prevSelected.filter(id => id !== documentId)
+        : [...prevSelected, documentId]
+    );
   };
 
   const handleDeleteDocuments = async () => {
@@ -92,116 +114,115 @@ export default function RequestTable({ documents, setDocuments, flag }) {
         setSelectedDocuments([]);
       }
     } catch (error) {
-      console.error('Error deleting documents:', error);
+      handleApiError(error);
     }
   };
 
   const handleDownload = async (documentId) => {
     try {
       const response = await fetchDocument(documentId);
-      if (response.status !== 200) {
+      if (!response) {
         throw new Error('Failed to fetch document');
       }
-      setDocumentContent(response.data.text);
-      downloadContainerRef.current.documentEditor.open(response.data.text);
-      await pdfConverter(downloadContainerRef); // Ensure pdfConverter works with the ref
+      downloadContainerRef.current.documentEditor.open(response.text);
+      await pdfConverter(downloadContainerRef);
     } catch (error) {
-      console.error('Error downloading document:', error);
+      handleApiError(error);
     }
   };
 
-  useEffect(() => {
-    if (showReviewForm && documentContainerRef.current) {
-      documentContainerRef.current.open(documentContent);
-    }
-  }, [showReviewForm, documentContent]);
+  const handleReview = (documentId) => {
+    navigate(`/requestmanager/history/${documentId}`);
+  };
 
-  useEffect(() => {
-    // Ensure the DocumentEditorComponent is rendered before accessing its ref
-    if (documentContainerRef.current && documentContent) {
-      documentContainerRef.current.open(documentContent);
-    }
-  }, [documentContent]);
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredDocs = useMemo(() => {
+    return documents.docs.filter(doc =>
+      doc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [documents.docs, searchQuery]);
+
+  if (isLoading) {
+    return <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>;
+  }
 
   return (
     <div className="d-flex flex-row">
       <div className="flex-grow-1">
         <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
           <DocumentEditorContainerComponent height="82vh" width="95%" id="container" ref={downloadContainerRef}>
-              <Inject services={[WordExport, SfdtExport]} />
+            <Inject services={[WordExport, SfdtExport]} />
           </DocumentEditorContainerComponent>
         </div>
-        {flag && !showReviewForm && (
+        {!flag ? <h1>Pending Requests</h1> : <h1>Request History</h1>}
+        {flag && !deleteMode && (
           <Button variant="primary" onClick={handleDeleteToggle} style={{ margin: '10px' }}>
             {translations[language].clear}
           </Button>
         )}
-        {deleteMode && !showReviewForm && (
+        {deleteMode && (
           <Button variant="danger" onClick={handleDeleteDocuments} style={{ margin: '10px' }}>
             {translations[language].delete}
           </Button>
         )}
-        {!showReviewForm ? (
-          <>
-            <Table striped bordered hover style={{ width: '100%', minWidth: '300px' }}>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  {deleteMode && <th>Select</th>}
-                  <th>{translations[language].requestID}</th>
-                  <th>{translations[language].request}</th>
-                  <th>{translations[language].status}</th>
-                  <th>{translations[language].review}</th>
-                  <th>{translations[language].download}</th>
+        <Form.Control
+          type="text"
+          placeholder={translations[language].searchPlaceholder}
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="mb-3"
+        />
+        <Table striped bordered hover style={{ width: '100%', minWidth: '300px' }}>
+          <thead>
+            <tr>
+              <th>#</th>
+              {deleteMode && <th>Select</th>}
+              <th>{translations[language].requestID}</th>
+              <th>{translations[language].request}</th>
+              <th>{translations[language].status}</th>
+              <th>{translations[language].review}</th>
+              <th>{translations[language].download}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredDocs.length === 0 ? (
+              <tr>
+                <td colSpan="7">No matching requests found</td>
+              </tr>
+            ) : (
+              filteredDocs.map((doc, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  {deleteMode && (
+                    <td>
+                      <Form.Check
+                        type="checkbox"
+                        checked={selectedDocuments.includes(documents.ids[index])}
+                        onChange={() => handleSelectDocument(documents.ids[index])}
+                      />
+                    </td>
+                  )}
+                  <td>{documents.ids[index]}</td>
+                  <td>{doc}</td>
+                  <td>{documents.statuses[index]}</td>
+                  <td>
+                    <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
+                      {translations[language].review}
+                    </Button>
+                  </td>
+                  <td>
+                    <Button variant="primary" onClick={() => handleDownload(documents.ids[index])}>
+                      {translations[language].download}
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {documents.docs && documents.docs.map((doc, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    {deleteMode && (
-                      <td>
-                        <Form.Check
-                          type="checkbox"
-                          checked={selectedDocuments.includes(documents.ids[index])}
-                          onChange={() => handleSelectDocument(documents.ids[index])}
-                        />
-                      </td>
-                    )}
-                    <td>{documents.ids[index]}</td>
-                    <td>{doc}</td>
-                    <td>{documents.statuses[index]}</td>
-                    <td>
-                      <Button variant="primary" onClick={() => handleReview(documents.ids[index])}>
-                        {translations[language].review}
-                      </Button>
-                    </td>
-                    <td>
-                      <Button variant="primary" onClick={() => handleDownload(documents.ids[index])}>
-                        {translations[language].download}
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </>
-        ) : (
-          <>
-            <DocumentEditorComponent
-              height="85vh"
-              width="95%"
-              id="container"
-              style={editorStyle}
-              ref={documentContainerRef}
-              restrictEditing={'true'}
-            />
-            <br />
-            <Button variant="primary" onClick={() => setShowReviewForm(false)}>
-              {translations[language].close}
-            </Button>
-          </>
-        )}
+              ))
+            )}
+          </tbody>
+        </Table>
       </div>
     </div>
   );

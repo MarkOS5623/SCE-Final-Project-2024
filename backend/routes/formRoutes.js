@@ -19,6 +19,9 @@ router.get('/fetchformwithsignaturelist', formController.fetchFormWithSignatureL
 //return an array of all the form titles 
 router.get('/fetchformslist', formController.fetchAllFormsList);
 
+//return an array of all the form titles 
+router.get('/fetchtemplateslist', formController.fetchAllTemplatesList);
+
 // changes the subject(name) of a document
 router.post('/updateformtitle', formController.updateFormTitle);
 
